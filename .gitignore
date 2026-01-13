@@ -1,0 +1,38 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+
+# Virtual environments
+.venv
+venv/
+env/
+.venv/
+
+# Ruff cache
+.ruff_cache/
+
+# Data files
+*.csv
+*.parquet
+/samples/data/
+/data/
+/sample_data/
+
+# Jupyter Notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+ 
+# Random Test Files
+_test_*.py
+
+# Planning Files
+planning/
