@@ -37,6 +37,8 @@ class AccountDriverGroup:
     -------
     apply_lags(best_lags, max_lag)
         Apply lag transformations to both account and drivers.
+    apply_daterange(start_date, end_date, best_lags, b_training)
+        Apply date range filter with lag adjustments to account and drivers.
     """
 
     account: AccountInfo
@@ -61,9 +63,12 @@ class AccountDriverGroup:
         AccountDriverGroup
             A new instance with lagged account and driver data.
         """
+        # Create new instance with both account and drivers lagged for temporal alignment
         return AccountDriverGroup(
-            account=self.account.apply_lag(max_lag=max_lag),
-            drivers=self.drivers.apply_lags(best_lags=best_lags, max_lag=max_lag),
+            account=self.account.apply_lag(max_lag=max_lag),  # Lag account by max_lag
+            drivers=self.drivers.apply_lags(
+                best_lags=best_lags, max_lag=max_lag
+            ),  # Lag each driver by its specific lag
             np_dtype=self.np_dtype,
         )
 
@@ -93,6 +98,10 @@ class AccountDriverGroup:
             When True, validates that the date range is long enough for the maximum lag.
             When False, validates that driver data exists for all lagged periods.
 
+        Returns
+        -------
+        None
+
         Raises
         ------
         AssertionError
@@ -108,9 +117,10 @@ class AccountDriverGroup:
             If b_training is False and any driver's lagged end date is not in the
             driver's date range.
 
-        Returns
-        -------
-        None
+        Notes
+        -----
+        This is a private method used internally by apply_daterange to validate inputs
+        before applying date range transformations.
         """
         # Verify that the start date exists in the account's available dates
         assert start_date in self.account.dates.keys(), (
@@ -218,6 +228,8 @@ class AccountDriverGroup:
 
         # Calculate driver-specific start dates by shifting back by each driver's lag
         # This aligns driver data to match the account's target timeline
+        # Example: if account starts at 2023-06-01 and driver has lag=3,
+        # driver data should start at 2023-03-01 to predict 2023-06-01
         driver_start_dates = {
             driver: start_date + relativedelta(months=-lag)
             for driver, lag in best_lags.items()
@@ -255,7 +267,7 @@ class AccountClassifiedDriverGroups:
     ----------
     account : AccountInfo
         The account information associated with the driver groups.
-    classified_drivers : ClassifiedDriverGroups
+    classified_drivers : ClassifiedDriverGroups[DriverClassification]
         The driver groups organized by classification.
     np_dtype : type, default=BASE_NP_DTYPE
         The numpy data type to use for numerical operations.
@@ -297,9 +309,12 @@ class AccountClassifiedDriverGroups:
         KeyError
             If the classification key does not exist in classified_drivers.
         """
+        # Create AccountDriverGroup combining account with specific classification's drivers
         return AccountDriverGroup(
             account=self.account,
-            drivers=self.classified_drivers[key],
+            drivers=self.classified_drivers[
+                key
+            ],  # Extract drivers for this classification
         )
 
     def apply_lags(
@@ -308,23 +323,37 @@ class AccountClassifiedDriverGroups:
         """
         Apply lag transformations to both account and classified driver data.
 
+        This method creates a new instance with the account and all classified
+        drivers shifted according to their specified lag values.
+
         Parameters
         ----------
         best_lags : dict[DriverClassification, dict[DriverName, int]]
             Nested mapping of driver classifications to their respective driver
-            names and optimal lag values.
+            names and optimal lag values. Each lag value represents the number
+            of time periods to shift that driver backward.
         max_lag : int
-            Maximum lag value to apply to the account and driver data.
+            Maximum lag value to apply to the account and driver data. The
+            resulting time series will be shortened by this amount.
 
         Returns
         -------
         AccountClassifiedDriverGroups
-            A new instance with lagged account and classified driver data.
+            A new instance with lagged account and classified driver data. The
+            time dimension is reduced by max_lag to ensure alignment.
+
+        Notes
+        -----
+        Both the account and all drivers are lagged to maintain temporal alignment.
+        The account is lagged by max_lag, while each driver is lagged according to
+        its specific value in best_lags.
         """
+        # Create new instance with lagged account and all classified driver groups
         return AccountClassifiedDriverGroups(
-            account=self.account.apply_lag(max_lag=max_lag),
+            account=self.account.apply_lag(max_lag=max_lag),  # Lag account uniformly
             classified_drivers=self.classified_drivers.apply_lag(
-                best_lags=best_lags, max_lag=max_lag
+                best_lags=best_lags,
+                max_lag=max_lag,  # Lag each driver by its classification-specific lag
             ),
             np_dtype=self.np_dtype,
         )
@@ -385,6 +414,7 @@ class AccountGroupDriverGroup:
         KeyError
             If the specified account type is not found in the accounts dictionary.
         """
+        # Create AccountDriverGroup pairing specific account with all drivers
         return AccountDriverGroup(account=self.accounts[key], drivers=self.drivers)
 
     def apply_lags(
@@ -393,21 +423,39 @@ class AccountGroupDriverGroup:
         """
         Apply lag transformations to both account group and driver data.
 
+        This method creates a new instance where all accounts and drivers have
+        been shifted according to their specified lag values to maintain temporal
+        alignment.
+
         Parameters
         ----------
         best_lags : dict[DriverName, int]
-            Mapping of driver names to their optimal lag values.
+            Mapping of driver names to their optimal lag values. Each value
+            represents the number of time periods to shift that driver backward.
         max_lag : int
-            Maximum lag value to apply to the account and driver data.
+            Maximum lag value to apply to the account and driver data. All
+            accounts are shifted by this amount, and the resulting time series
+            will be shortened by max_lag.
 
         Returns
         -------
         AccountGroupDriverGroup
-            A new instance with lagged account group and driver data.
+            A new instance with lagged account group and driver data. The time
+            dimension is reduced by max_lag to ensure all series have valid data.
+
+        Notes
+        -----
+        The accounts are lagged uniformly by max_lag, while drivers are lagged
+        individually according to best_lags values.
         """
+        # Create new instance with lagged accounts and drivers
         return AccountGroupDriverGroup(
-            accounts=self.accounts.apply_lag(max_lag=max_lag),
-            drivers=self.drivers.apply_lags(best_lags=best_lags, max_lag=max_lag),
+            accounts=self.accounts.apply_lag(
+                max_lag=max_lag
+            ),  # Lag all accounts uniformly
+            drivers=self.drivers.apply_lags(
+                best_lags=best_lags, max_lag=max_lag
+            ),  # Lag each driver individually
             np_dtype=self.np_dtype,
         )
 
@@ -418,14 +466,16 @@ class AccountGroupSelectedDrivers:
     A container for account groups and their associated classified driver groups.
 
     This class pairs account group information with classified driver groups,
-    ensuring that the account types match between the two structures.
+    ensuring that the account types match between the two structures. It is
+    typically created by the select_drivers method of AccountGroupClassifiedDriverGroups.
 
     Attributes
     ----------
     accounts : AccountGroupInfo
         Information about account groups, containing a mapping of account types.
     drivers : ClassifiedDriverGroups[AccountType]
-        Classified driver groups organized by account type.
+        Classified driver groups organized by account type, where each account
+        type has its own set of selected drivers.
     np_dtype : type, optional
         NumPy data type to use for numerical operations. Defaults to BASE_NP_DTYPE.
 
@@ -442,7 +492,13 @@ class AccountGroupSelectedDrivers:
     Notes
     -----
     The __post_init__ method validates that account types are consistent between
-    the accounts and drivers structures.
+    the accounts and drivers structures. This ensures that each account type has
+    a corresponding set of drivers.
+
+    Examples
+    --------
+    >>> selected = account_group_classified.select_drivers(driver_selection)
+    >>> account_drivers = selected[AccountType.REVENUE]
     """
 
     accounts: AccountGroupInfo
@@ -450,18 +506,45 @@ class AccountGroupSelectedDrivers:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
+        """Validate that account types match between accounts and drivers."""
+        # Ensure structural consistency between accounts and their associated drivers
         assert set(self.accounts.account_map.keys()) == set(
             self.drivers.classification_groups.keys()
         ), 'Account types in drivers must match those in accounts.account_map.'
         return
 
     def __getitem__(self, key: AccountType) -> AccountDriverGroup:
+        """
+        Retrieve an AccountDriverGroup for a specific account type.
+
+        Parameters
+        ----------
+        key : AccountType
+            The account type to retrieve the driver group for.
+
+        Returns
+        -------
+        AccountDriverGroup
+            An AccountDriverGroup instance containing the specified account and
+            its associated selected drivers.
+
+        Raises
+        ------
+        AssertionError
+            If the specified account type is not found in the accounts.
+
+        Examples
+        --------
+        >>> revenue_group = selected_drivers[AccountType('REVENUE')]
+        """
+        # Validate that the requested account type exists
         assert key in self.accounts.account_map, (
             f'Account type {key} not found in accounts.'
         )
+        # Create AccountDriverGroup pairing specific account with its selected drivers
         return AccountDriverGroup(
             account=self.accounts[key],
-            drivers=self.drivers[key],
+            drivers=self.drivers[key],  # Drivers already filtered for this account type
             np_dtype=self.np_dtype,
         )
 
@@ -472,14 +555,16 @@ class AccountGroupClassifiedDriverGroups:
     Container for account group information and classified driver groups.
 
     This class associates account group information with classified driver groups,
-    providing indexed access to individual account-classified driver combinations.
+    providing indexed access to individual account-classified driver combinations
+    and methods for driver selection and date range filtering.
 
     Attributes
     ----------
     accounts : AccountGroupInfo
         Information about the account groups.
-    classified_drivers : ClassifiedDriverGroups
-        Groups of classified drivers, organized by classification.
+    classified_drivers : ClassifiedDriverGroups[DriverClassification]
+        Groups of classified drivers, organized by classification (e.g., economic
+        indicators, technical factors).
     np_dtype : type, optional
         NumPy data type for numerical operations, defaults to BASE_NP_DTYPE.
 
@@ -487,11 +572,16 @@ class AccountGroupClassifiedDriverGroups:
     -------
     __getitem__(key)
         Retrieve account-classified driver groups for a specific account type.
+    select_drivers(selected_drivers)
+        Select specific drivers from classified groups for each account.
+    apply_daterange(start_date, end_date)
+        Filter both accounts and drivers to a specified date range.
 
     Examples
     --------
-    >>> ag_classified = AccountGroupClassifiedDriverGroups()
-    >>> account_drivers = ag_classified[AccountType.SAVINGS]
+    >>> ag_classified = AccountGroupClassifiedDriverGroups(accounts, drivers)
+    >>> account_drivers = ag_classified[AccountType('REVENUE')]
+    >>> selected = ag_classified.select_drivers(driver_selection)
     """
 
     accounts: AccountGroupInfo
@@ -512,9 +602,10 @@ class AccountGroupClassifiedDriverGroups:
         AccountClassifiedDriverGroups
             An instance containing the account and its associated classified drivers.
         """
+        # Create AccountClassifiedDriverGroups for specific account with all classifications
         return AccountClassifiedDriverGroups(
             account=self.accounts[key],
-            classified_drivers=self.classified_drivers,
+            classified_drivers=self.classified_drivers,  # All classifications available
         )
 
     def select_drivers(
@@ -630,6 +721,9 @@ class AccountGroupClassifiedDriverGroups:
         """
         Apply a date range filter to both accounts and classified drivers.
 
+        This method creates a new instance containing only data within the
+        specified date range for both accounts and all classified drivers.
+
         Parameters
         ----------
         start_date : datetime.date
@@ -641,14 +735,30 @@ class AccountGroupClassifiedDriverGroups:
         -------
         AccountGroupClassifiedDriverGroups
             A new instance with the date range applied to both accounts and
-            classified drivers, preserving the numpy dtype.
+            classified drivers. The numpy dtype is preserved.
+
+        Notes
+        -----
+        Both the accounts and all driver classifications are filtered to the
+        same date range. Date indices are reindexed to start from 0 in the
+        returned instance.
+
+        Examples
+        --------
+        >>> filtered = ag_classified.apply_daterange(
+        ...     start_date=date(2023, 1, 1),
+        ...     end_date=date(2023, 12, 31)
+        ... )
         """
+        # Create new instance with date-filtered accounts and drivers
         return AccountGroupClassifiedDriverGroups(
             accounts=self.accounts.apply_daterange(
-                start_date=start_date, end_date=end_date
+                start_date=start_date,
+                end_date=end_date,  # Filter accounts to date range
             ),
             classified_drivers=self.classified_drivers.apply_daterange(
-                start_date=start_date, end_date=end_date
+                start_date=start_date,
+                end_date=end_date,  # Filter all driver classifications to same date range
             ),
             np_dtype=self.np_dtype,
         )

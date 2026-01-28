@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import lh_v2.datatypes as dts
+from lh_v2.shared import ArrayF
 
 
 def parse_snake_case(s: str) -> str:
@@ -140,6 +141,116 @@ def plot_account_forecast(
 
     # Add title with formatted account type and axis labels
     plt.title(f'Account Forecast: {parse_snake_case(acc.account_type)}')
+    plt.xlabel('Date')
+    plt.ylabel('Account Value')
+    plt.legend()
+    plt.show()
+    return
+
+
+def plot_account_forecasts(
+    accounts: list[dts.AccountInfo],
+    forecast_daterange: tuple[datetime.date, datetime.date],
+    historicals: dts.AccountInfo | None = None,
+    labels: list[str] | None = None,
+):
+    if len(accounts) == 0:
+        return
+    if len(accounts) == 1:
+        plot_account_forecast(accounts[0], forecast_daterange)
+        return
+
+    acc = accounts[0].account_type
+    for account in accounts[1:]:
+        if account.account_type != acc:
+            raise ValueError('All accounts must have the same account_type')
+
+    dates = accounts[0].dates
+    for account in accounts[1:]:
+        if account.dates != dates:
+            raise ValueError('All accounts must have the same dates')
+
+    # Extract all dates that occur before the forecast period begins
+    historical_dates = [
+        date for date in accounts[0].dates.keys() if date < forecast_daterange[0]
+    ]
+    # Get the account values for the historical period
+    historical_values = accounts[0].apply_daterange(end_date=historical_dates[-1]).arr
+
+    # Extract all dates within the forecast date range (inclusive)
+    forecast_dates = [
+        date
+        for date in accounts[0].dates.keys()
+        if forecast_daterange[0] <= date <= forecast_daterange[1]
+    ]
+    # Get the account values for the forecast period
+    forecast_values: list[ArrayF] = []
+    for account in accounts:
+        forecast_values.append(
+            account.apply_daterange(
+                start_date=forecast_daterange[0], end_date=forecast_daterange[1]
+            ).arr
+        )
+
+    if historicals is not None:
+        if max(historicals.dates.keys()) >= forecast_daterange[1]:
+            historical_future_vals = historicals.apply_daterange(
+                start_date=forecast_daterange[0], end_date=forecast_daterange[1]
+            ).arr
+        else:
+            historical_future_vals = None
+
+    else:
+        historical_future_vals = None
+
+    # Create a new figure with specified dimensions
+    plt.figure(figsize=(16, 10))
+
+    # Plot historical data as a solid line
+    plt.plot(
+        np.array(historical_dates),
+        historical_values,
+        label='Historical Data',
+    )
+
+    if historical_future_vals is not None:
+        plt.plot(
+            np.array(forecast_dates),
+            historical_future_vals,
+            label='Historical Data Over Forecast Period',
+            color='black',
+            linewidth=3,
+        )
+
+    # Plot forecast data with dashed line if multiple points, otherwise use marker
+    if len(forecast_dates) > 1:
+        for i in range(len(accounts)):
+            if labels is not None:
+                label = labels[i]
+            else:
+                label = f'Forecasted Data {i + 1}'
+            plt.plot(
+                np.array(forecast_dates),
+                forecast_values[i],
+                label=label,
+                linestyle='--',
+            )
+    else:
+        # For single forecast point, display as a marker without line
+        for i in range(len(accounts)):
+            if labels is not None:
+                label = labels[i]
+            else:
+                label = f'Forecasted Data {i + 1}'
+            plt.plot(
+                np.array(forecast_dates),
+                forecast_values[i],
+                marker='o',
+                label=label,
+                linestyle='',
+            )
+    # Add title with formatted account type and axis labels
+    plt.title(f'Account Forecast: {parse_snake_case(accounts[0].account_type)}')
     plt.xlabel('Date')
     plt.ylabel('Account Value')
     plt.legend()

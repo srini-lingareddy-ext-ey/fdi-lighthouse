@@ -34,6 +34,35 @@ COLLINEARITY_METHOD_MAPPING: dict[
 
 
 def get_collinearity_method_weights() -> dict[cdt.CollinearityMethodEnum, float]:
+    """
+    Get default weights for combining multiple collinearity detection methods.
+
+    Returns the predefined weights used to calculate a weighted average when
+    combining results from different collinearity detection methods. These
+    weights reflect the relative importance and reliability of each method.
+
+    Returns
+    -------
+    dict[CollinearityMethodEnum, float]
+        Dictionary mapping each collinearity method to its weight coefficient.
+        Weights should sum to 1.0 when all methods are used.
+
+    Notes
+    -----
+    Default weights are:
+    - CORRELATION: 0.25
+    - VIF: 0.25
+    - KMEANS: 0.15
+    - MUTUAL_INFORMATION: 0.15
+    - LASSO: 0.05
+    - HIERARCHICAL_CLUSTERING: 0.15
+
+    These weights are automatically normalized if a subset of methods is used.
+
+    See Also
+    --------
+    run_methods : Function that uses these weights to combine method results.
+    """
     return {
         cdt.CollinearityMethodEnum.CORRELATION: 0.25,
         cdt.CollinearityMethodEnum.VIF: 0.25,
@@ -48,22 +77,44 @@ def use_driver(
     arr_collinearity: ArrayF, driver_ind: int, used_driver_inds: list[int]
 ) -> bool:
     """
-    Determines if a driver should be used based on its collinearity with already used drivers.
-    Used for pure statistical collinearity analysis.
+    Determine if a driver should be selected based on collinearity with existing drivers.
+
+    This function evaluates whether a driver should be included by checking if its
+    average collinearity with already-selected drivers is below an adaptive threshold.
+    The threshold becomes stricter as more drivers are selected. Used for pure
+    statistical collinearity-based driver selection.
 
     Parameters
     ----------
-    arr_collinearity : np.ndarray
-        The collinearity matrix.
+    arr_collinearity : ArrayF
+        The collinearity matrix of shape (n_drivers, n_drivers) where element [i, j]
+        represents the collinearity score between drivers i and j.
     driver_ind : int
-        The index of the driver to be evaluated.
+        The index of the driver being evaluated for selection.
     used_driver_inds : list[int]
-        The indices of the drivers that have already been used.
+        List of indices of drivers that have already been selected.
 
     Returns
     -------
     bool
-        True if the driver should be used, False otherwise.
+        True if the driver should be selected (collinearity is acceptable),
+        False if the driver is too collinear with existing drivers.
+
+    Notes
+    -----
+    The threshold formula is: 0.7 / sqrt(n), where n is the number of already
+    selected drivers. This creates an increasingly strict criterion as more
+    drivers are added, helping to maintain diversity in the selected set.
+
+    Examples
+    --------
+    >>> collinearity_matrix = np.array([[1.0, 0.8, 0.3],
+    ...                                  [0.8, 1.0, 0.5],
+    ...                                  [0.3, 0.5, 1.0]])
+    >>> use_driver(collinearity_matrix, driver_ind=2, used_driver_inds=[0])
+    True
+    >>> use_driver(collinearity_matrix, driver_ind=1, used_driver_inds=[0])
+    False
     """
     # If no drivers have been used yet, always include this driver
     if len(used_driver_inds) == 0:
@@ -84,22 +135,49 @@ def use_driver_pruning(
     used_driver_inds: list[int],
 ) -> bool:
     """
-    Determines if a driver should be allowed based on its collinearity with already allowed drivers.
-    Used for collinearity pruning of driver for LLM selection.
+    Determine if a driver should be allowed for LLM selection based on collinearity.
+
+    This function evaluates whether a driver should be included in the set of
+    selectable drivers for LLM-based selection. It uses a less strict threshold
+    than `use_driver`, allowing the LLM more flexibility in final driver selection.
+    The threshold adapts logarithmically as more drivers are allowed.
 
     Parameters
     ----------
-    arr_collinearity : np.ndarray
-        The collinearity matrix.
+    arr_collinearity : ArrayF
+        The collinearity matrix of shape (n_drivers, n_drivers) where element [i, j]
+        represents the collinearity score between drivers i and j.
     driver_ind : int
-        The index of the driver to be evaluated.
+        The index of the driver being evaluated.
     used_driver_inds : list[int]
-        The indices of the drivers that have already been used.
+        List of indices of drivers that have already been allowed for selection.
 
     Returns
     -------
     bool
-        True if the driver should be allowed, False otherwise.
+        True if the driver should be allowed for LLM selection (collinearity is
+        acceptable), False if the driver is too collinear with existing drivers.
+
+    Notes
+    -----
+    The threshold formula is: 0.85 / (log(n) + 1), where n is the number of
+    already allowed drivers. This is more permissive than `use_driver`, providing
+    the LLM with a larger pool of potential drivers while still filtering out
+    the most highly collinear ones.
+
+    See Also
+    --------
+    use_driver : Stricter version used for pure statistical driver selection.
+
+    Examples
+    --------
+    >>> collinearity_matrix = np.array([[1.0, 0.8, 0.3],
+    ...                                  [0.8, 1.0, 0.5],
+    ...                                  [0.3, 0.5, 1.0]])
+    >>> use_driver_pruning(collinearity_matrix, driver_ind=2, used_driver_inds=[0])
+    True
+    >>> use_driver_pruning(collinearity_matrix, driver_ind=1, used_driver_inds=[0])
+    True  # More permissive than use_driver
     """
     # If no drivers have been used yet, always include this driver
     if len(used_driver_inds) == 0:

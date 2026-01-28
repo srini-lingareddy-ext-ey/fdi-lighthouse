@@ -53,7 +53,7 @@ def mse(model: ArrayF, true: ArrayF) -> float:
     float
         The Mean Squared Error between the model predictions and true values.
     """
-    return float(np.sum(np.square(true - model)) / model.shape[0])
+    return float(np.sum(np.square(model - true)) / model.shape[0])
 
 
 def mse_percentage(model: ArrayF, true: ArrayF) -> float:
@@ -93,7 +93,7 @@ def rmse(model: ArrayF, true: ArrayF) -> float:
     float
         The Root Mean Squared Error between the model predictions and true values.
     """
-    return float(l2_norm(vector=model - true) / model.shape[0])
+    return float(np.sqrt(mse(model, true)))
 
 
 def rmse_percentage(model: ArrayF, true: ArrayF) -> float:
@@ -135,7 +135,7 @@ def mape(model: ArrayF, true: ArrayF) -> float:
     float
         The Mean Absolute Percentage Error between the model predictions and true values.
     """
-    return float(np.sum(np.abs((true - model) / true)) / model.shape[0] * 100)
+    return float(np.sum(np.abs((true - model) / true)) / model.shape[0])
 
 
 def rsquared(model: ArrayF, true: ArrayF) -> float:

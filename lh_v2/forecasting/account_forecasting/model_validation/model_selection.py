@@ -25,18 +25,26 @@ def lowest_mse_perc(
     AssertionError
         If no best method is found based on MSE%.
     """
+    # Initialize minimum MSE to a very large value for comparison
     min_mse = 1e10
+    # Track the best method found so far (None initially)
     best_method: aft.AccountForecastingMethodEnum | None = None
+
+    # Iterate through all methods to find the one with lowest MSE percentage
     for method in method_map.keys():
+        # Check if this method's MSE% is better than current minimum
         if (
             metrics[method_map[method]][aft.AccountValidationMetricEnum.MSE_PERCENTAGE]
             < min_mse
         ):
+            # Update minimum MSE to this method's value
             min_mse = metrics[method_map[method]][
                 aft.AccountValidationMetricEnum.MSE_PERCENTAGE
             ]
+            # Update best method to this one
             best_method = method
 
+    # Ensure a best method was found (should always be true if methods exist)
     assert best_method is not None, 'No best method found based on MSE%.'
     return best_method
 
@@ -65,18 +73,26 @@ def lowest_rmse_perc(
     AssertionError
         If no best method is found based on RMSE%.
     """
+    # Initialize minimum RMSE to a very large value for comparison
     min_rmse = 1e10
+    # Track the best method found so far (None initially)
     best_method: aft.AccountForecastingMethodEnum | None = None
+
+    # Iterate through all methods to find the one with lowest RMSE percentage
     for method in method_map.keys():
+        # Check if this method's RMSE% is better than current minimum
         if (
             metrics[method_map[method]][aft.AccountValidationMetricEnum.RMSE_PERCENTAGE]
             < min_rmse
         ):
+            # Update minimum RMSE to this method's value
             min_rmse = metrics[method_map[method]][
                 aft.AccountValidationMetricEnum.RMSE_PERCENTAGE
             ]
+            # Update best method to this one
             best_method = method
 
+    # Ensure a best method was found (should always be true if methods exist)
     assert best_method is not None, 'No best method found based on RMSE%.'
     return best_method
 
@@ -105,13 +121,21 @@ def lowest_mape(
     AssertionError
         If no best method is found based on MAPE.
     """
+    # Initialize minimum MAPE to a very large value for comparison
     min_mape = 1e10
+    # Track the best method found so far (None initially)
     best_method: aft.AccountForecastingMethodEnum | None = None
+
+    # Iterate through all methods to find the one with lowest MAPE
     for method in method_map.keys():
+        # Check if this method's MAPE is better than current minimum
         if metrics[method_map[method]][aft.AccountValidationMetricEnum.MAPE] < min_mape:
+            # Update minimum MAPE to this method's value
             min_mape = metrics[method_map[method]][aft.AccountValidationMetricEnum.MAPE]
+            # Update best method to this one
             best_method = method
 
+    # Ensure a best method was found (should always be true if methods exist)
     assert best_method is not None, 'No best method found based on MAPE.'
     return best_method
 
@@ -143,11 +167,16 @@ def select_best_forecast_method(
     ValueError
         If the selection_metric is not supported.
     """
+    # Route to appropriate selection function based on the specified metric
     if selection_metric == aft.AccountValidationMetricEnum.MSE_PERCENTAGE:
+        # Select method with lowest Mean Squared Error percentage
         return lowest_mse_perc(method_map, metrics)
     elif selection_metric == aft.AccountValidationMetricEnum.RMSE_PERCENTAGE:
+        # Select method with lowest Root Mean Squared Error percentage
         return lowest_rmse_perc(method_map, metrics)
     elif selection_metric == aft.AccountValidationMetricEnum.MAPE:
+        # Select method with lowest Mean Absolute Percentage Error
         return lowest_mape(method_map, metrics)
     else:
+        # Raise error if an unsupported metric is provided
         raise ValueError(f'Unsupported selection metric: {selection_metric}')

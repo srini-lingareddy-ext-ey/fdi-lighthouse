@@ -82,7 +82,7 @@ class MRMRRanking(AbstractRankingMethod):
         """
         # mutual_info_regression expects samples x features
         mi_scores = mutual_info_regression(
-            X, y, discrete_features=False, random_state=42
+            X, y, discrete_features='auto', random_state=42
         )
         return mi_scores.astype(self.info.np_dtype)
 
@@ -119,7 +119,7 @@ class MRMRRanking(AbstractRankingMethod):
             mi = mutual_info_regression(
                 selected_feature_data.reshape(-1, 1),
                 feature_data,
-                discrete_features=False,
+                discrete_features='auto',
                 random_state=42,
             )[0]
             redundancies.append(mi)

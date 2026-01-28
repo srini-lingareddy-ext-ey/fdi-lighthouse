@@ -1,3 +1,24 @@
+"""
+Shared utilities for driver ranking methods.
+
+This module provides configuration and selection utilities for driver ranking
+methods used in driver analysis. It includes a mapping of ranking method enums
+to their implementation classes and a function to select methods based on
+configuration parameters.
+
+Attributes
+----------
+RANKING_METHOD_MAP : dict[DriverRankingEnum, type[AbstractRankingMethod]]
+    Dictionary mapping ranking method enumeration values to their corresponding
+    implementation classes. This mapping is used to instantiate the appropriate
+    ranking method based on configuration.
+
+Notes
+-----
+The module supports multiple ranking methods including correlation-based,
+regression-based, ensemble, and feature selection methods.
+"""
+
 import lh_v2.datatypes.driver_analysis_types.ranking_types as rdt
 import lh_v2.params as params
 
@@ -41,28 +62,60 @@ def select_methods(
     """
     Configure which driver ranking methods to use based on configuration parameters.
 
-    This method determines the ranking methods to be used for driver analysis based on
-    the configuration in ranking_params. It supports three modes:
+    This function determines the ranking methods to be used for driver analysis based on
+    the configuration in methods_params. It supports three modes:
     1. Using all available ranking methods (default)
     2. Using all methods except those specified for removal
     3. Using only explicitly selected methods
 
+    Parameters
+    ----------
+    methods_params : params.RankingMethodsParams
+        Configuration parameters specifying which ranking methods to use. Contains
+        flags (b_remove, b_selected) and method lists (methods_removed, methods_selected).
+
     Returns
     -------
     list[rdt.DriverRankingEnum]
-        List of Ranking methods to be used.
+        List of ranking method enums to be used in driver analysis.
 
     Raises
     ------
     ValueError
-        If both b_remove and b_selected are set to True, which is an invalid configuration
+        If both b_remove and b_selected are set to True, which is an invalid
+        configuration.
+    ValueError
+        If the configuration state is invalid (should not occur in normal operation).
 
     Notes
     -----
     Exactly one of the following must be true:
     - Neither b_remove nor b_selected is True (use all methods)
-    - b_remove is True (use all except specified)
-    - b_selected is True (use only specified)
+    - b_remove is True (use all except specified methods)
+    - b_selected is True (use only specified methods)
+
+    Examples
+    --------
+    Use all available ranking methods:
+
+    >>> params = RankingMethodsParams(b_remove=False, b_selected=False)
+    >>> methods = select_methods(params)
+
+    Exclude specific methods:
+
+    >>> params = RankingMethodsParams(
+    ...     b_remove=True,
+    ...     methods_removed=[DriverRankingEnum.PCA, DriverRankingEnum.BORUTA]
+    ... )
+    >>> methods = select_methods(params)
+
+    Use only selected methods:
+
+    >>> params = RankingMethodsParams(
+    ...     b_selected=True,
+    ...     methods_selected=[DriverRankingEnum.LASSO, DriverRankingEnum.RIDGE]
+    ... )
+    >>> methods = select_methods(params)
     """
     # Check for invalid configuration: both flags cannot be True simultaneously
     if methods_params.b_remove and methods_params.b_selected:

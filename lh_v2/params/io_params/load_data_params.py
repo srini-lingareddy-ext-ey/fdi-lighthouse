@@ -8,5 +8,5 @@ class BaseDataLoaderParams(BaseParamsModel):
 
 class DataLoadingParams(BaseParamsModel):
     selected_method: dts.data_loader_types.DataLoadingMethodEnum = (
-        dts.data_loader_types.DataLoadingMethodEnum.OLD_CSV
+        dts.data_loader_types.DataLoadingMethodEnum.POLARS
     )

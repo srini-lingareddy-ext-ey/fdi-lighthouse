@@ -6,10 +6,10 @@ Categories:
 1. Independent Methods (pre-generate all combinations):
    - GRID: Evenly-spaced samples across parameter ranges
    - RANDOM: Uniformly random samples from parameter ranges
-   
+
 2. Sequential Methods (iterative generation based on history):
    - BAYESIAN: TPE-based optimization that learns from previous trials
-   
+
 Future sequential methods could include: GENETIC, SIMULATED_ANNEALING, etc.
 """
 

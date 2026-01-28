@@ -31,8 +31,20 @@ env/
 .ipynb_checkpoints
 *.ipynb
  
-# Random Test Files
+# Random Testing/Other Files
 _test_*.py
+lh_v2/scratch/
+
+# Test outputs
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+coverage.xml
+*.cover
+
+# Do commit testing data
+!tests/test_data/*.parquet
 
 # Planning Files
 planning/

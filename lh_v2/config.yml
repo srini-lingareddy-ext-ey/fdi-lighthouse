@@ -7,11 +7,12 @@ use_default: false
 
 # If true, all params will be set to default except
 # accounts, segment, region, and general_params
-use_default_params: true
+use_default_params: false
 
 
 # Accounts to forecast
-accounts: [volume] # default: [volume]
+# default: [volume]
+accounts: [volume, net_revenue, cogs_total, t_w_total, gross_margin]
 
 # Segments to forecast
 segment: Residential # default: Residential
@@ -50,7 +51,7 @@ general_params:
 # Data Loading Params:
 load_data_params:
     # Selected data loading method
-    selected_method: old_csv # default: old_csv
+    selected_method: polars # default: polars
 
 # Driver Analysis Params:
 driver_analysis_params:
@@ -494,7 +495,27 @@ account_forecast_params:
         # Seasonality prior scale for the Prophet model
         seasonality_prior_scale: 10.0 # default: 10.0
 
-    
+# Account Reconciliation Params:
+account_reconciliation_params:
+    # Whether to perform account reconciliation after forecasting
+    b_reconcile: true # default: true
+
+    # Whether to default to algebraic_formula method
+    # if formulas cannot be used in mint_adjustment
+    # or other methods
+    b_allow_default_algebraic_formulas: true # default: true
+
+    # Formulas to use for reconciliation
+    # must have spaces around operators
+    # e.g., acc4 = acc1 + acc2 - acc3 not acc4=acc1+acc2-acc3
+    # Allowed operators: +, -, *, /
+    # accounts cannot currently have a space in their name
+    formulas: # default: []
+        - gross_margin = net_revenue - cogs_total - t_w_total
+
+    # Reconciliation method to use
+    method: mint_adjustment # default: mint_adjustment
+
 
 ## Args for file outputs
 output_params:
@@ -519,46 +540,46 @@ output_params:
 ## If use_default true, set to logging.WARNING
 logging:
     # General logging level
-    general: INFO # Default: WARNING
+    general: WARNING # Default: WARNING
 
     # Logging level for config parsing
-    params: INFO # Default: WARNING
+    params: WARNING # Default: WARNING
 
     # Logging levels for I/O operations
     io:
         # General logging level for I/O operations
-        general: INFO # Default: WARNING
+        general: WARNING # Default: WARNING
 
         # Logging level for Data Loading
-        data_loading: INFO # Default: WARNING
+        data_loading: WARNING # Default: WARNING
 
     # Logging levels for Driver Analysis
     driver_analysis:
         # General logging level for Driver Analysis
-        general: INFO # Default: WARNING
+        general: WARNING # Default: WARNING
 
         # Logging level for Lag Handling
-        lag_handling: INFO # Default: WARNING
+        lag_handling: WARNING # Default: WARNING
 
         # Logging level for Driver Ranking
-        driver_ranking: INFO # Default: WARNING
+        driver_ranking: WARNING # Default: WARNING
 
         # Logging level for Collinearity Removal
-        collinearity_removal: INFO # Default: WARNING
+        collinearity_removal: WARNING # Default: WARNING
     
     forecasting:
     # Logging levels for Forecasting
         # General logging level for Forecasting
-        general: INFO # Default: WARNING
+        general: WARNING # Default: WARNING
 
         # Logging level for Driver Forecasting
-        driver_forecasting: INFO # Default: WARNING
+        driver_forecasting: WARNING # Default: WARNING
 
         # Logging level for Model Training
-        model_training: INFO # Default: WARNING
+        model_training: WARNING # Default: WARNING
 
         # Logging level for Hyperparameter Optimization
-        hyperparam_opt: INFO # Default: WARNING
+        hyperparam_opt: WARNING # Default: WARNING
 
         # Logging level for Account Forecasting
-        account_forecasting: INFO # Default: WARNING
+        account_forecasting: WARNING # Default: WARNING

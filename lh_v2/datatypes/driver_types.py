@@ -63,6 +63,7 @@ class Driver:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
+        """Cast array to specified numpy dtype upon initialization."""
         self.arr = self.arr.astype(self.np_dtype)
         return
 
@@ -71,6 +72,32 @@ class Driver:
         end_date: datetime.date,
         start_date: Optional[datetime.date] = None,
     ) -> None:
+        """
+        Validate that the specified date range is within available dates.
+
+        This private method checks whether the provided start and end dates
+        exist in the driver's date mapping, raising errors if they don't.
+
+        Parameters
+        ----------
+        end_date : datetime.date
+            The ending date to validate (required).
+        start_date : Optional[datetime.date], default=None
+            The starting date to validate. If None, validation is skipped
+            for the start date.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If end_date is not present in the driver's available dates.
+        ValueError
+            If start_date is provided but not present in the driver's
+            available dates.
+        """
         if end_date not in self.dates.keys():
             raise ValueError(
                 f'End date for driver {self.name} is not in available dates.'
@@ -301,19 +328,7 @@ class DriverGroup:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
-        """
-        Post-initialization method to ensure the array's data type matches the specified numpy data type.
-
-        This method is automatically called after the object is initialized. It converts the `arr` attribute
-        to the specified numpy data type (`np_dtype`).
-
-        Attributes
-        ----------
-        arr : numpy.ndarray
-            The array to be type-cast.
-        np_dtype : numpy.dtype
-            The target numpy data type to which `arr` will be converted.
-        """
+        """Cast array to specified numpy dtype upon initialization."""
         self.arr = self.arr.astype(self.np_dtype)
         return
 
@@ -452,7 +467,7 @@ class DriverGroup:
 
     def get_driver(self, driver_name: DriverName) -> Driver:
         """
-        Retrieve a Driver object for the specified driver name.
+        Extract a single Driver object from the group by name.
 
         Parameters
         ----------
@@ -462,7 +477,18 @@ class DriverGroup:
         Returns
         -------
         Driver
-            A Driver object containing the data and dates for the specified driver.
+            A Driver object containing the data, dates, and metadata for
+            the specified driver.
+
+        Raises
+        ------
+        AssertionError
+            If the driver_name is not present in the DriverGroup's map.
+
+        Examples
+        --------
+        >>> driver_group = DriverGroup(...)
+        >>> temp_driver = driver_group.get_driver(DriverName('temperature'))
         """
         assert driver_name in self.map, (
             f'Driver name {driver_name} not found in DriverGroup.'
@@ -474,7 +500,15 @@ class DriverGroup:
             np_dtype=self.np_dtype,
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """
+        Return the number of drivers in this group.
+
+        Returns
+        -------
+        int
+            The number of drivers (rows) in the driver array.
+        """
         return self.arr.shape[0]
 
     def __radd__(self, other: Any) -> DriverGroup:
@@ -596,13 +630,17 @@ class DriverGroup:
 
     def flip_map(self) -> dict[int, DriverName]:
         """
-        Flip the keys and values of the `map` attribute.
+        Create a reverse mapping from indices to driver names.
 
         Returns
         -------
-        dict[int, str]
-            A dictionary where the keys and values of the original `map`
-            attribute are swapped.
+        dict[int, DriverName]
+            A dictionary mapping driver indices to their corresponding
+            driver names. This is the inverse of the `map` attribute.
+
+        See Also
+        --------
+        flip_dict : Utility function used to reverse the dictionary.
         """
         return flip_dict(dictionary=self.map)
 
@@ -625,16 +663,18 @@ class DriverGroup:
 
     def flip_dates(self) -> list[dict[int, datetime.date]]:
         """
-        Flip the dates dictionary sequence.
+        Flip the sequence of date dictionaries.
 
         Returns
         -------
         list[dict[int, datetime.date]]
-            A list of dictionaries with flipped key-value pairs from the original dates sequence.
+            A list of dictionaries with flipped key-value pairs from the original dates.
+            Each dictionary in the sequence has its integer keys and datetime.date values
+            transposed using the flip_seq_dicts utility function.
 
         See Also
         --------
-        flip_seq_dicts : The underlying function that performs the sequence dictionary flipping operation.
+        flip_seq_dicts : Utility function that performs the flipping operation.
         """
         return flip_seq_dicts(seq_dicts=self.dates)
 
@@ -645,36 +685,32 @@ class DriverGroup:
         max_lag: int,
     ) -> dict[datetime.date, int]:
         """
-        Create a mapping of dates to column indices after applying driver-specific lag.
+        Create a mapping of lagged dates to column indices for a driver variable.
 
-        This method adjusts the date-to-index mapping by applying a driver-specific lag
-        relative to a maximum lag value. It's used to align driver data with the appropriate
-        time periods when different drivers have different lag characteristics.
+        This method adjusts date indices based on the driver's specific lag relative to
+        a maximum lag value, accounting for the temporal offset between different driver
+        variables in the analysis.
 
         Parameters
         ----------
         flipped_dates : dict[int, datetime.date]
-            A dictionary mapping column indices to dates, representing the original
-            date-to-index relationship.
+            A dictionary mapping column indices to their corresponding dates.
         driver_lag : int
-            The lag value specific to this driver, determining how many periods to
-            offset the dates.
+            The specific lag (in time periods) associated with this driver variable.
         max_lag : int
-            The maximum lag value across all drivers, used as a reference point for
-            alignment.
+            The maximum lag value across all driver variables in the system.
 
         Returns
         -------
         dict[datetime.date, int]
-            A dictionary mapping dates to column indices after applying the driver lag.
-            The resulting mapping accounts for the difference between max_lag and
-            driver_lag.
+            A dictionary mapping adjusted dates to their corresponding column indices,
+            accounting for the driver-specific lag offset.
 
         Notes
         -----
-        The method iterates through columns up to (shape[1] - max_lag) to ensure
-        that lagged indices remain within valid bounds. The date key for each column
-        index k is calculated as flipped_dates[k + max_lag - driver_lag].
+        The method iterates through valid column indices (excluding the last `max_lag`
+        columns) and creates new date-to-index mappings by offsetting each date by
+        the difference between `max_lag` and `driver_lag`.
         """
         # Initialize a new dictionary to store the date-to-index mapping after lag adjustment
         new_dates: dict[datetime.date, int] = {}
@@ -889,7 +925,7 @@ class DriverGroup:
         for driver in self.map.keys():
             # Get the array index corresponding to the start date for this driver
             start_idx = self.dates[self.map[driver]][start_dates[driver]]
-            # Get the array index corresponding to the end date, +1 to make range inclusive
+            # Get the array index corresponding to the end date, +1 to make the range inclusive
             end_idx = (
                 self.dates[self.map[driver]][end_dates[driver]] + 1
             )  # +1 to include end_date
@@ -1126,6 +1162,7 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
+        """Cast array to specified numpy dtype upon initialization."""
         self.arr = self.arr.astype(self.np_dtype)
         return
 
@@ -1134,6 +1171,43 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
         driver_group_lst: list[DriverGroup],
         classification_groups: dict[ClassificationOfDriver, int],
     ) -> ClassifiedDriverGroups[ClassificationOfDriver]:
+        """
+        Create a ClassifiedDriverGroups from a list of DriverGroup objects.
+
+        This factory method combines multiple DriverGroup objects into a single
+        ClassifiedDriverGroups, where each DriverGroup represents a distinct
+        classification category.
+
+        Parameters
+        ----------
+        driver_group_lst : list[DriverGroup]
+            List of DriverGroup objects to combine. All groups must have arrays
+            with the same number of columns (time periods).
+        classification_groups : dict[ClassificationOfDriver, int]
+            Dictionary mapping classification names to their corresponding
+            indices in the driver_group_lst.
+
+        Returns
+        -------
+        ClassifiedDriverGroups[ClassificationOfDriver]
+            A new ClassifiedDriverGroups instance containing all drivers from
+            the input list, organized by their classifications.
+
+        Raises
+        ------
+        AssertionError
+            If the length of driver_group_lst doesn't match the length of
+            classification_groups.
+        AssertionError
+            If the DriverGroup objects have arrays with different numbers
+            of columns.
+
+        Notes
+        -----
+        - Drivers are stacked vertically in the order they appear in the list
+        - Each classification maintains its own driver-to-index mapping
+        - All arrays are cast to the dtype of the first DriverGroup
+        """
         assert len(driver_group_lst) == len(classification_groups), (
             'Length of driver_group_lst must match length of classification_groups.'
         )
@@ -1651,7 +1725,7 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
             for driver in self.get_ordered_drivers(classification):
                 # Get the array index corresponding to the start date for this driver
                 start_idx = self.dates[class_map[driver]][start_date]
-                # Get the array index corresponding to the end date, +1 to make range inclusive
+                # Get the array index corresponding to the end date, +1 to make the range inclusive
                 end_idx = (
                     self.dates[class_map[driver]][end_date] + 1
                 )  # +1 to include end_date

@@ -17,6 +17,9 @@ class AccountInfo:
     """
     Represents account information with associated time series data and metadata.
 
+    This class encapsulates a single account's time series data along with its
+    temporal mapping, account classification, and hierarchical categorization.
+
     Attributes
     ----------
     arr : ArrayF
@@ -24,18 +27,18 @@ class AccountInfo:
     dates : dict[datetime.date, int]
         A mapping of dates to their corresponding indices in the `arr`.
     account_type : AccountType
-        The type of the account.
-    segment_type : SegmentType
-        The segment type associated with the account.
-    region_type : RegionType
-        The region type associated with the account.
-    np_dtype : type, optional
-        The NumPy data type used for the account data, default is `BASE_NP_DTYPE`.
+        The type of the account (e.g., 'REVENUE', 'COGS').
+    segment_type : HierarchyTree[ProductType]
+        The product hierarchy level associated with the account.
+    region_type : HierarchyTree[LocationType]
+        The location hierarchy level associated with the account.
+    np_dtype : type, default=BASE_NP_DTYPE
+        The NumPy data type used for the account data.
 
     Methods
     -------
-    get_info() -> tuple[AccountType, SegmentType, RegionType]
-        Retrieves the account type, segment type, and region type.
+    get_info() -> tuple[AccountType, ProductType, LocationType]
+        Retrieves the account type, segment name, and region name.
     flip_dates() -> dict[int, datetime.date]
         Returns a reversed mapping of indices to dates.
     apply_lag(max_lag: int) -> AccountInfo
@@ -44,6 +47,12 @@ class AccountInfo:
         Filters the account data to a specific date range.
     add_forecast_vals(forecast_dates: Sequence[datetime.date], forecast_values: ArrayF) -> AccountInfo
         Adds forecast values to the account data.
+
+    Notes
+    -----
+    The array data is automatically cast to the specified np_dtype in __post_init__.
+    All methods that transform the data return new AccountInfo instances, preserving
+    immutability of the original object.
     """
 
     arr: ArrayF
@@ -54,34 +63,48 @@ class AccountInfo:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
+        """Cast array to specified numpy dtype upon initialization."""
+        # Ensure array uses consistent dtype for all operations
         self.arr = self.arr.astype(self.np_dtype)
         return
 
     def get_info(self) -> tuple[AccountType, ProductType, LocationType]:
         """
-        Retrieves information about the account type, segment type, and region type.
+        Retrieve account classification and hierarchical information.
 
         Returns
         -------
-        tuple[AccountType, SegmentType, RegionType]
-            A tuple containing the account type, segment type, and region type.
+        tuple[AccountType, ProductType, LocationType]
+            A tuple containing:
+            - account_type: The type of account (e.g., 'REVENUE', 'COGS')
+            - segment_name: The name of the product hierarchy node
+            - region_name: The name of the location hierarchy node
         """
+        # Extract names from hierarchy tree nodes for easier access
         return self.account_type, self.segment_type.name, self.region_type.name
 
     def flip_dates(self) -> dict[int, datetime.date]:
         """
-        Return a flipped dictionary with dates as values and integers as keys.
+        Create a reverse mapping from array indices to dates.
 
         Returns
         -------
         dict[int, datetime.date]
-            A dictionary with integer keys and date values, where the original
-            dates dictionary's keys and values are swapped.
+            A dictionary mapping array indices to their corresponding dates.
+            This is the inverse of the `dates` attribute.
 
         See Also
         --------
-        flip_dict : Function used to flip the dictionary keys and values.
+        flip_dict : Utility function used to reverse the dictionary.
+
+        Examples
+        --------
+        >>> account_info.dates
+        {datetime.date(2023, 1, 1): 0, datetime.date(2023, 2, 1): 1}
+        >>> account_info.flip_dates()
+        {0: datetime.date(2023, 1, 1), 1: datetime.date(2023, 2, 1)}
         """
+        # Reverse the dates dictionary to enable index-to-date lookups
         return flip_dict(dictionary=self.dates)
 
     def _lag_dates(self, max_lag: int) -> dict[datetime.date, int]:
@@ -149,9 +172,10 @@ class AccountInfo:
             - All other attributes (account_type, segment_type, region_type,
               np_dtype) preserved from the original instance
         """
+        # Create new instance with sliced array and adjusted dates
         return AccountInfo(
-            arr=self.arr[max_lag:],
-            dates=self._lag_dates(max_lag=max_lag),
+            arr=self.arr[max_lag:],  # Remove first max_lag observations
+            dates=self._lag_dates(max_lag=max_lag),  # Adjust date mappings
             account_type=self.account_type,
             segment_type=self.segment_type,
             region_type=self.region_type,
@@ -317,35 +341,64 @@ class AccountGroupInfo:
     """
     Represents a group of accounts with associated metadata and operations.
 
+    This class manages multiple accounts as a single entity, organizing them
+    in a 2D array where each row represents an account's time series data.
+    It provides operations for accessing, transforming, and analyzing the
+    entire group of accounts.
+
     Attributes
     ----------
     arr : ArrayF
-        A NumPy array containing data for the accounts.
+        A 2D NumPy array containing data for all accounts, where each row
+        represents one account's time series.
     account_map : dict[AccountType, int]
-        A mapping of account types to their corresponding indices in the `arr`.
+        A mapping of account types to their corresponding row indices in `arr`.
     dates : Sequence[dict[datetime.date, int]]
-        A sequence of date dictionaries mapping datetime64 objects to indices for each account.
-    segment_type : SegmentType
-        The segment type associated with the accounts.
-    region_type : RegionType
-        The region type associated with the accounts.
-    np_dtype : type, optional
-        The NumPy data type used for the account data, default is `BASE_NP_DTYPE`.
+        A sequence of date dictionaries, one per account, mapping dates to
+        column indices in `arr`.
+    segment_type : HierarchyTree[ProductType]
+        The product hierarchy level associated with all accounts in the group.
+    region_type : HierarchyTree[LocationType]
+        The location hierarchy level associated with all accounts in the group.
+    np_dtype : type, default=BASE_NP_DTYPE
+        The NumPy data type used for the account data.
 
     Methods
     -------
+    from_account_lst(account_lst: list[AccountInfo]) -> AccountGroupInfo
+        Creates an AccountGroupInfo from a list of AccountInfo objects.
     __getitem__(key: AccountType) -> AccountInfo
-        Retrieves the `AccountInfo` object for the given account type.
+        Retrieves the AccountInfo object for the given account type.
     __len__() -> int
         Returns the number of accounts in the group.
     flip_account_map() -> dict[int, AccountType]
         Returns a reversed mapping of indices to account types.
     get_ordered_accounts() -> list[AccountType]
-        Returns a list of account types in the order of their indices.
+        Returns a list of account types ordered by their indices.
     flip_dates() -> list[dict[int, datetime.date]]
-        Returns a reversed mapping of indices to datetime64 objects for all accounts.
+        Returns reversed date mappings for all accounts.
     apply_lag(max_lag: int) -> AccountGroupInfo
-        Applies a lag to the account data and returns a new AccountGroupInfo instance.
+        Applies a lag to all accounts and returns a new instance.
+    apply_daterange(start_date: datetime.date, end_date: datetime.date) -> AccountGroupInfo
+        Filters all accounts to a specific date range.
+
+    Notes
+    -----
+    The array data is automatically cast to the specified np_dtype in __post_init__.
+    All accounts in the group share the same segment_type and region_type.
+    Methods that transform the data return new AccountGroupInfo instances,
+    preserving immutability of the original object.
+
+    Examples
+    --------
+    Access a specific account from the group:
+
+    >>> account_group = AccountGroupInfo(...)
+    >>> revenue_account = account_group[AccountType('REVENUE')]
+
+    Get all account types in order:
+
+    >>> ordered_accounts = account_group.get_ordered_accounts()
     """
 
     arr: ArrayF
@@ -356,37 +409,52 @@ class AccountGroupInfo:
     np_dtype: type = BASE_NP_DTYPE
 
     def __post_init__(self):
+        """Cast array to specified numpy dtype upon initialization."""
+        # Ensure all account data uses consistent dtype
         self.arr = self.arr.astype(self.np_dtype)
         return
 
     @staticmethod
     def from_account_lst(account_lst: list[AccountInfo]) -> AccountGroupInfo:
         """
-        Create an AccountGroupInfo object from a list of AccountInfo objects.
+        Construct an AccountGroupInfo from a list of individual AccountInfo objects.
+
+        This factory method combines multiple AccountInfo objects into a single
+        AccountGroupInfo, creating a 2D array structure where each row represents
+        one account's time series.
 
         Parameters
         ----------
         account_lst : list[AccountInfo]
-            A list of AccountInfo objects to combine into a single AccountGroupInfo.
-            All AccountInfo objects must have arrays of the same length.
+            List of AccountInfo objects to combine. All objects must have:
+            - Arrays of identical length (same number of time periods)
+            - Compatible segment_type and region_type
 
         Returns
         -------
         AccountGroupInfo
-            A new AccountGroupInfo object containing the combined data from all
-            input AccountInfo objects.
+            A new AccountGroupInfo containing all accounts from the input list.
+            The segment_type, region_type, and np_dtype are inherited from the
+            first AccountInfo in the list.
 
         Raises
         ------
         AssertionError
-            If the AccountInfo objects have arrays of different lengths.
+            If AccountInfo objects have arrays of different lengths.
 
         Notes
         -----
-        The method creates a 2D array where each row corresponds to an AccountInfo
-        object from the input list. All arrays are cast to the dtype of the first
-        AccountInfo object in the list. The segment_type, region_type, and np_dtype
-        are inherited from the first AccountInfo object.
+        - Account data is stacked row-wise in the order provided in the list
+        - Each account's date mapping is preserved independently
+        - All arrays are cast to the dtype of the first account
+
+        Examples
+        --------
+        >>> revenue = AccountInfo(arr=..., account_type='REVENUE', ...)
+        >>> cogs = AccountInfo(arr=..., account_type='COGS', ...)
+        >>> group = AccountGroupInfo.from_account_lst([revenue, cogs])
+        >>> len(group)
+        2
         """
         # Get the length of the first account's array as reference
         len_acc1 = account_lst[0].arr.shape[0]
@@ -433,22 +501,29 @@ class AccountGroupInfo:
 
     def __getitem__(self, key: AccountType) -> AccountInfo:
         """
-        Retrieve the AccountInfo object corresponding to the given AccountType key.
+        Access an individual account from the group by account type.
 
         Parameters
         ----------
         key : AccountType
-            The account type key to look up in the account group.
+            The account type identifier to retrieve.
 
         Returns
         -------
         AccountInfo
-            The AccountInfo object associated with the given AccountType key.
+            An AccountInfo object containing the data for the specified account,
+            including its time series array, date mapping, and metadata.
 
         Raises
         ------
         AssertionError
-            If the given AccountType key is not present in the account_map.
+            If the specified AccountType is not present in this group.
+
+        Examples
+        --------
+        >>> revenue = account_group[AccountType('REVENUE')]
+        >>> revenue.arr.shape
+        (24,)  # 24 time periods for this account
         """
         assert key in self.account_map.keys(), (
             'Given AccountType not present in this AccountGroupInfo.'
@@ -462,98 +537,119 @@ class AccountGroupInfo:
             np_dtype=self.np_dtype,
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
-        Returns the number of accounts in the account map.
-
-        This method is used to retrieve the total count of keys in the `account_map` attribute.
+        Return the number of accounts in this group.
 
         Returns
         -------
         int
-            The number of keys in the `account_map`.
+            The total number of accounts in the account_map.
+
+        Examples
+        --------
+        >>> len(account_group)
+        5  # This group contains 5 accounts
         """
+        # Count accounts by getting number of keys in the account map
         return len(self.account_map.keys())
 
     def flip_account_map(self) -> dict[int, AccountType]:
         """
-        Reverses the `account_map` dictionary, swapping keys and values.
+        Create a reverse mapping from array row indices to account types.
 
         Returns
         -------
-        dict[int, AccountTypes]
-            A dictionary where the keys are the values of the original `account_map`
-            and the values are the keys of the original `account_map`.
+        dict[int, AccountType]
+            A dictionary mapping row indices in the array to their corresponding
+            AccountType identifiers. This is the inverse of the `account_map` attribute.
 
-        Notes
-        -----
-        This method assumes that the values in `account_map` are unique and hashable,
-        as they will become the keys in the returned dictionary.
+        See Also
+        --------
+        flip_dict : Utility function used to reverse the dictionary.
+        get_ordered_accounts : Retrieves accounts in index order using this mapping.
+
+        Examples
+        --------
+        >>> account_group.account_map
+        {AccountType('REVENUE'): 0, AccountType('COGS'): 1}
+        >>> account_group.flip_account_map()
+        {0: AccountType('REVENUE'), 1: AccountType('COGS')}
         """
+        # Reverse the account_map to enable index-to-account lookups
         return flip_dict(dictionary=self.account_map)
 
     def get_ordered_accounts(self) -> list[AccountType]:
         """
-        Retrieves a list of account types in a specific ordered sequence.
+        Retrieve all account types ordered by their row indices.
 
         Returns
         -------
-        list[AccountTypes]
-            A list of `AccountTypes` objects ordered based on the mapping
-            defined by `flip_account_map` and the range of the current instance's length.
+        list[AccountType]
+            A list of AccountType identifiers in the order they appear as rows
+            in the data array (i.e., sorted by their index values in account_map).
+
+        Examples
+        --------
+        >>> account_group.get_ordered_accounts()
+        [AccountType('REVENUE'), AccountType('COGS'), AccountType('OPEX')]
         """
+        # Get index-to-account mapping and extract accounts in order
         flipped_accs = self.flip_account_map()
         return [flipped_accs[k] for k in range(len(self))]
 
     def flip_dates(self) -> list[dict[int, datetime.date]]:
         """
-        Flip the sequence of date dictionaries.
+        Create reverse date mappings for all accounts in the group.
 
         Returns
         -------
         list[dict[int, datetime.date]]
-            A flipped version of the dates sequence where the order of dictionaries
-            in the sequence is reversed or transformed according to flip_seq_dicts.
+            A list of dictionaries, one per account, mapping array column indices
+            to their corresponding dates. The list order matches the account order
+            in the array.
 
         See Also
         --------
-        flip_seq_dicts : The underlying function used to flip the sequence.
+        flip_seq_dicts : Utility function used to reverse the sequence of dictionaries.
 
         Notes
         -----
-        This method delegates to flip_seq_dicts to perform the actual flipping
-        operation on the dates attribute.
+        Each dictionary in the returned list corresponds to one account and maps
+        that account's array column indices to dates.
         """
+        # Reverse all date dictionaries in the sequence for index-to-date lookups
         return flip_seq_dicts(seq_dicts=self.dates)
 
     def _lag_dates(self, max_lag: int) -> list[dict[datetime.date, int]]:
         """
-        Create a mapping of lagged dates to their corresponding indices.
+        Generate date-to-index mappings for lagged data across all accounts.
 
-        This method generates a list of dictionaries that map dates to their lagged
-        indices for each account. The lag is applied by shifting the date indices
-        backward by max_lag positions.
+        This private method creates new date mappings that account for the loss
+        of observations at the beginning of the time series due to lagging.
 
         Parameters
         ----------
         max_lag : int
-            The maximum number of time periods to lag. Must be less than the total
+            The number of time periods to lag. Must be less than the total
             number of time periods in the array.
 
         Returns
         -------
         list[dict[datetime.date, int]]
-            A list of dictionaries, one per account, where each dictionary maps
-            a date to its lagged index position. The length of the list equals
-            the number of accounts, and each dictionary contains mappings for
-            dates shifted by max_lag positions.
+            A list of dictionaries (one per account) mapping dates to their
+            new indices in the lagged array. Each dictionary excludes the
+            first (max_lag + 1) observations.
 
         Notes
         -----
-        The method uses flipped dates from `flip_dates()` and iterates through
-        all ordered accounts. For each account, it creates a mapping where dates
-        are offset by max_lag positions, effectively creating a lagged time series
-        mapping.
+        For each account, dates are remapped such that the date originally at
+        position (k + max_lag) now maps to position k in the lagged series.
+        This accounts for the loss of initial observations due to lagging.
+
+        See Also
+        --------
+        apply_lag : Public method that uses this to create lagged AccountGroupInfo.
         """
         # Get reverse mapping from indices to dates for all accounts
         flipped_dates = self.flip_dates()
@@ -578,29 +674,45 @@ class AccountGroupInfo:
 
     def apply_lag(self, max_lag: int) -> AccountGroupInfo:
         """
-        Apply a lag to the account group data by removing the first max_lag time periods.
+        Create a lagged version of the account group by removing initial time periods.
+
+        This method generates a new AccountGroupInfo with data shifted by
+        removing the first max_lag columns (time periods) from all accounts.
 
         Parameters
         ----------
         max_lag : int
-            The number of time periods to remove from the beginning of the data array.
+            The number of time periods to remove from the beginning of each
+            account's time series.
 
         Returns
         -------
         AccountGroupInfo
-            A new AccountGroupInfo instance with the lagged data. The array will have
-            max_lag fewer time periods, and the dates will be adjusted accordingly.
+            A new AccountGroupInfo instance with:
+            - arr: Array with first max_lag columns removed
+            - dates: Date mappings adjusted for removed periods
+            - All other metadata preserved from the original
 
         Notes
         -----
-        This method creates a new instance and does not modify the original object.
-        The account_map, segment_type, region_type, and np_dtype are preserved from
-        the original instance.
+        This method is commonly used in time series modeling to create lagged
+        features while maintaining alignment across all accounts.
+
+        Examples
+        --------
+        >>> original_group.arr.shape
+        (5, 100)  # 5 accounts, 100 time periods
+        >>> lagged_group = original_group.apply_lag(12)
+        >>> lagged_group.arr.shape
+        (5, 88)  # Same 5 accounts, 88 time periods (100 - 12)
         """
+        # Create new instance with sliced array (remove first max_lag columns)
         return AccountGroupInfo(
-            arr=self.arr[:, max_lag:],
-            account_map=self.account_map,
-            dates=self._lag_dates(max_lag=max_lag),
+            arr=self.arr[:, max_lag:],  # Slice all rows, remove first max_lag columns
+            account_map=self.account_map,  # Preserve account mapping
+            dates=self._lag_dates(
+                max_lag=max_lag
+            ),  # Adjust date mappings for all accounts
             segment_type=self.segment_type,
             region_type=self.region_type,
             np_dtype=self.np_dtype,
@@ -612,18 +724,18 @@ class AccountGroupInfo:
         end_date: datetime.date,
     ) -> AccountGroupInfo:
         """
-        Apply a date range filter to all accounts in the group.
+        Filter all accounts to a specified date range.
 
-        This method creates a new AccountGroupInfo instance with data filtered to the
-        specified date range. It iterates through all accounts, applies the date range
-        to each, and consolidates the results into a new array structure.
+        This method creates a new AccountGroupInfo containing only data within
+        the specified date range for all accounts. Each account is filtered
+        individually and the results are combined into a new group.
 
         Parameters
         ----------
         start_date : datetime.date
-            The start date of the range to apply (inclusive).
+            The starting date for the filtered range (inclusive).
         end_date : datetime.date
-            The end date of the range to apply (inclusive).
+            The ending date for the filtered range (inclusive).
 
         Returns
         -------
@@ -635,9 +747,20 @@ class AccountGroupInfo:
 
         Notes
         -----
-        The method preserves the order of accounts as returned by
-        `get_ordered_accounts()` and creates a new numpy array with dimensions
-        based on the number of accounts and the number of months in the date range.
+        The number of columns in the resulting array equals the number of
+        months between start_date and end_date (inclusive). All accounts
+        maintain their original row order.
+
+        Examples
+        --------
+        >>> original_group.arr.shape
+        (5, 100)  # 5 accounts, 100 months of data
+        >>> filtered = original_group.apply_daterange(
+        ...     datetime.date(2023, 1, 1),
+        ...     datetime.date(2023, 12, 1)
+        ... )
+        >>> filtered.arr.shape
+        (5, 12)  # Same 5 accounts, only 12 months
         """
         # Initialize list to hold date-to-index mappings for each account after filtering
         new_dates: list[dict[datetime.date, int]] = []

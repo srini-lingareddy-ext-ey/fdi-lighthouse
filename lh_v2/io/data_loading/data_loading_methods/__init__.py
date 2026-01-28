@@ -1,7 +1,7 @@
 from .abstract_class import AbstractDataLoader
-from .old_csv import CSVOldDataLoader
+from .polars_loader import PolarsDataLoader
 
 __all__ = [
     'AbstractDataLoader',
-    'CSVOldDataLoader',
+    'PolarsDataLoader',
 ]

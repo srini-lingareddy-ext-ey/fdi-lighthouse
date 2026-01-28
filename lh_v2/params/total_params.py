@@ -8,6 +8,10 @@ from pydantic import Field
 import lh_v2.datatypes as dts
 from lh_v2.util import BaseParamsModel
 
+from .account_reconciliation_params import (
+    AccountReconciliationParams,
+    validate_formulas_ordered,
+)
 from .driver_analysis_params import DriverAnalysisParams
 from .forecasting_params import AccountForecastParams, DriverForecastParams
 from .general_params import (
@@ -35,10 +39,10 @@ class LighthouseParams(BaseParamsModel):
         Market segment for analysis. Defaults to 'Residential'.
     region : dts.RegionType
         Geographic region for analysis. Defaults to 'North America'.
-    load_data_params : DataLoadingParams
-        Configuration parameters for data loading operations.
     general_params : GeneralParams
         General configuration parameters for the forecasting system.
+    load_data_params : DataLoadingParams
+        Configuration parameters for data loading operations.
     driver_analysis_params : DriverAnalysisParams
         Configuration parameters for driver analysis phase.
     driver_forecast_params : DriverForecastParams
@@ -62,8 +66,8 @@ class LighthouseParams(BaseParamsModel):
     region: dts.LocationType = Field(
         default_factory=lambda: dts.LocationType('North America')
     )
-    load_data_params: DataLoadingParams = Field(default_factory=DataLoadingParams)
     general_params: GeneralParams = Field(default_factory=GeneralParams)
+    load_data_params: DataLoadingParams = Field(default_factory=DataLoadingParams)
     driver_analysis_params: DriverAnalysisParams = Field(
         default_factory=DriverAnalysisParams
     )
@@ -73,27 +77,23 @@ class LighthouseParams(BaseParamsModel):
     account_forecast_params: AccountForecastParams = Field(
         default_factory=AccountForecastParams
     )
+    account_reconciliation_params: AccountReconciliationParams = Field(
+        default_factory=AccountReconciliationParams
+    )
 
+    def model_post_init(self, context: Any) -> None:
+        if not self.accounts:
+            raise ValueError("At least one account must be specified in 'accounts'.")
 
-def _parse_primary_params(yaml_dict: dict[str, Any]) -> LighthouseParams:
-    """
-    Helper function to parse primary parameters from a YAML dictionary.
-    """
-    default_params = LighthouseParams()
-
-    accounts: list[dts.AccountType] = []
-    for acc in yaml_dict.get('accounts', default_params.accounts):
-        accounts.append(dts.AccountType(acc))
-
-    segment = dts.ProductType(yaml_dict.get('segment', default_params.segment))
-    region = dts.LocationType(yaml_dict.get('region', default_params.region))
-    general_params = GeneralParams(**yaml_dict.get('general_params', {}))
-
-    default_params.accounts = accounts
-    default_params.segment = segment
-    default_params.region = region
-    default_params.general_params = general_params
-    return default_params
+        # Validate that the account reconciliation formulas are possible
+        # (accs in lhs are previously made)
+        if self.account_reconciliation_params.b_reconcile:
+            accs_c = set(self.accounts.copy())
+            validate_formulas_ordered(
+                accs_c,
+                self.account_reconciliation_params.formulas,
+            )
+        return
 
 
 def parse_yaml(yaml_info: pth.Path | dict[str, Any]) -> LighthouseParams:
@@ -149,3 +149,24 @@ def parse_yaml(yaml_info: pth.Path | dict[str, Any]) -> LighthouseParams:
     setup_logging(LoggingParams(**(yaml_dict.get('logging', {}))))
     # Create and return a LighthouseParams object populated with values from the YAML file
     return LighthouseParams(**yaml_dict)
+
+
+def _parse_primary_params(yaml_dict: dict[str, Any]) -> LighthouseParams:
+    """
+    Helper function to parse primary parameters from a YAML dictionary.
+    """
+    default_params = LighthouseParams()
+
+    accounts: list[dts.AccountType] = []
+    for acc in yaml_dict.get('accounts', default_params.accounts):
+        accounts.append(dts.AccountType(acc))
+
+    segment = dts.ProductType(yaml_dict.get('segment', default_params.segment))
+    region = dts.LocationType(yaml_dict.get('region', default_params.region))
+    general_params = GeneralParams(**yaml_dict.get('general_params', {}))
+
+    default_params.accounts = accounts
+    default_params.segment = segment
+    default_params.region = region
+    default_params.general_params = general_params
+    return default_params

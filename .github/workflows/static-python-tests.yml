@@ -1,0 +1,42 @@
+# Static code analysis, checking for type issues and stuff
+name: Static Tests Backend
+
+on:
+    push:
+
+permissions:
+    contents: read
+
+env:
+    PYTHON_VERSION: '3.14'
+
+jobs:
+    backend-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+
+            - name: Set up Python ${{ env.PYTHON_VERSION }}
+              uses: actions/setup-python@v6
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            # Install uv + restore its wheel cache
+            - uses: astral-sh/setup-uv@v7 # official action from the uv team
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }} # passes PYTHON_VERSION on to uv
+                  enable-cache: true # caches /root/.cache/uv for free
+                  working-directory: . # puts the venv under backend/.venv
+
+            - name: Run Pyright type checker
+              working-directory: .
+              run: uv run task check
+
+            - name: Run Pytest unit tests
+              working-directory: .
+              run: uv run task test-unit
+
+            - name: Run Pytest integration tests
+              working-directory: .
+              run: uv run task test-integration

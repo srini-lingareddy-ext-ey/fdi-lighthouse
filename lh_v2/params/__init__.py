@@ -1,4 +1,4 @@
-# pyright: reportUnusedImport=false
+from .account_reconciliation_params import AccountReconciliationParams
 from .driver_analysis_params import (
     CollinearityParams,
     DriverAnalysisParams,
@@ -30,6 +30,7 @@ __all__ = [
     'AccountForecastMethodParams',
     'DriverForecastParams',
     'HyperparamOptParams',
+    'AccountReconciliationParams',
     'OutputParams',
     'LighthouseParams',
     'parse_yaml',

@@ -10,18 +10,53 @@ from lh_v2.shared import ArrayF, ArrayI
 def set_lags_to_zero(
     accounts_drivers_info: dts.AccountGroupClassifiedDriverGroups,
 ) -> dict[dts.AccountType, dict[dts.DriverClassification, dict[dts.DriverName, int]]]:
+    """
+    Initialize lag values to zero for all drivers across all accounts and classifications.
+
+    This function creates a nested dictionary structure with lag values set to zero
+    for every driver in the provided account-driver groups. This is typically used
+    as a default initialization before lag optimization.
+
+    Parameters
+    ----------
+    accounts_drivers_info : dts.AccountGroupClassifiedDriverGroups
+        Container with account groups and their associated classified driver groups.
+
+    Returns
+    -------
+    dict[AccountType, dict[DriverClassification, dict[DriverName, int]]]
+        A nested dictionary mapping account types to driver classifications to
+        driver names, with all lag values initialized to 0.
+
+    Examples
+    --------
+    >>> best_lags = set_lags_to_zero(accounts_drivers_info)
+    >>> best_lags[AccountType('REVENUE')][DriverClassification.PRIMARY]['driver1']
+    0
+    """
+    # Initialize nested dictionary to store lag values for all accounts and drivers
     best_lags: dict[
         dts.AccountType, dict[dts.DriverClassification, dict[dts.DriverName, int]]
     ] = {}
+
+    # Iterate through each account type in the accounts structure
     for account_type in accounts_drivers_info.accounts.get_ordered_accounts():
+        # Initialize dictionary for this account's driver classifications
         best_lags[account_type] = {}
+
+        # Iterate through each driver classification
         for (
             class_
         ) in accounts_drivers_info.classified_drivers.get_ordered_classifications():
+            # Initialize dictionary for drivers in this classification
             best_lags[account_type][class_] = {}
+
+            # Get the index for this classification to access its drivers
             class_idx = accounts_drivers_info.classified_drivers.classification_groups[
                 class_
             ]
+
+            # Set lag to 0 for each driver in this classification
             for driver in accounts_drivers_info.classified_drivers.maps[
                 class_idx
             ].keys():
@@ -188,6 +223,10 @@ def rank_array_to_ranking_dict(
     """
     Convert a rank array to a dictionary mapping driver names to rankings.
 
+    This utility function transforms an array of rankings (where the index
+    corresponds to a driver's position) into a more accessible dictionary
+    format that directly maps driver names to their ranks.
+
     Parameters
     ----------
     rank_array : ArrayI
@@ -209,9 +248,14 @@ def rank_array_to_ranking_dict(
     >>> rank_array_to_ranking_dict(rank_array, drivers)
     {'Hamilton': 2, 'Verstappen': 1, 'Leclerc': 3}
     """
+    # Initialize output dictionary to store driver name to rank mappings
     ranking_dict: dict[DriverName, int] = {}
+
+    # Iterate through drivers and their corresponding ranks
     for idx, driver in enumerate(ordered_drivers):
+        # Map each driver name to its rank from the array, converting to int
         ranking_dict[driver] = int(rank_array[idx])
+
     return ranking_dict
 
 
@@ -221,18 +265,33 @@ def order_drivers_allow_ties_old(
     """
     Convert a value array from a driver ranking method to a ranking dictionary.
 
+    This is a legacy version of the ranking function that directly returns a
+    dictionary mapping driver names to ranks. Ties are handled by assigning
+    the same rank to drivers with approximately equal values.
+
     Parameters
     ----------
-    values : np.ndarray
+    values : ArrayF
         A 1D numpy array of values resultant from a driver ranking method.
-        For these values, large implies good.
-    dict_drivers : dict[str:int]
-        A dictionary mapping driver names to their indices.
+        For these values, larger values imply better performance.
+    ordered_drivers : Sequence[DriverName]
+        A sequence of driver names ordered by their indices in the values array.
 
     Returns
     -------
-    dict[str:int]
-        A dictionary mapping driver names to their ranking positions.
+    dict[DriverName, int]
+        A dictionary mapping driver names to their ranking positions, where
+        rank 1 is the best. Tied drivers receive the same rank.
+
+    Notes
+    -----
+    This is a legacy function. Consider using `order_drivers_allow_ties` combined
+    with `rank_array_to_ranking_dict` for better separation of concerns.
+
+    See Also
+    --------
+    order_drivers_allow_ties : Modern array-based version of this function.
+    rank_array_to_ranking_dict : Converts rank arrays to dictionaries.
     """
     # Sort indices by values in descending order (highest values first)
     inds_sorted = np.argsort(values)[::-1]
@@ -266,22 +325,41 @@ def order_drivers_no_ties_old(
     arr_avg_rankings: ArrayF, ordered_drivers: Sequence[DriverName]
 ) -> dict[DriverName, int]:
     """
-    Orders drivers based on average ranking.
-    Produces the same ordering for driver average ranking ties independent of driver
-    order in dict_drivers by sorting the driver names. Allows for driver selection
-    to be a deterministic system indep of the ordering the drivers are entered in.
+    Order drivers based on average ranking without allowing ties.
+
+    This is a legacy version that directly returns a dictionary. When drivers have
+    approximately equal ranking values, ties are broken deterministically by sorting
+    driver names alphabetically to ensure consistent ordering.
 
     Parameters
     ----------
-    arr_avg_ranking: np.ndarray
-        Array of the average ranking for each driver. Index of each driver in dict_drivers.
-    dict_drivers: dict[str, int]
-        Mapping between the driver name and the index in arr_avg_ranking.
+    arr_avg_rankings : ArrayF
+        Array of the average ranking for each driver, where each index corresponds
+        to a driver's position in ordered_drivers. Lower values indicate better
+        performance.
+    ordered_drivers : Sequence[DriverName]
+        Sequence of driver names ordered by their indices in arr_avg_rankings.
 
     Returns
     -------
-    dict[str, int]
-        Mapping between driver name and final ranking starting at 1.
+    dict[DriverName, int]
+        A dictionary mapping driver names to their final ranking positions, starting
+        at 1. No two drivers will have the same rank; ties are broken alphabetically.
+
+    Notes
+    -----
+    This function produces deterministic ordering for driver average ranking ties
+    independent of driver order by sorting driver names alphabetically. This ensures
+    driver selection is a deterministic system independent of the ordering drivers
+    are entered in.
+
+    This is a legacy function. Consider using `order_drivers_no_ties` combined
+    with `rank_array_to_ranking_dict` for better separation of concerns.
+
+    See Also
+    --------
+    order_drivers_no_ties : Modern array-based version of this function.
+    rank_array_to_ranking_dict : Converts rank arrays to dictionaries.
     """
     # Sort the indices based on the average rankings (ascending order)
     inds_sorted = np.argsort(arr_avg_rankings)

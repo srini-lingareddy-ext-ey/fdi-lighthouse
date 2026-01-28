@@ -15,7 +15,7 @@ class DriverForecastingInput:
 
     Attributes
     ----------
-    account_drivers : dts.AccountDriverGroup
+    drivers : dts.DriverGroup
         The group of drivers for each account, containing information about
         which drivers are associated with which accounts.
     lags : dict[dts.DriverName, int]
@@ -70,19 +70,50 @@ class DriverForecastingOutput(dts.DriverGroup):
         forecast_daterange: tuple[datetime.date, datetime.date],
     ) -> None:
         """
-        Plots the historical and forecasted values for a specified driver.
+        Plot historical and forecasted values for a specified driver.
+
+        This method visualizes both the historical data and forecasted values for
+        a driver, with the forecast period highlighted. It automatically adjusts
+        the forecast date range based on the driver's lag value.
 
         Parameters
         ----------
         driver_name : dts.DriverName
             The name of the driver to plot.
+        lag : int
+            The lag value (in months) applied to this driver. Used to adjust the
+            forecast date range to account for temporal offset.
         forecast_daterange : tuple[datetime.date, datetime.date]
-            The date range for the forecast to be highlighted on the plot.
+            The date range for the forecast as (start_date, end_date). Will be
+            adjusted by subtracting the lag from the end date.
 
         Returns
         -------
         None
-            Displays a plot of historical and forecasted driver values.
+            Displays a plot of historical and forecasted driver values. Returns
+            early without plotting if lag exceeds the forecast date range length.
+
+        Notes
+        -----
+        If the lag is greater than the number of months in the forecast date range,
+        the function prints a message and returns without plotting, as no forecasting
+        is required in this case.
+
+        The forecast date range is adjusted by subtracting the lag (in months) from
+        the end date to account for the temporal offset of lagged drivers.
+
+        See Also
+        --------
+        lh_v2.io.plotting.plot_driver_forecast : Underlying plotting function.
+
+        Examples
+        --------
+        >>> output = DriverForecastingOutput(...)
+        >>> output.plot_driver_forecasts(
+        ...     driver_name=DriverName('temperature'),
+        ...     lag=3,
+        ...     forecast_daterange=(date(2024, 1, 1), date(2024, 12, 31))
+        ... )
         """
 
         if lag > month_dif(forecast_daterange[0], forecast_daterange[1]):

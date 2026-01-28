@@ -60,6 +60,8 @@ class AccountValidationMetricEnum(str, Enum):
         Represents the Root Mean Squared Error Percentage metric.
     MAPE : str
         Represents the Mean Absolute Percentage Error metric.
+    STD : str
+        Represents the Standard Deviation metric.
     """
 
     MSE_PERCENTAGE = 'MSE%'
@@ -69,6 +71,21 @@ class AccountValidationMetricEnum(str, Enum):
 
 
 class HyperparamOptMethodEnum(str, Enum):
+    """
+    Enumeration for Hyperparameter Optimization Methods.
+
+    This enumeration defines the methods available for hyperparameter optimization.
+
+    Attributes
+    ----------
+    GRID : str
+        Represents the Grid Search optimization method.
+    RANDOM : str
+        Represents the Random Search optimization method.
+    BAYESIAN : str
+        Represents the Bayesian Optimization method.
+    """
+
     GRID = 'grid'
     RANDOM = 'random'
     BAYESIAN = 'bayesian'

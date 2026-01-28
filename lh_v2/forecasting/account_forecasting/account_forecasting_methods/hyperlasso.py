@@ -81,7 +81,7 @@ class HyperLassoAccountForecastingMethod(AbstractAccountForecastingMethod):
 
         # Train LassoCV with cross-validation to find optimal alpha
         self.model = LassoCV(
-            alphas=self.model_params.alphas,
+            alphas=self.model_params.alphas,  # pyright: ignore[reportArgumentType]
             cv=self.model_params.cv,
             fit_intercept=self.model_params.fit_intercept,
             max_iter=self.model_params.max_iter,

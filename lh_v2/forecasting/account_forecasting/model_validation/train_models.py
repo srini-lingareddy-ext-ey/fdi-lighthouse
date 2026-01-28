@@ -32,23 +32,43 @@ def train_method(
     method_params: params.forecasting_params.account_forecasting_params.BaseAccountForecastParams,
 ) -> AbstractAccountForecastingMethod:
     """
-    Trains a single forecasting method for a given account driver group.
+    Train a single forecasting method for a given account driver group.
+
+    This function instantiates a specific forecasting method, trains it on the
+    provided data using the specified parameters and date ranges, and returns
+    the trained model instance.
 
     Parameters
     ----------
-    training_info : dts.AccountDriverGroup
-        The account driver group containing training data.
+    info : dts.AccountDriverGroup
+        The account driver group containing training data, including account
+        information and associated drivers.
+    best_lags : dict[dts.DriverName, int]
+        Dictionary mapping driver names to their optimal lag values.
     method : aft.AccountForecastingMethodEnum
-        The forecasting method enum to train.
-    general_params : params.GeneralParams
-        General parameters for model training.
+        The forecasting method enum specifying which method to train.
+    training_daterange : tuple[datetime.date, datetime.date]
+        Start and end dates for the training period (inclusive).
+    forecast_daterange : tuple[datetime.date, datetime.date]
+        Start and end dates for the forecast period (inclusive).
     method_params : params.forecasting_params.account_forecasting_params.BaseAccountForecastParams
-        Method-specific model parameters.
+        Method-specific model parameters for training.
 
     Returns
     -------
     AbstractAccountForecastingMethod
-        The trained forecasting method instance.
+        The trained forecasting method instance ready for validation or prediction.
+
+    Notes
+    -----
+    The function looks up the appropriate method class from ACCOUNT_FORECASTING_METHOD_MAP
+    using the provided enum, instantiates it with the given parameters, and trains it
+    in a single pass.
+
+    See Also
+    --------
+    train_methods : Trains multiple forecasting methods with hyperparameter optimization.
+    ACCOUNT_FORECASTING_METHOD_MAP : Mapping of method enums to their implementation classes.
     """
 
     # Get the class corresponding to the method enum
@@ -83,7 +103,7 @@ def train_methods(
 
     This function iterates over selected forecasting methods, optimizes their
     hyperparameters, trains each method, and returns a dictionary of trained
-    model instances.
+    model instances along with updated parameters.
 
     Parameters
     ----------
@@ -104,10 +124,10 @@ def train_methods(
 
     Returns
     -------
-    dict[aft.AccountForecastingMethodEnum, AbstractAccountForecastingMethod]
+    trained_methods : dict[aft.AccountForecastingMethodEnum, AbstractAccountForecastingMethod]
         Dictionary mapping each selected method enum to its trained method
         instance with optimized hyperparameters.
-    params.AccountForecastParams
+    updated_af_params : params.AccountForecastParams
         Updated AccountForecastParams with optimized hyperparameters for each method.
 
     Notes
@@ -117,7 +137,13 @@ def train_methods(
        and MAPE as the selection metric
     2. Instantiates the method class with optimized parameters
     3. Trains the method on the provided data
-    4. Stores the trained instance for later use
+    4. Stores the trained instance and updates parameters
+    5. Logs training time for performance monitoring
+
+    See Also
+    --------
+    optimize_hyperparameters : Function that performs hyperparameter optimization.
+    train_method : Trains a single method without hyperparameter optimization.
     """
 
     # Initialize dictionary to hold trained method instances
@@ -181,20 +207,40 @@ def _validate_methods(
     ],
 ) -> tuple[list[dts.AccountInfo], list[dict[aft.AccountValidationMetricEnum, float]]]:
     """
-    Validates trained forecasting methods using provided validation data.
+    Validate trained forecasting methods and collect performance metrics.
+
+    This function iterates through trained forecasting methods, validates each one,
+    and collects both the forecasted accounts and their performance metrics.
 
     Parameters
     ----------
-    validation_info : dts.AccountDriverGroup
-        The account driver group containing validation data.
+    selected_methods : Sequence[aft.AccountForecastingMethodEnum]
+        Sequence of forecasting method enums in the order to validate.
     trained_methods : dict[aft.AccountForecastingMethodEnum, AbstractAccountForecastingMethod]
         Dictionary mapping method enums to their trained method instances.
 
     Returns
     -------
-    dict[aft.AccountForecastingMethodEnum, dict[str, float]]
-        Dictionary mapping each method enum to its validation metrics.
+    forecasted_accounts : list[dts.AccountInfo]
+        List of forecasted account information, one per validated method, in the
+        same order as selected_methods.
+    validation_metrics : list[dict[aft.AccountValidationMetricEnum, float]]
+        List of dictionaries containing validation metrics for each method, in the
+        same order as selected_methods. Each dictionary maps metric enums to their
+        computed float values.
+
+    Notes
+    -----
+    The function calls the validate() method on each trained model instance, which
+    computes forecasts and evaluates them against validation data. Validation time
+    for each method is logged for performance monitoring.
+
+    See Also
+    --------
+    train_methods : Function that creates the trained_methods dictionary.
+    AbstractAccountForecastingMethod.validate : Method that performs validation.
     """
+
     forecasted_accounts: list[dts.AccountInfo] = []
     # Initialize dictionary to hold validation metrics for each method
     validation_metrics: list[dict[aft.AccountValidationMetricEnum, float]] = []
@@ -226,37 +272,68 @@ def train_and_validate_models(
     """
     Train and validate account forecasting models across multiple accounts and methods.
 
-    This function iterates through all accounts in the training data, forecasts their
-    drivers, trains multiple forecasting methods, and validates each method's performance.
-    It returns consolidated results including forecasts and validation metrics.
+    This function orchestrates the complete model training and validation pipeline,
+    including driver forecasting, model training with hyperparameter optimization,
+    and validation. It processes each account independently and returns consolidated
+    results for all accounts and methods.
 
     Parameters
     ----------
     model_training_info : ModelTrainingInput
-        Input containing account-driver groups and optimal lags for each account.
+        Input containing account-driver groups, optimal lags, and driver classifications
+        for each account.
     general_params : params.GeneralParams
         General parameters including training and validation date ranges.
-    af_params : params.AccountForecastParams
-        Account forecasting parameters, including method selection and model-specific parameters.
+    af_params : params.AccountForecastParams | dict[dts.AccountType, params.AccountForecastParams]
+        Account forecasting parameters. Can be either:
+        - A single AccountForecastParams applied to all accounts
+        - A dictionary mapping account types to account-specific parameters
     df_params : params.DriverForecastParams
-        Driver forecasting parameters used to generate driver forecasts.
+        Driver forecasting parameters used to generate driver forecasts for the
+        validation period.
 
     Returns
     -------
     ModelTrainingOutput
-        Training output containing:
-        - account_map: Mapping of account identifiers
-        - method_map: Mapping of forecasting methods to their indices
-        - forecasted_accounts: List of forecasted accounts for each account and method
-        - metrics: List of validation metrics for each account and method
+        Comprehensive training output containing:
+        - account_map: Dictionary mapping account types to their indices
+        - method_map: Nested dictionary mapping account types to method enums to indices
+        - forecasted_accounts: Nested list of forecasted accounts [account_idx][method_idx]
+        - metrics: Nested list of validation metrics [account_idx][method_idx]
+        - best_params: List of updated AccountForecastParams with optimized hyperparameters
 
     Notes
     -----
-    The function processes each account sequentially:
-    1. Generates driver forecasts for the validation period
-    2. Trains all selected forecasting methods
-    3. Validates each method and collects metrics
+    The function processes each account sequentially through these steps:
+    1. Extracts account-specific information and optimal lags
+    2. Generates driver forecasts for the validation period
+    3. Trains all selected forecasting methods with hyperparameter optimization
+    4. Validates each method and collects forecasts and performance metrics
+    5. Stores results in structured format for easy access
+
+    The function supports both uniform parameters across all accounts and
+    account-specific parameter configurations.
+
+    See Also
+    --------
+    train_methods : Function that trains multiple methods for one account.
+    create_driver_forecasts : Function that generates driver forecasts.
+    _validate_methods : Function that validates trained methods.
+    ModelTrainingOutput : Output data structure for training results.
+
+    Examples
+    --------
+    >>> output = train_and_validate_models(
+    ...     model_training_info=training_input,
+    ...     general_params=gen_params,
+    ...     af_params=account_forecast_params,
+    ...     df_params=driver_forecast_params
+    ... )
+    >>> # Access results for a specific account
+    >>> revenue_forecasts = output.forecasted_accounts[output.account_map[AccountType('REVENUE')]]
+    >>> revenue_metrics = output.metrics[output.account_map[AccountType('REVENUE')]]
     """
+
     # Determine which forecasting methods to use based on account forecast parameters
     selected_methods: (
         list[aft.AccountForecastingMethodEnum]

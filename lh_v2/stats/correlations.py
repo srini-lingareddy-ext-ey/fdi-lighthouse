@@ -20,9 +20,11 @@ def pearson_correlation(ts1: ArrayF, ts2: ArrayF) -> float:
     float
         The Pearson correlation coefficient between the two time series.
     """
-    return ((ts1 - ts1.mean()) / ts1.std()).dot(
-        (ts2 - ts2.mean()) / ts2.std()
-    ) / ts1.shape[0]
+    ts1std = ts1.std()
+    ts2std = ts2.std()
+    if ts1std == 0 or ts2std == 0:
+        return float('nan')
+    return ((ts1 - ts1.mean()) / ts1std).dot((ts2 - ts2.mean()) / ts2std) / ts1.shape[0]
 
 
 def spearman_correlation(ts1: ArrayF, ts2: ArrayF) -> float:

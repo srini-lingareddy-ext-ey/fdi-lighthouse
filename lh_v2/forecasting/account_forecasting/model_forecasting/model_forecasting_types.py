@@ -1,8 +1,6 @@
 import datetime
 from dataclasses import dataclass
 
-from params import AccountForecastParams
-
 from lh_v2.datatypes import (
     AccountGroupInfo,
     AccountGroupSelectedDrivers,
@@ -14,6 +12,8 @@ from lh_v2.datatypes.forecasting_types.account_forecasting_types import (
     AccountForecastingMethodEnum,
 )
 from lh_v2.io.plotting import plot_account_forecast
+from lh_v2.params import AccountForecastParams
+from lh_v2.shared import ArrayF
 
 
 @dataclass
@@ -46,6 +46,12 @@ class ModelForecastingInput:
         A dictionary mapping each account type to a tuple containing the
         forecasting method enumeration and an optional instance of the
         forecasting method implementation.
+    best_params : dict[AccountType, AccountForecastParams]
+        A dictionary mapping each account type to its best hyperparameters
+        determined during model selection or tuning.
+    validation_errors : dict[AccountType, ArrayF]
+        Point-wise validation errors for each account type's forecast,
+        represented as arrays of floating-point numbers.
 
     Notes
     -----
@@ -58,6 +64,7 @@ class ModelForecastingInput:
     classifications: dict[AccountType, dict[DriverName, DriverClassification]]
     selected_model: dict[AccountType, AccountForecastingMethodEnum]
     best_params: dict[AccountType, AccountForecastParams]
+    validation_errors: dict[AccountType, ArrayF]
 
 
 @dataclass
@@ -71,6 +78,8 @@ class ModelForecastingOutput:
         Collection of account forecasts for different account types.
     forecast_daterange : tuple[datetime.date, datetime.date]
         Start and end dates defining the forecasting period.
+    validation_errors : dict[AccountType, ArrayF]
+        Point-wise validation errors for each account type's forecast.
 
     Methods
     -------
@@ -82,6 +91,7 @@ class ModelForecastingOutput:
 
     accounts_forecasts: AccountGroupInfo
     forecast_daterange: tuple[datetime.date, datetime.date]
+    validation_errors: dict[AccountType, ArrayF]
 
     def get_forecasts(self) -> AccountGroupInfo:
         return self.accounts_forecasts.apply_daterange(

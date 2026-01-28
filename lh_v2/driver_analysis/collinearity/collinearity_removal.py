@@ -149,25 +149,95 @@ def remove_collinearity(
         dict[dts.DriverClassification, dict[dts.DriverName, int]],
     ],
 ) -> dict[dts.AccountType, dict[dts.DriverClassification, list[dts.DriverName]]]:
+    """
+    Remove collinear drivers and select final driver set for each account and classification.
+
+    This function performs collinearity analysis across all drivers for each account type,
+    then selects a final set of non-collinear drivers based on their rankings. The selection
+    process ensures that chosen drivers are sufficiently independent to avoid multicollinearity
+    issues in downstream modeling.
+
+    Parameters
+    ----------
+    accounts_drivers_info : dts.AccountGroupClassifiedDriverGroups
+        Container with account groups and their associated classified driver groups.
+    classified_driver_rankings : dict[AccountType, dict[DriverClassification, dict[DriverName, int]]]
+        Nested dictionary containing driver rankings for each account type and classification.
+        Lower rank numbers indicate higher priority for selection.
+    da_params : params.DriverAnalysisParams
+        Driver analysis parameters including collinearity method settings and the number
+        of final drivers to select per classification.
+    best_lags : dict[AccountType, dict[DriverClassification, dict[DriverName, int]]]
+        Optimal lag values for each driver, organized by account type and classification.
+        Used to apply appropriate temporal offsets before collinearity analysis.
+
+    Returns
+    -------
+    dict[AccountType, dict[DriverClassification, list[DriverName]]]
+        Final selected drivers for each account type and classification. Drivers are
+        selected to minimize collinearity while respecting ranking priorities.
+
+    Notes
+    -----
+    The function performs the following steps:
+    1. Selects collinearity detection methods based on configuration
+    2. Combines all classified drivers into a single group for analysis
+    3. Applies optimal lags to driver data for each account
+    4. Computes collinearity matrices using selected methods
+    5. Iteratively selects top-ranked drivers that are not collinear with existing selections
+
+    Currently, preselected drivers (drivers that must be included) are initialized as empty
+    lists. Future enhancement will add configuration support for preselected drivers.
+
+    See Also
+    --------
+    _select_final_drivers : Helper function that performs driver selection for one account.
+    run_methods : Executes collinearity detection methods.
+    select_methods : Determines which collinearity methods to use.
+
+    Examples
+    --------
+    >>> selected = remove_collinearity(
+    ...     accounts_drivers_info=data,
+    ...     classified_driver_rankings=rankings,
+    ...     da_params=params,
+    ...     best_lags=lags
+    ... )
+    >>> revenue_drivers = selected[AccountType('REVENUE')]
+    >>> primary_drivers = revenue_drivers[DriverClassification.PRIMARY]
+    """
+    # Select which collinearity detection methods to use based on configuration
     selected_methods = select_methods(collinearity_params=da_params.collinearity_params)
 
-    # Combine classified drivers into a single driver group
+    # Combine all classified drivers into a single unified DriverGroup
+    # This enables collinearity analysis across all driver classifications
     drivers_info = accounts_drivers_info.classified_drivers.combine()
 
+    # Initialize dictionary to store collinearity matrices for each account
     arr_collinearity_dict: dict[dts.AccountType, ArrayF] = {}
 
+    # Compute collinearity matrix for each account independently
     for account in accounts_drivers_info.accounts.get_ordered_accounts():
+        # Flatten lag dictionary structure: combine all classifications into single dict
+        # This maps each driver name directly to its optimal lag value
         all_drivers_lags: dict[dts.DriverName, int] = {}
         for (
             classification
         ) in accounts_drivers_info.classified_drivers.classification_groups.keys():
+            # Get the index for this classification to access its driver map
             for driver in accounts_drivers_info.classified_drivers.maps[
                 accounts_drivers_info.classified_drivers.classification_groups[
                     classification
                 ]
             ].keys():
+                # Store the optimal lag for this driver from this account's lag dictionary
                 all_drivers_lags[driver] = best_lags[account][classification][driver]
+
+        # Find the maximum lag across all drivers to determine truncation amount
         max_lag = max(all_drivers_lags.values())
+
+        # Apply lags to driver data and compute collinearity matrix
+        # Lagging ensures temporal alignment before measuring collinearity
         arr_collinearity_dict[account] = run_methods(
             drivers_info=drivers_info.apply_lags(
                 best_lags=all_drivers_lags, max_lag=max_lag
@@ -181,20 +251,28 @@ def remove_collinearity(
     # a corresponding key in the params, will need to be on a per
     # driver classification level, and will need to verify correct
     # driver classifications
+
+    # Initialize preselected drivers structure (currently empty, to be populated from config)
+    # Preselected drivers are those that must be included regardless of collinearity
     preselected_drivers: dict[
         dts.AccountType, dict[dts.DriverClassification, list[dts.DriverName]]
     ] = {}
     for account in accounts_drivers_info.accounts.account_map.keys():
+        # Create empty list for each classification - will be populated from config in future
         preselected_drivers[account] = {
             classification: []
             for classification in accounts_drivers_info.classified_drivers.get_ordered_classifications()
         }
 
+    # Initialize dictionary to store final selected drivers for each account and classification
     final_selected_drivers: dict[
         dts.AccountType, dict[dts.DriverClassification, list[dts.DriverName]]
     ] = {}
 
+    # Select final non-collinear drivers for each account independently
     for account in accounts_drivers_info.accounts.get_ordered_accounts():
+        # Call helper function to perform iterative selection for this account
+        # Selection respects rankings while avoiding collinear drivers
         final_selected_drivers[account] = _select_final_drivers(
             drivers_info=drivers_info,
             classified_driver_rankings=classified_driver_rankings[account],
@@ -203,4 +281,5 @@ def remove_collinearity(
             arr_collinearity=arr_collinearity_dict[account],
         )
 
+    # Return the final selected drivers organized by account and classification
     return final_selected_drivers
