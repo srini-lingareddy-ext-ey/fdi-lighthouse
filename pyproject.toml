@@ -46,6 +46,7 @@ test-cov = "pytest --cov=lh_v2 --cov-report=html --cov-report=term"
 test-unit = "pytest -m unit"
 test-integration = "pytest -m integration"
 test-verbose = "pytest -vv"
+verify = "task format && task test && task check"
 
 [tool.ruff.format]
 quote-style = "single"

@@ -1,6 +1,6 @@
 import datetime
 from dataclasses import dataclass
-from typing import NewType, Optional, Sequence
+from typing import Any, NewType, Optional, Sequence
 
 import numpy as np
 
@@ -60,7 +60,7 @@ class AccountInfo:
     account_type: AccountType
     segment_type: HierarchyTree[ProductType]
     region_type: HierarchyTree[LocationType]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Cast array to specified numpy dtype upon initialization."""
@@ -141,9 +141,9 @@ class AccountInfo:
         # Initialize new date-to-index mapping for lagged data
         new_dates: dict[datetime.date, int] = {}
 
-        # Map dates to new indices, skipping the first (max_lag + 1) observations
+        # Map dates to new indices, skipping the first (max_lag) observations
         # which are lost due to lagging
-        for k in range(self.arr.shape[0] - (max_lag + 1)):
+        for k in range(self.arr.shape[0] - (max_lag)):
             # Date at position (k + max_lag) in original series maps to index k in lagged series
             new_dates[flipped_dates[k + max_lag]] = k
 
@@ -406,7 +406,7 @@ class AccountGroupInfo:
     dates: Sequence[dict[datetime.date, int]]
     segment_type: HierarchyTree[ProductType]
     region_type: HierarchyTree[LocationType]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Cast array to specified numpy dtype upon initialization."""
@@ -662,9 +662,9 @@ class AccountGroupInfo:
             # Initialize empty dictionary for this account's date mapping
             new_dates.append({})
 
-            # Map dates to new indices, skipping the first (max_lag + 1) observations
+            # Map dates to new indices, skipping the first (max_lag) observations
             # which are lost due to lagging
-            for k in range(self.arr.shape[1] - (max_lag + 1)):
+            for k in range(self.arr.shape[1] - (max_lag)):
                 # Date at position (k + max_lag) in original series maps to index k in lagged series
                 new_dates[self.account_map[account]][
                     flipped_dates[self.account_map[account]][k + max_lag]

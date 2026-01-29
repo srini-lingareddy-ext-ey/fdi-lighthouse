@@ -41,7 +41,7 @@ def basic_llm_select_drivers(
 
 
 def make_sample_config_info() -> dict[str, Any]:
-    sample_config = {}
+    sample_config: dict[str, Any] = {}
     sample_config['use_default_params'] = True
     sample_config['accounts'] = ['volume']
     sample_config['segment'] = 'Residential'

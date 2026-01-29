@@ -60,7 +60,7 @@ class Driver:
     name: DriverName
     arr: ArrayF
     dates: dict[datetime.date, int]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Cast array to specified numpy dtype upon initialization."""
@@ -325,7 +325,7 @@ class DriverGroup:
     arr: ArrayF
     map: dict[DriverName, int]
     dates: list[dict[datetime.date, int]]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Cast array to specified numpy dtype upon initialization."""
@@ -333,7 +333,9 @@ class DriverGroup:
         return
 
     @staticmethod
-    def from_driver_lst(driver_lst: list[Driver], np_dtype: type = BASE_NP_DTYPE):
+    def from_driver_lst(
+        driver_lst: list[Driver], np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
+    ):
         """
         Create a DriverGroup from a list of Driver objects.
 
@@ -434,36 +436,38 @@ class DriverGroup:
             If the provided key is not of an accepted type or format.
         """
         # Use pattern matching to handle different key types and formats
-        match key:
-            case str():
-                # When key is a string, look up its index in the map and return corresponding row
-                key = DriverName(key)
-                return self.arr[self.map[key]]
-            case int():
-                # When key is an integer, return the corresponding row
-                return self.arr[key]
-            case slice():
-                # When key is a slice, return the corresponding rows
-                return self.arr[key]
-            case int(), int() if len(key) == 2:
-                # When key is a tuple of two integers, return a single element as float
-                return float(self.arr[key[0], key[1]])
-            case slice(), int() if len(key) == 2:
-                # When key is a tuple with slice and integer, return selected rows from a specific column
-                return self.arr[key[0], key[1]]
-            case int(), slice() if len(key) == 2:
-                # When key is a tuple with integer and slice, return selected columns from a specific row
-                return self.arr[key[0], key[1]]
-            case slice(), slice() if len(key) == 2:
-                # When key is a tuple of two slices, return the corresponding subarray
-                return self.arr[key[0], key[1]]
-            case np.ndarray():
-                # When key is a NumPy array, use it for advanced indexing
-                return self.arr[key]
-            case _:
-                # Default case: unsupported key type
-                print(type(key))
-                raise ValueError('Key is not accepted...')
+
+        if isinstance(key, str):
+            key = DriverName(key)
+            return self.arr[self.map[key]]
+
+        if isinstance(key, int):
+            return self.arr[key]
+
+        if isinstance(key, slice):
+            return self.arr[key]
+
+        if isinstance(key, np.ndarray):
+            return self.arr[key]
+
+        if isinstance(key, tuple):
+            raise NotImplementedError('Tuple indexing not yet implemented.')
+            try:
+                key0, key1 = key
+            except (ValueError, TypeError):
+                raise ValueError(f'Key is not accepted - got type {type(key)}')
+
+            if isinstance(key0, int) and isinstance(key1, int):
+                return float(self.arr[key0, key1])
+            if isinstance(key0, slice) and isinstance(key1, int):
+                return self.arr[key0, key1]
+            if isinstance(key0, int) and isinstance(key1, slice):
+                return self.arr[key0, key1]
+            if isinstance(key0, slice) and isinstance(key1, slice):
+                return self.arr[key0, key1]
+
+        # Default case: unsupported key type
+        raise ValueError('Key is not accepted...')
 
     def get_driver(self, driver_name: DriverName) -> Driver:
         """
@@ -550,7 +554,7 @@ class DriverGroup:
             )
 
             # Create new dictionary for merged driver mappings
-            dict_drivers = {}
+            dict_drivers: dict[DriverName, int] = {}
 
             # Copy mappings from current instance directly
             for driver, ind in self.map.items():
@@ -1159,7 +1163,7 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
     classification_groups: dict[ClassificationOfDriver, int]
     maps: Sequence[dict[DriverName, int]]
     dates: list[dict[datetime.date, int]]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Cast array to specified numpy dtype upon initialization."""

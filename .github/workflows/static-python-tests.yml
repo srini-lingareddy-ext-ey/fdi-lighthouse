@@ -1,5 +1,5 @@
 # Static code analysis, checking for type issues and stuff
-name: Static Tests Backend
+name: Static Tests Lighthouse
 
 on:
     push:
@@ -11,7 +11,7 @@ env:
     PYTHON_VERSION: '3.14'
 
 jobs:
-    backend-tests:
+    lighthouse-tests:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
@@ -29,14 +29,17 @@ jobs:
                   enable-cache: true # caches /root/.cache/uv for free
                   working-directory: . # puts the venv under backend/.venv
 
-            - name: Run Pyright type checker
-              working-directory: .
-              run: uv run task check
-
+            # Run Unit tests (should be first)
             - name: Run Pytest unit tests
               working-directory: .
               run: uv run task test-unit
 
+            # Run Integration tests (should be second)
             - name: Run Pytest integration tests
               working-directory: .
               run: uv run task test-integration
+
+            # Run Pyright type checker (should be last)
+            - name: Run Pyright type checker
+              working-directory: .
+              run: uv run task check

@@ -17,6 +17,7 @@ from lh_v2.forecasting.account_forecasting.model_validation.model_training_types
 )
 from lh_v2.io.data_loading import load_data_driver_ranking
 from lh_v2.params import parse_yaml
+from lh_v2.shared import ArrayF
 
 b_time_parts = True
 b_plot = False
@@ -27,19 +28,19 @@ def prepend_data(
     n_repeats: int,
 ) -> dts.AccountGroupClassifiedDriverGroups:
     n_data = accounts_drivers_info.accounts.arr.shape[1]
-    arr_new_accounts = np.zeros(
+    arr_new_accounts: ArrayF = np.zeros(
         (
             accounts_drivers_info.accounts.arr.shape[0],
             n_data * n_repeats,
         ),
-        accounts_drivers_info.np_dtype,
+        dtype=accounts_drivers_info.np_dtype,
     )
-    arr_new_drivers = np.zeros(
+    arr_new_drivers: ArrayF = np.zeros(
         (
             accounts_drivers_info.classified_drivers.arr.shape[0],
             n_data * n_repeats,
         ),
-        accounts_drivers_info.np_dtype,
+        dtype=accounts_drivers_info.np_dtype,
     )
     for i in range(n_repeats):
         arr_new_accounts[

@@ -1,5 +1,6 @@
 import datetime
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 from dateutil.relativedelta import relativedelta
@@ -586,7 +587,7 @@ class AccountGroupClassifiedDriverGroups:
 
     accounts: AccountGroupInfo
     classified_drivers: ClassifiedDriverGroups[DriverClassification]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __getitem__(self, key: AccountType) -> AccountClassifiedDriverGroups:
         """

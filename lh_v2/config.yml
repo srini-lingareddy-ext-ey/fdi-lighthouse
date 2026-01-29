@@ -71,7 +71,7 @@ driver_analysis_params:
         # Whether to optimize driver lags
         b_lag: true # default: true
 
-        # Maximum lag to test
+        # Maximum lag to test, inclusive of value ([0, n_max_lag])
         n_max_lag: 12 # default: 12
 
         # Number of highest ranked lags to pick the lowest lag from
@@ -222,13 +222,16 @@ driver_analysis_params:
 
         # Specific Parameters for Corrleation Collinearity Removal
         correlation_collinearity_params:
-            # weight of pearson correlation in the correlation collinearity removal method
+            # weight of pearson correlation in the
+            # correlation collinearity removal method
             pearson_weight: 0.3 # default: 0.3
 
-            # weight of spearman correlation in the correlation collinearity removal method
+            # weight of spearman correlation in the
+            # correlation collinearity removal method
             spearman_weight: 0.3 # default: 0.3
 
-            # weight of kendall correlation in the correlation collinearity removal method
+            # weight of kendall correlation in the
+            # correlation collinearity removal method
             kendall_weight: 0.3 # default: 0.3
 
         # Specific Parameters for KMeans Collinearity Removal
@@ -363,7 +366,8 @@ account_forecast_params:
         b_remove: true # default: true
 
         # Specific methods to be removed in list format, only works if b_remove is true
-        methods_removed: [lr_drivers, sarimax] # default: [lr_drivers, sarimax]
+        # default: [lr_drivers, sarimax]
+        methods_removed: [lr_drivers, sarimax]
 
         # Allows you to select collinearity removal methods from scratch
         b_selected: false # default: false
@@ -383,11 +387,13 @@ account_forecast_params:
         # Hyperparameter optimization  method to use
         # Options: random, grid, bayesian
         method: bayesian # default: bayesian
-        # List of account forecasting methods to disable hyperparameter optimization for
+        # List of account forecasting methods to
+        # disable hyperparameter optimization for
         disabled_methods: [prophet] # default: [prophet]
         # Number of options per hyperparameter to test
         n_options_per_param: 3 # default: 3
-        # Bayesian optimization trial multiplier (total trials = n_options * n_params * multiplier)
+        # Bayesian optimization trial multiplier
+        # (total trials = n_options * n_params * multiplier)
         bayesian_trial_multiplier: 5 # default: 5
     
     # Specific Parameters for Random Forest Account Forecasting
@@ -476,9 +482,11 @@ account_forecast_params:
         # Wether to automatically optimize parameters
         auto_params: true # default: true
         # Default order of the SARIMAX model
-        default_params: [1, 1, 1, 0, 0, 0, 12] # default: [1, 1, 1, 0, 0, 0, 12]
+        # default: [1, 1, 1, 0, 0, 0, 12]
+        default_params: [1, 1, 1, 0, 0, 0, 12]
         # Maximum parameters to consider when optimizing
-        max_params: [2, 1, 2, 1, 1, 1, 12] # default: [2, 1, 2, 1, 1, 1, 12]
+        # default: [2, 1, 2, 1, 1, 1, 12]
+        max_params: [2, 1, 2, 1, 1, 1, 12]
 
     # Specific Parameters for Prophet Account Forecasting
     prophet_params:
@@ -529,10 +537,12 @@ output_params:
     account_file_format: csv # default: parquet
     # Delimiter for csv's to use when outputting data
     csv_delimiter: ',' # default: ","
-    # Whether to split driver up in the output files with each one having its own column
+    # Whether to split driver up in the output files 
+    # with each one having its own column
     # # of columns changes with n_final_drivers
     b_split_drivers: false # default: false
-    # Whether or not to make output file saving paths as the set testing path for
+    # Whether or not to make output file 
+    # saving paths as the set testing path for
     # each of the possible file outputs
     b_test_outputs: false # default: false
 
