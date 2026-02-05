@@ -78,3 +78,19 @@ class GeneralParams(BaseParamsModel):
             'Testing start date must be after validation end date.'
         )
         return
+
+    def get_training_daterange(self) -> tuple[datetime.date, datetime.date]:
+        """Return the training date range as a tuple (start_date, end_date)."""
+        return (self.training_start_date, self.training_end_date)
+
+    def get_validation_daterange(self) -> tuple[datetime.date, datetime.date]:
+        """Return the validation date range as a tuple (start_date, end_date)."""
+        return (self.validation_start_date, self.validation_end_date)
+
+    def get_train_val_daterange(self) -> tuple[datetime.date, datetime.date]:
+        """Return the combined training and validation date range as a tuple (start_date, end_date)."""
+        return (self.training_start_date, self.validation_end_date)
+
+    def get_testing_daterange(self) -> tuple[datetime.date, datetime.date]:
+        """Return the testing date range as a tuple (start_date, end_date)."""
+        return (self.testing_start_date, self.testing_end_date)

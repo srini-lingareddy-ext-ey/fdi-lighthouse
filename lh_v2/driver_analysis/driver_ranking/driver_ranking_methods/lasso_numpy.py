@@ -5,7 +5,7 @@ import numpy as np
 import lh_v2.datatypes as dts
 import lh_v2.params.driver_analysis_params.ranking_params as dr_params
 import lh_v2.stats as stats
-from lh_v2.shared import ArrayF
+from lh_v2.shared import ArrayF, ArrayI
 
 from .abstract_class import AbstractRankingMethod
 
@@ -193,12 +193,12 @@ class LassoRankingNumpy(AbstractRankingMethod):
           selection counts across all iterations.
         """
         # Normalize driver data for more stable Lasso regression results
-        drivers_norm = stats.normalize_arr(self.info.drivers.arr).astype(
+        drivers_norm: ArrayF = stats.normalize_arr(self.info.drivers.arr).astype(
             self.info.np_dtype
         )
 
         # Initialize array to track which drivers are selected in each iteration
-        arr_lasso = np.zeros(
+        arr_lasso: ArrayI = np.zeros(
             (self.method_params.n_iter, self.info.drivers.arr.shape[0]), dtype=np.int32
         )
 

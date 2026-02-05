@@ -367,13 +367,13 @@ account_forecast_params:
 
         # Specific methods to be removed in list format, only works if b_remove is true
         # default: [lr_drivers, sarimax]
-        methods_removed: [lr_drivers, sarimax]
+        methods_removed: [sarimax]
 
         # Allows you to select collinearity removal methods from scratch
         b_selected: false # default: false
 
         # Specific methods to be used, only works if b_selected is true
-        methods_selected: [prophet] # default: [prophet]
+        methods_selected: [] # default: []
 
     # Params for LLM selection of account forecasting models
     llm_validation_params:

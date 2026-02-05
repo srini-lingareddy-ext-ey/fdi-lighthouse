@@ -1,7 +1,7 @@
 import pathlib as pth
 import time
 
-import lh_v2.datatypes as dts
+# import lh_v2.datatypes as dts
 from lh_v2.account_reconciliation import apply_account_reconciliation
 from lh_v2.driver_analysis import analyze_drivers_full
 from lh_v2.forecasting import create_account_forecasts, train_and_validate_models
@@ -12,10 +12,16 @@ from lh_v2.forecasting.account_forecasting.model_validation.model_training_types
     ModelTrainingInput,
 )
 from lh_v2.io.data_loading import load_data_driver_ranking
+from lh_v2.io.output.output_data import (
+    save_account_forecasts_csv,
+    save_account_validation_csv,
+    save_selected_drivers_csv,
+)
 from lh_v2.io.plotting import plot_account_forecasts
 from lh_v2.params import parse_yaml
 
 b_time_parts = True
+b_save_csv = False
 b_plot = True
 
 if __name__ == '__main__':
@@ -119,26 +125,19 @@ if __name__ == '__main__':
     print(f'Average time per account: {avg_time_per_account:.6f} seconds.')
     print('-' * 80)
 
-    training_results.plot_all_forecasts(
-        account=dts.AccountType('volume'),
-        forecast_daterange=(
-            lh_params.general_params.validation_start_date,
-            lh_params.general_params.validation_end_date,
-        ),
-        historicals=dr_data.accounts[dts.AccountType('volume')],
-    )
-
-    training_results.plot_all_forecasts(
-        account=dts.AccountType('t_w_total'),
-        forecast_daterange=(
-            lh_params.general_params.validation_start_date,
-            lh_params.general_params.validation_end_date,
-        ),
-        historicals=dr_data.accounts[dts.AccountType('t_w_total')],
-    )
-
-    # Plot all accounts
     if b_plot:
+        # Plot specific accounts for validation
+        for account in training_results.account_map.keys():
+            training_results.plot_all_forecasts(
+                account=account,
+                forecast_daterange=(
+                    lh_params.general_params.validation_start_date,
+                    lh_params.general_params.validation_end_date,
+                ),
+                historicals=dr_data.accounts[account],
+            )
+
+        # Plot all accounts
         for account in reconciliation_results.accounts_forecasts.get_ordered_accounts():
             print(f'Plotting forecast for {account}')
             plot_account_forecasts(
@@ -148,3 +147,25 @@ if __name__ == '__main__':
                 ],
                 forecast_daterange=forecasting_results.forecast_daterange,
             )
+
+    # Save forecasts to CSV
+    if b_save_csv:
+        save_selected_drivers_csv(
+            da_output=analysis_results,
+            segment_type=lh_params.segment,
+            region_type=lh_params.region,
+            output_pth=path.parent / 'scratch' / 'selected_drivers.csv',
+        )
+        save_account_validation_csv(
+            validation_output=training_results,
+            actuals=dr_data.accounts,
+            validation_daterange=(
+                lh_params.general_params.validation_start_date,
+                lh_params.general_params.validation_end_date,
+            ),
+            output_pth=path.parent / 'scratch' / 'account_validation.csv',
+        )
+        save_account_forecasts_csv(
+            account_forecasts=reconciliation_results,
+            output_pth=path.parent / 'scratch' / 'account_forecasts_reconciled.csv',
+        )

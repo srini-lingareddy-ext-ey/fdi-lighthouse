@@ -44,7 +44,7 @@ class AccountDriverGroup:
 
     account: AccountInfo
     drivers: DriverGroup
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def apply_lags(
         self, best_lags: dict[DriverName, int], max_lag: int
@@ -288,7 +288,7 @@ class AccountClassifiedDriverGroups:
 
     account: AccountInfo
     classified_drivers: ClassifiedDriverGroups[DriverClassification]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __getitem__(self, key: DriverClassification) -> AccountDriverGroup:
         """
@@ -393,7 +393,7 @@ class AccountGroupDriverGroup:
 
     accounts: AccountGroupInfo
     drivers: DriverGroup
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __getitem__(self, key: AccountType) -> AccountDriverGroup:
         """
@@ -504,7 +504,7 @@ class AccountGroupSelectedDrivers:
 
     accounts: AccountGroupInfo
     drivers: ClassifiedDriverGroups[AccountType]
-    np_dtype: type = BASE_NP_DTYPE
+    np_dtype: type[np.floating[Any]] = BASE_NP_DTYPE
 
     def __post_init__(self):
         """Validate that account types match between accounts and drivers."""

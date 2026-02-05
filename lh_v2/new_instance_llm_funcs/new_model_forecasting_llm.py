@@ -141,7 +141,9 @@ def forecast_models_new_llm(
         af_params_training: dict[dts.AccountType, params.AccountForecastParams] = {}
         for account in selected_models.keys():
             # Create a copy of the account forecast parameters for this account
-            af_params_training[account] = lh_params.account_forecast_params.model_copy()
+            af_params_training[account] = lh_params.account_forecast_params.model_copy(
+                deep=True
+            )
             # Disable automatic model removal based on performance
             af_params_training[account].methods.b_remove = False
             # Enable manual model selection mode

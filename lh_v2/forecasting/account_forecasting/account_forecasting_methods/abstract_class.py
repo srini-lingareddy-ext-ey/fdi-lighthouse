@@ -14,11 +14,16 @@ from lh_v2.params.forecasting_params import BaseAccountForecastParams
 from lh_v2.shared import ArrayF
 from lh_v2.util import month_dif
 
+
+def _std_metric_func(model: ArrayF, true: ArrayF) -> float:
+    return stats.std_slr(model)
+
+
 VALIDATION_METRIC_MAP = {
     AccountValidationMetricEnum.MSE_PERCENTAGE: stats.mse_percentage,
     AccountValidationMetricEnum.RMSE_PERCENTAGE: stats.rmse_percentage,
     AccountValidationMetricEnum.MAPE: stats.mape,
-    AccountValidationMetricEnum.STD: lambda model, true: stats.std_slr(model),
+    AccountValidationMetricEnum.STD: _std_metric_func,
 }
 
 

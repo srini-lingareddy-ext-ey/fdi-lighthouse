@@ -1,4 +1,3 @@
-# pyright: reportUnusedImport=false
 from .analyze_drivers import (
     analyze_drivers_full,
     analyze_drivers_llm,

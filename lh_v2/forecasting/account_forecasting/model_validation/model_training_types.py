@@ -277,6 +277,8 @@ class ModelTrainingOutput:
         accs: list[dts.AccountInfo] = []
         methods: list[str] = []
 
+        selected_method = self.select_forecast_methods()[account]
+
         # Collect all forecasts and method names for this account
         for method in self.method_map[account].keys():
             # Retrieve forecasted account data for this method
@@ -285,7 +287,10 @@ class ModelTrainingOutput:
             ]
             accs.append(forecasted_account)
             # Store the method name as a string for plot labeling
-            methods.append(method.value)
+            if method == selected_method:
+                methods.append(f'{method.value} (Selected)')
+            else:
+                methods.append(method.value)
 
         # Generate comparison plot showing all forecasting methods for this account
         plot_account_forecasts(

@@ -130,21 +130,25 @@ class PolarsDataLoader(AbstractDataLoader):
         )
         assert 'value' in source.columns, "DataFrame must contain 'value' column."
 
+        polars_filters: list[pl.Expr] = []
+
         # Determine which column contains the segment/product information
         seg_key = _get_product_key(df=source, product_type=self.lh_params.segment)
+
+        if seg_key is not None:
+            polars_filters.append(pl.col(seg_key) == self.lh_params.segment)
 
         # Determine which column contains the region/location information
         reg_key = _get_location_key(df=source, location_type=self.lh_params.region)
 
+        if reg_key is not None:
+            polars_filters.append(pl.col(reg_key) == self.lh_params.region)
+
+        polars_filters.append(pl.col('account_key').is_in(self.lh_params.accounts))
+
         # Filter data to specified segment, region, and accounts, then aggregate by period
         filtered_df = (
-            source.filter(
-                (pl.col(seg_key) == self.lh_params.segment)  # Filter by segment
-                & (pl.col(reg_key) == self.lh_params.region)  # Filter by region
-                & (
-                    pl.col('account_key').is_in(self.lh_params.accounts)
-                )  # Filter by account list
-            )
+            source.filter(polars_filters)
             .group_by(
                 ['period_key', seg_key, reg_key, 'account_key']
             )  # Group by key dimensions
@@ -341,7 +345,9 @@ class PolarsDataLoader(AbstractDataLoader):
             )
 
         # Combine all classification groups into a single ClassifiedDriverGroups structure
-        return dts.ClassifiedDriverGroups.from_driver_group_lst(
+        return dts.ClassifiedDriverGroups[
+            dts.DriverClassification
+        ].from_driver_group_lst(
             driver_group_lst=classified_driver_group_lst,
             classification_groups=classifications,
         )
@@ -350,7 +356,7 @@ class PolarsDataLoader(AbstractDataLoader):
 def _get_product_key(
     df: pl.DataFrame,
     product_type: dts.ProductType,
-) -> str:
+) -> str | None:
     """
     Get the product key column name based on the product type.
 
@@ -371,6 +377,10 @@ def _get_product_key(
     ValueError
         If the product type is not recognized or the corresponding column is not found.
     """
+    # If product type is 'total' or 'all', no filtering is needed
+    if product_type.lower() in [dts.ProductType('total'), dts.ProductType('all')]:
+        return None
+
     # Check if product type is in the business unit column
     if product_type in df['bu_key'].unique().to_list():
         return 'bu_key'
@@ -400,7 +410,7 @@ def _get_product_key(
 def _get_location_key(
     df: pl.DataFrame,
     location_type: dts.LocationType,
-) -> str:
+) -> str | None:
     """
     Get the region key column name based on the region type.
 
@@ -421,6 +431,10 @@ def _get_location_key(
     ValueError
         If the region type is not recognized or the corresponding column is not found.
     """
+    # If region type is 'total' or 'all', no filtering is needed
+    if location_type.lower() in [dts.LocationType('total'), dts.LocationType('all')]:
+        return None
+
     # Check if location type is in the plant_key column
     if location_type in df['plant_key'].unique().to_list():
         return 'plant_key'

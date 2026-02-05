@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from typing import Optional
 
 from sklearn.linear_model import Ridge
@@ -7,9 +8,12 @@ import lh_v2.datatypes as dts
 import lh_v2.datatypes.forecasting_types.account_forecasting_types as aft
 from lh_v2.params.forecasting_params import RidgeAccountForecastParams
 from lh_v2.shared import ArrayF
+from lh_v2.util import get_logger
 
 from ..errors import ModelNotTrainedError
 from .abstract_class import AbstractAccountForecastingMethod
+
+logger = get_logger(__name__)
 
 
 class RidgeAccountForecastingMethod(AbstractAccountForecastingMethod):
@@ -87,7 +91,15 @@ class RidgeAccountForecastingMethod(AbstractAccountForecastingMethod):
             random_state=self.model_params.random_state,
         )
 
-        self.model.fit(X, y)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            self.model.fit(X, y)
+
+            for warning in w:
+                logger.warning(
+                    f'{self.name()} encountered warning during training '
+                    f'- {warning.category.__name__}: {warning.message}'
+                )
 
     def apply(self) -> ArrayF:
         """

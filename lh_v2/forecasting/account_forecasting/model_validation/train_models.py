@@ -70,6 +70,9 @@ def train_method(
     train_methods : Trains multiple forecasting methods with hyperparameter optimization.
     ACCOUNT_FORECASTING_METHOD_MAP : Mapping of method enums to their implementation classes.
     """
+    logger.info(
+        f'Training method `{method.name}` on account `{info.account.account_type}`.'
+    )
 
     # Get the class corresponding to the method enum
     method_class = ACCOUNT_FORECASTING_METHOD_MAP[method]
@@ -169,6 +172,10 @@ def train_methods(
             selection_metric=aft.AccountValidationMetricEnum.MAPE,
         )
 
+        logger.info(
+            f'Training method `{method.name}` on account `{info.account.account_type}`.'
+        )
+
         last_time = time.time()
 
         # Get the forecasting method class corresponding to the method enum
@@ -247,6 +254,10 @@ def _validate_methods(
 
     # Iterate over each trained method and validate using the provided data
     for method in selected_methods:
+        logger.info(
+            f'Validating method `{trained_methods[method].name()}` '
+            f'on account `{trained_methods[method].info.account.account_type}`.'
+        )
         last_time = time.time()
         # Call the validate method of the trained instance
         forecasted_account, metric = trained_methods[method].validate()

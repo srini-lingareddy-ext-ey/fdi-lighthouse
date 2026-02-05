@@ -138,7 +138,8 @@ def _optimize_independent(
     )
     logger.info(
         f'Starting {hyperopt_params.method.value} hyperparameter optimization for '
-        f'{forecasting_method.__name__} with {len(param_options)} parameter combinations.'
+        f'{forecasting_method.__name__} with {len(param_options)} parameter combinations '
+        f'on account `{info.account.account_type}`.'
     )
 
     # Initialize the forecasting method instance with base parameters

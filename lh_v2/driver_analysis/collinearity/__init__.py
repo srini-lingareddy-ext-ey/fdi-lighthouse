@@ -1,4 +1,3 @@
-# pyright: reportUnusedImport=false
 from .collinearity_methods import (
     AbstractCollinearityMethod,
 )

@@ -10,8 +10,8 @@ from lh_v2.params import LighthouseParams, parse_yaml
 
 def initialize(
     config_info: pth.Path | dict[str, Any],
-    account_data_pth: pth.Path,
-    driver_data_pth: pth.Path,
+    account_data_pth: Any,
+    driver_data_pth: Any,
 ) -> tuple[LighthouseParams, DriverAnalysisInput]:
     """
     Initialize Lighthouse parameters and load driver analysis input data.

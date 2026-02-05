@@ -106,35 +106,11 @@ class LinearRegressionDriversAccountForecastingMethod(AbstractAccountForecasting
         if self.model is None:
             raise ModelNotTrainedError(method_name=self.name())
 
-        # Find available date range for each driver within forecast period
-        start_dates = {}
-        end_dates = {}
-
-        for driver_name in self.info.drivers.get_ordered_drivers():
-            driver = self.info.drivers.get_driver(driver_name)
-            driver_dates = sorted(driver.dates.keys())
-
-            # Find overlap between driver dates and forecast period
-            forecast_start = self.forecast_daterange[0]
-            forecast_end = self.forecast_daterange[1]
-
-            # Get driver dates within forecast range
-            available_dates = [
-                d for d in driver_dates if forecast_start <= d <= forecast_end
-            ]
-
-            if not available_dates:
-                raise ValueError(
-                    f'Driver {driver_name} has no data in forecast period '
-                    f'{forecast_start} to {forecast_end}. Driver data ends at {driver_dates[-1]}'
-                )
-
-            start_dates[driver_name] = available_dates[0]
-            end_dates[driver_name] = available_dates[-1]
-
-        forecast_driver_data = self.info.drivers.apply_daterange(
-            start_dates=start_dates,
-            end_dates=end_dates,
+        forecast_driver_data = self.info.drivers.apply_daterange_lags(
+            start_date=self.forecast_daterange[0],
+            end_date=self.forecast_daterange[1],
+            lags=self.best_lags,
+            b_training=False,
         )
 
         # Debug: Check the shape
@@ -148,7 +124,6 @@ class LinearRegressionDriversAccountForecastingMethod(AbstractAccountForecasting
                 f'Driver data shape mismatch: expected {expected_months} months '
                 f'from {self.forecast_daterange[0]} to {self.forecast_daterange[1]}, '
                 f'but got {actual_samples} samples. '
-                f'Start dates: {set(start_dates.values())}, End dates: {set(end_dates.values())}'
             )
 
         # Get driver data as features - shape: (n_drivers, n_samples)

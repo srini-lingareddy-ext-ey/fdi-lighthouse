@@ -54,6 +54,11 @@ def create_account_forecast(
     account_forecast : AccountInfo
         Forecasted account information including predicted values and metadata.
     """
+    logger.info(
+        f'Forecasting account `{info.account.account_type}` '
+        f'with method `{selected_method.name}`.'
+    )
+
     # Instantiate the forecasting method with account data and configuration
     method_instance = ACCOUNT_FORECASTING_METHOD_MAP[selected_method](
         info=dts.AccountDriverGroup(

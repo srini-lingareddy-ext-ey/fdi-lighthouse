@@ -77,7 +77,7 @@ def optimize_hyperparameters_bayesian(
     logger.info(
         f'Starting Bayesian hyperparameter optimization for '
         f'{forecasting_method.__name__} with {n_trials} trials '
-        f'across {n_params} parameters.'
+        f'across {n_params} parameters on account `{info.account.account_type}`.'
     )
 
     # Create method instance

@@ -1,4 +1,3 @@
-# pyright: reportUnusedImport=false
 from .collinearity_params import CollinearityParams
 from .full_driver_analysis_params import DriverAnalysisParams
 from .full_pca_params import FullPCAParams

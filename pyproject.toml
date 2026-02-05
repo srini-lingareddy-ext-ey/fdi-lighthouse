@@ -39,19 +39,25 @@ dev = [
 ]
 
 [tool.taskipy.tasks]
-format = "ruff format ."
-check = "pyright ."
-test = "pytest"
-test-cov = "pytest --cov=lh_v2 --cov-report=html --cov-report=term"
-test-unit = "pytest -m unit"
-test-integration = "pytest -m integration"
-test-verbose = "pytest -vv"
+format = "cd $(git rev-parse --show-toplevel) && ruff format ."
+check = "cd $(git rev-parse --show-toplevel) && pyright ."
+test = "cd $(git rev-parse --show-toplevel) && pytest"
+
+test-cov = """
+cd $(git rev-parse --show-toplevel) && \
+pytest --cov=lh_v2 --cov-report=html --cov-report=term
+"""
+
+test-unit = "cd $(git rev-parse --show-toplevel) && pytest -m unit"
+test-integration = "cd $(git rev-parse --show-toplevel) && pytest -m integration"
+test-verbose = "cd $(git rev-parse --show-toplevel) && pytest -vv"
 verify = "task format && task test && task check"
 
 [tool.ruff.format]
 quote-style = "single"
 
 [tool.pyright]
+enableExperimentalFeatures = true
 typeCheckingMode = "strict"
 # reportUnnecessaryTypeIgnoreComment = "error"
 reportUnknownMemberType = false
@@ -59,6 +65,3 @@ reportMissingTypeStubs = false
 reportUnknownVariableType = false
 reportUnknownArgumentType = false
 reportUnknownLambdaType = false
-reportArgumentType = "error"
-
-useLibraryCodeForTypes = true

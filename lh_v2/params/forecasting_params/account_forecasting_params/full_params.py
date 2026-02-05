@@ -37,9 +37,7 @@ from .method_params import (
 class AccountForecastMethodParams(BaseParamsModel):
     b_remove: bool = True
     methods_removed: Sequence[AccountForecastingMethodEnum] = (
-        AccountForecastingMethodEnum.LINEAR_REGRESSION_DRIVERS,
         AccountForecastingMethodEnum.SARIMAX,
-        AccountForecastingMethodEnum.RIDGE,
     )
     b_selected: bool = False
     methods_selected: Sequence[AccountForecastingMethodEnum] = ()

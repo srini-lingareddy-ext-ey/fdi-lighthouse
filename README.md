@@ -19,7 +19,7 @@ SSH: `git@github.com:ey-org/lighthouse-2026.git`
 **For Mac users:**
 - `brew` (homebrew) is required for installation, follow instructions here: [homebrew install link](https://brew.sh/)
 
-### 3. Install Dependencies
+### 2. Install Dependencies
 **1. Install `uv`, `python` and `ruff`.**
 - **Mac users**
     - Install `uv` and `ruff`: `brew install uv ruff`
@@ -27,10 +27,12 @@ SSH: `git@github.com:ey-org/lighthouse-2026.git`
 - **Windows users**
     - Install `uv`, `python`, and `ruff`: `winget install astral-sh.uv Python.Python.3.14 astral-sh.ruff`
 
+**For the rest of the installation, you will need to run commands from inside the lighthouse directory (lighthouse-2026).**
+
 **2. Setup python env and install dependencies**
 - Run `uv sync` to create virtual environment, and download dependencies.
 
-### 4. Verify application is working
+### 3. Verify application is working
 Run `uv run task verify` to run lighthouse testing suite and static type checker.
 - Testing suite:
     - If all test cases pass, then the core lighthouse functionality is working properly.
