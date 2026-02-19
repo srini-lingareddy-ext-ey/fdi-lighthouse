@@ -19,6 +19,8 @@ env/
 # Data files
 *.csv
 *.parquet
+!demo/accounts.csv
+!demo/drivers.csv
 /samples/data/
 /data/
 /sample_data/
@@ -30,6 +32,7 @@ env/
 # Jupyter Notebooks
 .ipynb_checkpoints
 *.ipynb
+!demo/lighthouse_demo.ipynb
  
 # Random Testing/Other Files
 _test_*.py

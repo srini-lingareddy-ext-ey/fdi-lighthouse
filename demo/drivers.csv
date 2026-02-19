@@ -1,0 +1,1189 @@
+date,driver_value,driver_category,driver_name,driver_unique_name,qualifier,region,driver_units,driver_classification,driver_source,driver_capture_date,subregion,qualifier_2,denorm
+2019-01-01,1.0259844064712524,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-02-01,1.020676851272583,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-03-01,1.020785927772522,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-04-01,1.0152143239974976,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-05-01,1.016631841659546,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-06-01,1.017871618270874,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-07-01,1.0125430822372437,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-08-01,1.0202430486679075,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-09-01,1.0170536041259766,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-10-01,1.0083948373794556,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-11-01,1.0139695405960083,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-12-01,1.0119117498397827,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-01-01,1.0059072971343994,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-02-01,1.0092287063598633,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-03-01,0.968870222568512,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-04-01,0.8405742645263672,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-05-01,0.8537723422050476,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-06-01,0.9099920988082886,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-07-01,0.9430388808250428,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-08-01,0.9522276520729064,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-09-01,0.9518505334854126,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-10-01,0.9581457376480104,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-11-01,0.9623873233795166,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2020-12-01,0.9748051762580872,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-01-01,0.9808562397956848,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-02-01,0.9480368494987488,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-03-01,0.9746959805488586,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-04-01,0.9760738015174866,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-05-01,0.98456072807312,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-06-01,0.9891427755355836,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-07-01,0.9932969808578492,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-08-01,0.9930428266525269,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-09-01,0.9826628565788268,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-10-01,0.9961497783660888,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-11-01,1.0052244663238523,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2021-12-01,1.0044938325881958,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-01-01,1.004690408706665,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-02-01,1.0109559297561646,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-03-01,1.0191689729690552,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-04-01,1.0214440822601318,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-05-01,1.0220743417739868,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-06-01,1.020650029182434,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-07-01,1.022914171218872,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-08-01,1.0241034030914309,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-09-01,1.027699589729309,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-10-01,1.0268220901489258,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-11-01,1.023463010787964,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2022-12-01,1.0107653141021729,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-01-01,1.0199074745178225,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-02-01,1.020430564880371,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-03-01,1.0205695629119873,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-04-01,1.0246373414993286,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-05-01,1.0222233533859253,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-06-01,1.0162674188613892,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-07-01,1.0231295824050903,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-08-01,1.0233569145202637,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-09-01,1.0254712104797363,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-10-01,1.0182249546051023,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-11-01,1.0212892293930054,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2023-12-01,1.0187489986419678,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-01-01,1.0073546171188354,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-02-01,1.019700050354004,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-03-01,1.017634391784668,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-04-01,1.016932487487793,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-05-01,1.0245529413223269,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2024-06-01,1.0251902341842651,Economic,Industrial Production,Industrial Production: Total Index,Total Index,North America,Index 100: 2017 Seasonal Adjusted,External,FRED,20241709,,,100.74208
+2019-01-01,0.7424758076667786,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-02-01,0.7556102871894836,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-03-01,0.7664957642555237,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-04-01,0.7974805235862732,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-05-01,0.7694454789161682,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-06-01,0.6823229789733887,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-07-01,0.702761173248291,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-08-01,0.6547254323959351,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-09-01,0.6843433976173401,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-10-01,0.6695867776870728,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-11-01,0.7133753299713135,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-12-01,0.732785701751709,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-01-01,0.7050506472587585,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-02-01,0.6108551025390625,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-03-01,0.4079890549182892,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-04-01,0.312390923500061,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-05-01,0.3801392018795013,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-06-01,0.4605477750301361,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-07-01,0.4830112755298614,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-08-01,0.5210782289505005,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-09-01,0.5102928280830383,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-10-01,0.5332387685775757,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-11-01,0.5639384984970093,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2020-12-01,0.6623028516769409,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-01-01,0.7738229632377625,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-02-01,0.76945561170578,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-03-01,0.7944491505622864,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-04-01,0.80035799741745,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-05-01,0.8638738989830017,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-06-01,0.955190658569336,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-07-01,1.0136258602142334,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-08-01,1.0273566246032717,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-09-01,1.189852952957153,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-10-01,1.433445692062378,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-11-01,1.3173136711120603,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2021-12-01,1.34139084815979,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-01-01,1.34913969039917,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-02-01,1.453498125076294,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-03-01,1.8544514179229736,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-04-01,1.6797813177108765,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-05-01,1.714110016822815,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-06-01,1.833992838859558,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-07-01,1.9216700792312624,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-08-01,2.1038942337036133,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-09-01,1.8453174829483032,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-10-01,1.4524378776550293,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-11-01,1.4356757402420044,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2022-12-01,1.4448537826538086,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-01-01,1.247945785522461,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-02-01,1.127472162246704,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-03-01,1.0397461652755735,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-04-01,1.0752125978469849,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-05-01,0.9458606839179992,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-06-01,0.9268403053283693,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-07-01,0.9780065417289734,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-08-01,1.052035927772522,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-09-01,1.1433130502700806,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-10-01,1.134027123451233,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-11-01,1.060866355895996,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2023-12-01,0.9791630506515504,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-01-01,0.9706668257713318,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-02-01,0.9682539701461792,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-03-01,1.0050499439239502,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-04-01,1.0537664890289309,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-05-01,1.022172212600708,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2024-06-01,1.039851188659668,Economic,Global Price of Energy,Global Price of Energy,,Global,Index 100: 2016,External,FRED,20241709,,,178.91208
+2019-01-01,0.7175526022911072,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-02-01,0.7151255011558533,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-03-01,0.7249332070350647,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-04-01,0.7116878032684326,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-05-01,0.7388373017311096,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-06-01,0.7626844048500061,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-07-01,0.7665912508964539,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-08-01,0.77689528465271,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-09-01,0.7901316285133362,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-10-01,0.8009499311447144,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-11-01,0.8215939998626709,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-12-01,0.7978551387786865,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-01-01,0.8283790946006775,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-02-01,0.8425989747047424,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-03-01,0.835561215877533,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-04-01,0.821819543838501,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-05-01,0.8124268651008606,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-06-01,0.8207458257675171,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-07-01,0.7974220514297485,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-08-01,0.7753433585166931,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-09-01,0.7784020900726318,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-10-01,0.7998581528663635,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-11-01,0.8103426098823547,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2020-12-01,0.79264897108078,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-01-01,0.8145021200180054,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-02-01,0.8045409917831421,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-03-01,0.8462170958518982,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-04-01,0.8578113317489624,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-05-01,0.8497810959815979,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-06-01,0.8564669489860535,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-07-01,0.8723559975624084,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-08-01,0.8889488577842712,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-09-01,0.891818106174469,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-10-01,0.9150606989860536,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-11-01,0.9572511315345764,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2021-12-01,0.9835163354873656,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-01-01,1.037517547607422,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-02-01,1.0717408657073977,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-03-01,1.0737799406051636,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-04-01,1.1174050569534302,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-05-01,1.1397453546524048,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-06-01,1.1748980283737185,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-07-01,1.2254976034164429,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-08-01,1.2274104356765747,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-09-01,1.2441115379333496,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-10-01,1.2833154201507568,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-11-01,1.2924283742904663,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2022-12-01,1.3169342279434204,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-01-01,1.281339406967163,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-02-01,1.2834688425064087,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-03-01,1.2893606424331665,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-04-01,1.3165011405944824,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-05-01,1.314525127410889,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-06-01,1.3062242269515991,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-07-01,1.3022451400756836,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-08-01,1.29801344871521,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-09-01,1.3033279180526731,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-10-01,1.2454107999801636,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-11-01,1.2192538976669312,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2023-12-01,1.194946527481079,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-01-01,1.1794273853302002,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-02-01,1.171902418136597,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-03-01,1.167553424835205,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-04-01,1.146674871444702,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-05-01,1.137624979019165,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2024-06-01,1.1302894353866575,Economic,Construction Spend,Construction Spend - Commercial,Commercial,North America,Millions of Dollars Seasonally Adjusted Annual Rate,External,FRED,20241709,,,110830.9
+2019-01-01,0.8241744041442871,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-02-01,0.8241744041442871,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-03-01,0.8284894824028015,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-04-01,0.8338832855224609,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-05-01,0.8333438634872437,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-06-01,0.834962010383606,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-07-01,0.8371195197105408,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-08-01,0.8371195197105408,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-09-01,0.836040735244751,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-10-01,0.8371195197105408,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-11-01,0.836040735244751,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-12-01,0.8381982445716858,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-01-01,0.8398163914680481,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-02-01,0.8425133228302002,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-03-01,0.8495252728462219,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-04-01,0.8506040573120117,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-05-01,0.8473678231239319,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-06-01,0.8511434197425842,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-07-01,0.8500646948814392,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-08-01,0.8543797135353088,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-09-01,0.8549190759658813,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-10-01,0.8538403511047363,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-11-01,0.8570765852928162,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2020-12-01,0.8576160073280334,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-01-01,0.86678546667099,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-02-01,0.8716399669647217,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-03-01,0.8781124949455261,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-04-01,0.881348729133606,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-05-01,0.8878213763237,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-06-01,0.906160295009613,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-07-01,0.9156372547149658,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-08-01,0.9277355670928956,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-09-01,0.9412686228752136,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-10-01,0.9537121057510376,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-11-01,0.967024028301239,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2021-12-01,0.9827470779418944,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-01-01,1.0189772844314575,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-02-01,1.0399268865585327,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-03-01,1.0570738315582275,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-04-01,1.0790643692016602,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-05-01,1.092360019683838,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-06-01,1.1095609664916992,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-07-01,1.1225546598434448,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-08-01,1.1214110851287842,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-09-01,1.126508355140686,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-10-01,1.1324037313461304,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-11-01,1.1344209909439087,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2022-12-01,1.1390974521636963,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-01-01,1.1467188596725464,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-02-01,1.1498258113861084,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-03-01,1.1683642864227295,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-04-01,1.1705811023712158,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-05-01,1.175117254257202,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-06-01,1.172285556793213,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-07-01,1.174831509590149,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-08-01,1.1770267486572266,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-09-01,1.1772748231887815,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-10-01,1.1798639297485352,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-11-01,1.1825499534606934,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2023-12-01,1.18011736869812,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-01-01,1.1808078289031982,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-02-01,1.191320300102234,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-03-01,1.189146637916565,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-04-01,1.2006031274795532,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-05-01,1.2032352685928345,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2024-06-01,1.200247049331665,HVAC,PPI,PPI for HVAC,HVAC,North America,Index 100: 2003,External,FRED,20241709,,,185.39766
+2019-01-01,0.8938655257225037,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-02-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-03-01,0.8938655257225037,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-04-01,0.8938655257225037,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-05-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-06-01,0.9203503727912904,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-07-01,0.9269716143608092,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-08-01,0.9203503727912904,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-09-01,0.9203503727912904,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-10-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-11-01,0.8806230425834656,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-12-01,0.8806230425834656,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-01-01,0.8872442841529846,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-02-01,0.8872442841529846,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-03-01,0.8872442841529846,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-04-01,0.8806230425834656,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-05-01,0.8872442841529846,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-06-01,0.9071078896522522,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-07-01,0.9071078896522522,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-08-01,0.9071078896522522,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-09-01,0.9071078896522522,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-10-01,0.8938655257225037,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-11-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2020-12-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-01-01,0.9004867672920227,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-02-01,0.9071078896522522,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-03-01,0.9137291312217712,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-04-01,0.9203503727912904,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-05-01,0.9269716143608092,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-06-01,0.9402140974998474,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-07-01,0.9468353390693665,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-08-01,0.953456461429596,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-09-01,0.953456461429596,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-10-01,0.9402140974998474,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-11-01,0.9402140974998474,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2021-12-01,0.9402140974998474,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-01-01,0.9733201861381532,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-02-01,0.979941427707672,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-03-01,0.9931839108467102,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-04-01,0.9998050332069396,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-05-01,1.019668698310852,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-06-01,1.0593961477279663,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-07-01,1.085880994796753,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-08-01,1.10574471950531,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-09-01,1.10574471950531,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-10-01,1.099123477935791,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-11-01,1.079259753227234,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2022-12-01,1.092502236366272,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-01-01,1.112365961074829,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-02-01,1.112365961074829,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-03-01,1.099123477935791,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-04-01,1.092502236366272,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-05-01,1.092502236366272,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-06-01,1.1256084442138672,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-07-01,1.118987202644348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-08-01,1.1256084442138672,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-09-01,1.132229566574097,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-10-01,1.118987202644348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-11-01,1.112365961074829,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2023-12-01,1.118987202644348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-01-01,1.1454720497131348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-02-01,1.1454720497131348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-03-01,1.1520932912826538,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-04-01,1.1454720497131348,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-05-01,1.1587145328521729,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2024-06-01,1.17857825756073,Economic,Average Electricity Price,Average Electricity Price,,North America,US Dollars per Kilowatt-Hour,External,FRED,20241709,,,0.15102944
+2019-01-01,1.0820600986480713,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-02-01,1.0402817726135254,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-03-01,1.0361039638519287,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-04-01,1.0319260358810425,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-05-01,1.0193926095962524,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-06-01,0.9609028100967408,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-07-01,0.9274801015853882,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-08-01,0.8606346845626831,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-09-01,0.8481011390686035,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-10-01,0.7854335904121399,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-11-01,0.7394773960113525,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-12-01,0.7352995276451111,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-01-01,0.6893433332443237,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-02-01,0.6642763018608093,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-03-01,0.5640081763267517,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-04-01,0.3175157010555267,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-05-01,0.0710232555866241,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-06-01,0.0835567638278007,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-07-01,0.0752010941505432,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-08-01,0.062667578458786,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-09-01,0.0543118976056575,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-10-01,0.0501340590417385,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-11-01,0.0668454095721244,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2020-12-01,0.0710232555866241,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-01-01,0.0584897361695766,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-02-01,0.0459562204778194,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-03-01,0.0417783819139003,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-04-01,0.0459562204778194,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-05-01,0.0417783819139003,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-06-01,0.0376005470752716,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-07-01,0.0417783819139003,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-08-01,0.0417783819139003,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-09-01,0.0417783819139003,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-10-01,0.0459562204778194,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-11-01,0.0584897361695766,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2021-12-01,0.0710232555866241,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-01-01,0.0919124409556388,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-02-01,0.1587578505277633,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-03-01,0.3049822151660919,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-04-01,0.3801833093166351,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-05-01,0.5556524991989136,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-06-01,0.7812557816505432,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-07-01,1.044459581375122,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-08-01,1.153083324432373,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-09-01,1.3410861492156982,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-10-01,1.608467698097229,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-11-01,1.8633159399032593,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2022-12-01,1.8842052221298216,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-01-01,1.9259835481643677,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-02-01,1.9802953004837036,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-03-01,2.051318645477295,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-04-01,2.1014528274536133,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-05-01,2.1515867710113525,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-06-01,2.1808314323425293,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-07-01,2.2351434230804443,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-08-01,2.2727441787719727,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-09-01,2.293633222579956,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-10-01,2.281099796295166,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-11-01,2.2602105140686035,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2023-12-01,2.2226099967956543,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-01-01,2.197543144226074,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-02-01,2.1808314323425293,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-03-01,2.210076332092285,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-04-01,2.226787805557251,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-05-01,2.226787805557251,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2024-06-01,2.2058987617492676,Economic,Interest Rates,Interest Rates: 90 Day,90 Days,North America,Percent,External,FRED,20241709,,,2.3935823
+2019-01-01,0.7243696451187134,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-02-01,0.6660870313644409,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-03-01,0.8176218271255493,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-04-01,0.9708218574523926,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-05-01,0.9833109974861144,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-06-01,0.9583327174186708,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-07-01,0.9508392214775084,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-08-01,1.007456660270691,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-09-01,0.942513108253479,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-10-01,0.9558349251747132,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-11-01,0.8609175086021423,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-12-01,0.9017153382301332,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-01-01,0.9416805505752563,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-02-01,0.9291914105415344,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-03-01,0.8700761795043945,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-04-01,0.7068848609924316,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-05-01,0.791810929775238,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-06-01,0.9891392588615416,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-07-01,1.154828429222107,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-08-01,1.019945740699768,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-09-01,1.0515849590301514,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-10-01,1.0923826694488523,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-11-01,0.980813205242157,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2020-12-01,0.9583327174186708,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-01-01,0.959165334701538,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-02-01,0.8500935435295105,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-03-01,1.1706479787826538,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-04-01,1.1281849145889282,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-05-01,1.2131110429763794,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-06-01,1.2847154140472412,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-07-01,1.1981240510940552,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-08-01,1.1656522750854492,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-09-01,1.1256871223449707,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-10-01,1.1123653650283811,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-11-01,1.0890523195266724,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2021-12-01,1.03410005569458,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-01-01,1.007456660270691,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-02-01,1.0499197244644165,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-03-01,1.187300205230713,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-04-01,1.3679763078689575,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-05-01,1.1706479787826538,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-06-01,1.20645010471344,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-07-01,1.0299370288848877,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-08-01,1.1198588609695437,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-09-01,1.061576247215271,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-10-01,1.012452244758606,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-11-01,0.925028383731842,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2022-12-01,0.7884805202484131,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-01-01,0.8134588003158569,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-02-01,0.8592522740364075,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-03-01,0.9491740465164183,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-04-01,1.0132849216461182,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-05-01,1.215608835220337,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-06-01,1.1040393114089966,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-07-01,1.0940479040145874,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-08-01,0.9641610383987428,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-09-01,0.9741522669792176,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-10-01,0.9583327174186708,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-11-01,0.9699892401695251,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2023-12-01,0.9067109823226928,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-01-01,0.8151240348815918,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-02-01,0.9466761946678162,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-03-01,0.914204478263855,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-04-01,1.0465892553329468,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-05-01,1.0066241025924685,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2024-06-01,1.029104471206665,Economic,Housing Starts,Housing Starts: Total,Total,North America,Thousands of Units,External,FRED,20241709,,,120.10442
+2019-01-01,0.9347181916236876,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-02-01,0.8084862232208252,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-03-01,0.8866298198699951,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-04-01,0.7964640855789185,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-05-01,0.7934585809707642,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-06-01,0.7213259935379028,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-07-01,0.7123093605041504,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-08-01,0.6672265529632568,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-09-01,0.7694143652915955,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-10-01,0.7002872824668884,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-11-01,0.7964640855789185,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-12-01,0.6672265529632568,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-01-01,0.6071160435676575,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-02-01,0.5740552544593811,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-03-01,0.5379889607429504,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-04-01,0.5229613184928894,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-05-01,0.5259668231010437,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-06-01,0.4899005591869354,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-07-01,0.5319778919219971,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-08-01,0.6912707090377808,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-09-01,0.5770607590675354,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-10-01,0.7183204889297485,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-11-01,0.7844419479370117,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2020-12-01,0.7784309387207031,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-01-01,0.8144972324371338,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-02-01,1.607955813407898,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-03-01,0.787447452545166,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-04-01,0.7994696497917175,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-05-01,0.8746077418327332,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-06-01,0.9798011183738708,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-07-01,1.1541215181350708,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-08-01,1.2232487201690674,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-09-01,1.550850749015808,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-10-01,1.6560442447662354,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-11-01,1.5177900791168213,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2021-12-01,1.1300773620605469,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-01-01,1.3164199590682983,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-02-01,1.4095911979675293,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-03-01,1.4727071523666382,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-04-01,1.9836463928222656,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-05-01,2.4464974403381348,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-06-01,2.31425404548645,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-07-01,2.1880221366882324,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-08-01,2.647867441177368,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-09-01,2.3683536052703857,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-10-01,1.701127052307129,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-11-01,1.6380109786987305,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2022-12-01,1.662055253982544,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-01-01,0.9828066229820251,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-02-01,0.7153149247169495,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-03-01,0.6942762136459351,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-04-01,0.6491934061050415,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-05-01,0.6461878418922424,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-06-01,0.6552044153213501,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-07-01,0.7664088010787964,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-08-01,0.775425374507904,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-09-01,0.7934585809707642,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-10-01,0.8956463932991028,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-11-01,0.8144972324371338,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2023-12-01,0.7573922276496887,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-01-01,0.955756902694702,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-02-01,0.5169503092765808,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-03-01,0.4478231966495514,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-04-01,0.4808839857578277,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-05-01,0.63717120885849,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2024-06-01,0.7603977918624878,Economic,Natural Gas,Natural Gas,,North America,Dollars per Million BTU,External,FRED,20241709,,,3.327206
+2019-01-01,0.0084766894578933,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-02-01,0.0847668871283531,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-03-01,0.0762902051210403,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-04-01,0.3136374950408935,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-05-01,1.034156084060669,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-06-01,1.8733482360839844,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-07-01,3.1363749504089355,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-08-01,2.7803540229797363,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-09-01,2.034405469894409,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-10-01,0.6866118311882019,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-11-01,0.0762902051210403,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-12-01,0.0339067578315734,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-01-01,0.0678135156631469,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-02-01,0.0762902051210403,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-03-01,0.2882074415683746,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-04-01,0.2966841161251068,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-05-01,0.8900523781776428,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-06-01,2.059835433959961,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-07-01,3.2720019817352295,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-08-01,2.8820743560791016,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-09-01,1.4918972253799438,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-10-01,0.6527050733566284,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-11-01,0.2119172215461731,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2020-12-01,0.0,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-01-01,0.0254300665110349,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-02-01,0.0508601330220699,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-03-01,0.1441037207841873,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-04-01,0.2712540626525879,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-05-01,0.8391922116279602,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-06-01,2.280229330062866,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-07-01,2.839690923690796,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-08-01,2.958364486694336,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-09-01,1.5512341260910034,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-10-01,0.6527050733566284,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-11-01,0.0508601330220699,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2021-12-01,0.1356270313262939,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-01-01,0.0254300665110349,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-02-01,0.0339067578315734,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-03-01,0.1186736449599266,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-04-01,0.3814510107040405,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-05-01,1.169783115386963,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-06-01,2.076788902282715,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-07-01,3.09399151802063,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-08-01,2.7888307571411133,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-09-01,1.5681874752044678,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-10-01,0.3560209274291992,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-11-01,0.1356270313262939,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2022-12-01,0.0423834435641765,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-01-01,0.0084766894578933,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-02-01,0.0678135156631469,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-03-01,0.1525804102420807,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-04-01,0.2458239793777465,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-05-01,0.7120418548583984,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-06-01,1.5766642093658447,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-07-01,3.060084819793701,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-08-01,2.678633689880371,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-09-01,1.5088506937026978,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-10-01,0.5594614744186401,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-11-01,0.0508601330220699,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2023-12-01,0.0084766894578933,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-01-01,0.0084766894578933,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-02-01,0.0084766894578933,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-03-01,0.0932435765862464,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-04-01,0.3136374950408935,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-05-01,1.0426326990127563,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2024-06-01,2.2632761001586914,Economic,CDD,Cooling Degree Days,,North America,Days,External,NOAA,20241709,,,117.97059
+2019-01-01,2.54612398147583,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-02-01,2.1346895694732666,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-03-01,1.8842511177062988,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-04-01,0.8437390327453613,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-05-01,0.4412486851215362,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-06-01,0.0715538412332534,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-07-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-08-01,0.0119256395846605,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-09-01,0.1013679355382919,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-10-01,0.7781479954719543,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-11-01,1.7441247701644895,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-12-01,2.1108381748199463,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-01-01,2.188354969024658,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-02-01,2.0392844676971436,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-03-01,1.4579094648361206,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-04-01,1.091196060180664,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-05-01,0.4949140548706054,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-06-01,0.0745352506637573,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-07-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-08-01,0.0029814098961651,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-09-01,0.1878288239240646,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-10-01,0.7513152956962585,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-11-01,1.2551735639572144,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2020-12-01,2.2390389442443848,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-01-01,2.3970537185668945,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-02-01,2.3910908699035645,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-03-01,1.526481866836548,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-04-01,0.9361627101898192,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-05-01,0.4591371417045593,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-06-01,0.0417397394776344,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-07-01,0.0029814098961651,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-08-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-09-01,0.0954051166772842,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-10-01,0.545598030090332,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-11-01,1.505612015724182,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2021-12-01,1.8365485668182373,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-01-01,2.72202730178833,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-02-01,2.1436338424682617,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-03-01,1.5771658420562744,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-04-01,1.0375306606292725,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-05-01,0.3607506155967712,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-06-01,0.080498069524765,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-07-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-08-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-09-01,0.1639775484800338,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-10-01,0.7900736331939697,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-11-01,1.59803569316864,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2022-12-01,2.4179234504699707,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-01-01,2.2062432765960693,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-02-01,1.9259908199310305,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-03-01,1.8246228694915771,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-04-01,0.9391441345214844,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-05-01,0.4084531664848327,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-06-01,0.1162749901413917,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-07-01,0.0,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-08-01,0.0059628197923302,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-09-01,0.1401262730360031,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-10-01,0.6737986207008362,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-11-01,1.544370412826538,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2023-12-01,1.9230093955993652,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-01-01,2.5789196491241455,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-02-01,1.854436993598938,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-03-01,1.505612015724182,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-04-01,0.8884601593017578,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-05-01,0.3100666403770447,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2024-06-01,0.0536653809249401,Economic,HDD,Heating Degree Days,,North America,Days,External,NOAA,20241709,,,335.41177
+2019-01-01,1.0178990364074707,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-02-01,1.0185890197753906,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-03-01,1.019390106201172,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-04-01,1.019527554512024,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-05-01,1.0191911458969116,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-06-01,1.0182193517684937,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-07-01,1.0169241428375244,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-08-01,1.015414834022522,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-09-01,1.015212893486023,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-10-01,1.015944242477417,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-11-01,1.0173585414886477,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-12-01,1.0183799266815186,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-01-01,1.0176576375961304,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-02-01,1.0127196311950684,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-03-01,1.00213885307312,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-04-01,0.9908524751663208,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-05-01,0.9873322248458862,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-06-01,0.989394187927246,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-07-01,0.992193341255188,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-08-01,0.9947699308395386,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-09-01,0.9969639778137208,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-10-01,0.9977893233299256,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-11-01,0.9979055523872375,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2020-12-01,0.9990549087524414,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-01-01,1.0004671812057495,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-02-01,1.0032674074172974,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-03-01,1.0074056386947632,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-04-01,1.0106960535049438,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-05-01,1.0131793022155762,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-06-01,1.0147188901901243,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-07-01,1.013715744018555,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-08-01,1.011311411857605,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-09-01,1.0096778869628906,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-10-01,1.0078446865081787,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-11-01,1.0055533647537231,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2021-12-01,1.0031249523162842,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-01-01,0.99974125623703,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-02-01,0.995058298110962,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-03-01,0.9895657896995544,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-04-01,0.9855754971504213,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-05-01,0.981791377067566,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-06-01,0.9780266284942628,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-07-01,0.9760125875473022,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-08-01,0.9761139154434204,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-09-01,0.9763566255569458,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-10-01,0.9773594737052916,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-11-01,0.9791887998580932,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2022-12-01,0.9819459915161132,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-01-01,0.98504239320755,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-02-01,0.9875348806381226,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-03-01,0.9891993403434752,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-04-01,0.9912703633308412,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-05-01,0.9931387305259703,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-06-01,0.9949486255645752,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-07-01,0.995820701122284,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-08-01,0.9948650002479552,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-09-01,0.9932698011398317,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-10-01,0.992238700389862,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-11-01,0.993327498435974,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2023-12-01,0.9966116547584534,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-01-01,1.000090479850769,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-02-01,1.0019713640213013,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-03-01,1.002541422843933,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-04-01,1.0017600059509275,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-05-01,1.0003094673156738,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2024-06-01,0.9994465112686156,Economic,CCI,CCI,Amplitude Adjusted,North America,Index 100: Long Term Average,External,OECD,20241709,,,98.98732
+2019-01-01,0.9809377789497375,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-02-01,0.9650275707244872,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-03-01,0.9066673517227172,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-04-01,0.9463459849357604,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-05-01,0.9626023769378662,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-06-01,0.9279730916023254,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-07-01,0.953416645526886,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-08-01,0.9493646025657654,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-09-01,0.9466732144355774,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-10-01,0.9420549869537354,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-11-01,0.95774108171463,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-12-01,0.977619171142578,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-01-01,0.9216488599777222,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-02-01,0.9731075763702391,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-03-01,0.952464520931244,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-04-01,0.958053708076477,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-05-01,0.9172205924987792,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-06-01,0.9500510096549988,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-07-01,0.9848862290382384,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-08-01,0.918686866760254,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-09-01,0.8955066204071045,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-10-01,0.901556670665741,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-11-01,0.9534311294555664,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2020-12-01,1.0081310272216797,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-01-01,0.9755708575248718,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-02-01,0.9897416830062866,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-03-01,0.9491220116615297,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-04-01,0.9826521277427672,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-05-01,0.939560055732727,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-06-01,0.962392508983612,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-07-01,0.9396615028381348,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-08-01,0.932381808757782,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-09-01,0.9499883055686952,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-10-01,0.9342706203460692,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-11-01,0.9803410768508912,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2021-12-01,0.9515966773033142,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-01-01,0.9568939805030824,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-02-01,0.937846302986145,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-03-01,0.978998601436615,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-04-01,0.9276663661003112,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-05-01,0.9636065363883972,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-06-01,0.9375045299530028,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-07-01,0.9223106503486632,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-08-01,0.933929979801178,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-09-01,0.9257916212081908,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-10-01,0.9410715699195862,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-11-01,0.937807321548462,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2022-12-01,0.954621195793152,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-01-01,0.961151957511902,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-02-01,0.9427566528320312,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-03-01,1.1350723505020142,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-04-01,1.144830584526062,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-05-01,1.1191502809524536,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-06-01,1.1578125953674316,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-07-01,1.1619656085968018,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-08-01,1.1421815156936646,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-09-01,1.2100589275360107,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-10-01,1.164296269416809,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-11-01,1.1323968172073364,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2023-12-01,1.1246551275253296,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-01-01,1.128682255744934,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-02-01,1.12033212184906,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-03-01,1.1708427667617798,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-04-01,1.1142578125,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-05-01,1.13336181640625,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2024-06-01,1.1194781064987185,Economic,Metals Price,Metals Price - Aluminum Price,Aluminum Price,Global,US Dollars per Pound,External,,20242709,,,1.1620998
+2019-01-01,1.027957558631897,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-01-01,0.8821619153022766,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-01-01,1.069061040878296,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-01-01,0.920807957649231,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-01-01,0.9701331257820128,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-01-01,0.8520790338516235,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-02-01,1.0160558223724363,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-02-01,0.9192604422569276,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-02-01,0.9231994152069092,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-02-01,1.0164989233016968,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-02-01,0.8785664439201355,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-02-01,1.0086455345153809,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-03-01,1.004522681236267,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-03-01,0.8897829651832581,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-03-01,0.9088456630706788,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-03-01,0.9359053373336792,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-03-01,0.9872896075248718,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-03-01,0.948633313179016,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-04-01,1.0618196725845337,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-04-01,0.9265194535255432,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-04-01,0.9456838369369508,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-04-01,1.021285891532898,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-04-01,1.045280933380127,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-04-01,1.0314868688583374,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-05-01,1.0023483037948608,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-05-01,0.9461371302604676,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-05-01,1.0263866186141968,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-05-01,0.9172083735466005,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-05-01,1.0044960975646973,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-05-01,1.0581355094909668,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-06-01,1.0621944665908811,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-06-01,0.9226020574569702,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-06-01,0.9722877144813538,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-06-01,0.8922070264816284,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-06-01,1.0371146202087402,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-06-01,1.1129944324493408,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-07-01,0.9610430002212524,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-07-01,0.9442663788795472,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-07-01,0.9576361775398254,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-07-01,1.0413142442703247,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-07-01,1.073294758796692,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-07-01,0.938618302345276,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-08-01,1.0224303007125854,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-08-01,0.9738794565200806,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-08-01,1.0028067827224731,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-08-01,0.97373366355896,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-08-01,0.969953954219818,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-08-01,1.0534683465957642,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-09-01,0.9947137832641602,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-09-01,0.9675330519676208,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-09-01,1.1031583547592163,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-09-01,0.9193394780158995,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-09-01,1.0309003591537476,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-09-01,0.8562098145484924,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-10-01,1.0713783502578735,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-10-01,0.9013658761978148,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-10-01,1.094244360923767,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-10-01,0.9569103717803956,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-10-01,0.9975128173828124,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-10-01,1.023118257522583,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-11-01,1.0337364673614502,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-11-01,0.8892419338226318,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-11-01,1.0305410623550415,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-11-01,1.1439357995986938,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-11-01,1.0209414958953855,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-11-01,0.9882234930992126,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2019-12-01,1.0531198978424072,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2019-12-01,1.0199655294418335,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2019-12-01,1.069554090499878,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2019-12-01,1.0220825672149658,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2019-12-01,1.1146955490112305,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2019-12-01,1.1603052616119385,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-01-01,1.0618730783462524,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-01-01,0.8479535579681396,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-01-01,0.9652193188667296,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-01-01,0.944590151309967,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-01-01,0.9320976138114928,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-01-01,0.9522920846939088,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-02-01,1.0486613512039185,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-02-01,1.093502402305603,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-02-01,1.0118123292922974,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-02-01,0.947352170944214,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-02-01,0.9417166113853456,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-02-01,1.111267328262329,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-03-01,1.000412940979004,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-03-01,0.9710134863853456,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-03-01,0.8740591406822205,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-03-01,0.9757572412490844,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-03-01,0.9155446887016296,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-03-01,0.9429298639297484,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-04-01,1.0198837518692017,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-04-01,0.9969072341918944,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-04-01,0.9064008593559264,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-04-01,1.005398154258728,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-04-01,1.015937566757202,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-04-01,1.0845825672149658,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-05-01,0.8759401440620422,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-05-01,0.9892902970314026,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-05-01,0.9201427698135376,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-05-01,1.0403441190719604,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-05-01,1.0453990697860718,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-05-01,1.0513015985488892,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-06-01,1.0438684225082395,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-06-01,0.9997419118881226,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-06-01,1.1109281778335571,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-06-01,0.9485822319984436,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-06-01,0.9535731673240662,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-06-01,1.001273274421692,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-07-01,1.0300401449203491,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-07-01,0.929385244846344,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-07-01,0.9061289429664612,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-07-01,0.9290897846221924,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-07-01,0.9452344179153442,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-07-01,1.0259761810302734,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-08-01,1.007759928703308,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-08-01,1.105043649673462,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-08-01,1.0124517679214478,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-08-01,1.0359678268432615,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-08-01,0.9692838191986084,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-08-01,1.0584670305252075,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-09-01,0.955170750617981,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-09-01,1.057083010673523,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-09-01,1.089282751083374,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-09-01,0.9269086718559264,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-09-01,1.078062891960144,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-09-01,1.0967016220092771,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-10-01,0.9566857218742372,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-10-01,0.9053853750228882,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-10-01,0.9406246542930604,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-10-01,1.0836795568466189,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-10-01,0.9572350382804872,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-10-01,1.0944212675094604,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-11-01,0.9111640453338624,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-11-01,0.9788271188735962,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-11-01,1.039419412612915,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-11-01,0.9377633929252625,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-11-01,1.154097557067871,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-11-01,1.0772746801376345,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2020-12-01,0.9706332683563232,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2020-12-01,0.9861361980438232,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2020-12-01,0.9983376860618592,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2020-12-01,1.0395653247833252,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2020-12-01,1.0164984464645386,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2020-12-01,0.924445867538452,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-01-01,1.0517332553863523,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-01-01,0.9512856006622314,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-01-01,1.0314147472381592,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-01-01,1.0749812126159668,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-01-01,0.951523780822754,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-01-01,1.0178862810134888,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-02-01,1.0221779346466064,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-02-01,0.9195141196250916,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-02-01,0.9663712978363036,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-02-01,0.8846471309661865,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-02-01,0.9033876657485962,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-02-01,0.9605097770690918,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-03-01,0.9963895678520204,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-03-01,1.0677130222320557,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-03-01,0.97106671333313,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-03-01,0.9662714600563048,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-03-01,1.003613829612732,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-03-01,0.9640217423439026,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-04-01,0.9783696532249452,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-04-01,0.9107760787010192,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-04-01,0.9767284989356996,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-04-01,1.0762258768081665,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-04-01,0.9238442182540894,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-04-01,0.9305618405342102,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-05-01,1.0051758289337158,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-05-01,0.9058538675308228,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-05-01,0.8879175186157227,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-05-01,1.0228723287582395,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-05-01,1.031402349472046,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-05-01,1.1064748764038086,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-06-01,0.9331567287445068,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-06-01,1.0118683576583862,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-06-01,1.0231554508209229,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-06-01,0.8506798148155212,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-06-01,0.9987609386444092,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-06-01,0.8233001232147217,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-07-01,0.9568517804145812,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-07-01,1.0708638429641724,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-07-01,1.0226430892944336,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-07-01,1.080589771270752,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-07-01,1.0362221002578735,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-07-01,0.9904860854148864,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-08-01,1.011194109916687,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-08-01,1.019071102142334,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-08-01,0.9825489521026612,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-08-01,0.9890830516815186,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-08-01,1.0111112594604492,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-08-01,1.0573463439941406,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-09-01,0.9293361306190492,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-09-01,0.9788570404052734,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-09-01,1.0407660007476809,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-09-01,0.9550873637199402,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-09-01,1.0294427871704102,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-09-01,0.9565644264221193,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-10-01,1.0812731981277466,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-10-01,0.8963688611984253,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-10-01,1.0746897459030151,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-10-01,0.9893276691436768,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-10-01,0.9523569941520692,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-10-01,0.9969128370285034,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-11-01,1.0219180583953855,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-11-01,1.086528182029724,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-11-01,0.989695966243744,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-11-01,1.1329224109649658,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-11-01,1.0361312627792358,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-11-01,0.9849064350128174,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2021-12-01,1.0231398344039917,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2021-12-01,0.986873209476471,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2021-12-01,0.9932959079742432,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2021-12-01,0.9403684735298156,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2021-12-01,1.0383844375610352,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2021-12-01,0.9115116596221924,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-01-01,1.0516520738601685,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-01-01,1.0971471071243286,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-01-01,0.912304937839508,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-01-01,0.9082745909690856,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-01-01,0.9533789157867432,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-01-01,1.0175422430038452,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-02-01,1.0021785497665403,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-02-01,1.0434346199035645,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-02-01,0.9987686276435852,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-02-01,0.9709484577178956,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-02-01,0.937307059764862,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-02-01,0.9745557904243468,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-03-01,0.983391284942627,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-03-01,0.9975861310958862,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-03-01,0.9713718295097352,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-03-01,0.9953296184539796,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-03-01,1.0537697076797483,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-03-01,0.9069618582725524,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-04-01,1.0211710929870603,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-04-01,1.0188982486724854,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-04-01,1.0890394449234009,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-04-01,0.9285898208618164,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-04-01,0.99652898311615,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-04-01,1.046226143836975,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-05-01,0.8856574892997742,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-05-01,1.0349578857421875,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-05-01,1.014541506767273,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-05-01,1.0625251531600952,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-05-01,0.9683984518051147,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-05-01,0.8490801453590393,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-06-01,0.8828092217445374,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-06-01,0.9671170711517334,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-06-01,0.97898131608963,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-06-01,0.9743607044219972,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-06-01,0.9836896061897278,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-06-01,0.942916214466095,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-07-01,0.9409961700439452,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-07-01,1.0214040279388428,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-07-01,1.0091007947921753,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-07-01,0.9760686159133912,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-07-01,1.071467041969299,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-07-01,1.0730743408203125,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-08-01,1.0353143215179443,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-08-01,1.1266566514968872,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-08-01,0.968233048915863,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-08-01,1.011682629585266,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-08-01,1.028825283050537,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-08-01,1.0823956727981567,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-09-01,1.0032117366790771,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-09-01,0.9061521887779236,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-09-01,1.040783405303955,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-09-01,1.0290087461471558,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-09-01,0.9779408574104308,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-09-01,0.9034326076507568,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-10-01,1.0742610692977903,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-10-01,1.042158603668213,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-10-01,1.0796325206756592,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-10-01,0.982639491558075,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-10-01,0.8826042413711548,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-10-01,0.8999726176261902,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-11-01,0.9610570669174194,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-11-01,1.1270391941070557,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-11-01,0.9492706060409546,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-11-01,1.013091802597046,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-11-01,1.135059833526611,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-11-01,0.9851250052452089,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2022-12-01,0.9164628386497498,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2022-12-01,1.0356695652008057,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2022-12-01,1.123024344444275,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2022-12-01,0.996793568134308,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2022-12-01,1.069763422012329,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2022-12-01,1.0344780683517456,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-01-01,0.9452553987503052,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-01-01,1.013826847076416,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-01-01,0.9605079889297484,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-01-01,0.9480947256088256,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-01-01,0.9580382108688354,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-01-01,0.9984340667724608,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-02-01,1.0684260129928589,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-02-01,1.096794366836548,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-02-01,1.1349284648895264,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-02-01,1.0806939601898191,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-02-01,0.9874677658081056,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-02-01,1.0214177370071411,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-03-01,1.0840500593185425,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-03-01,1.009171962738037,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-03-01,1.0582027435302734,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-03-01,1.0475536584854126,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-03-01,1.0085338354110718,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-03-01,0.9379599690437316,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-04-01,1.0050610303878784,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-04-01,1.113296389579773,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-04-01,1.1168687343597412,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-04-01,1.034619688987732,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-04-01,0.9561201333999634,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-04-01,1.0315451622009275,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-05-01,0.9126209020614624,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-05-01,1.0844184160232544,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-05-01,0.9833233952522278,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-05-01,1.051408052444458,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-05-01,0.9564104080200196,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-05-01,1.1352847814559937,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-06-01,1.0372358560562134,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-06-01,1.0737522840499878,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-06-01,0.969954788684845,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-06-01,0.9353660345077516,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-06-01,0.9869427680969238,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-06-01,1.0188894271850586,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-07-01,0.9284847378730774,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-07-01,0.9881708025932312,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-07-01,0.98148375749588,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-07-01,0.9864677786827089,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-07-01,1.0211397409439087,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-07-01,0.927564263343811,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-08-01,0.8650527596473694,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-08-01,1.0228551626205444,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-08-01,1.0244531631469729,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-08-01,1.0095806121826172,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-08-01,0.9543203115463256,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-08-01,1.0826653242111206,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-09-01,0.9979786276817322,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-09-01,1.00960373878479,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-09-01,0.9685621857643129,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-09-01,1.063589572906494,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-09-01,1.0252928733825684,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-09-01,0.9176700115203856,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-10-01,0.932631492614746,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-10-01,1.0628292560577393,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-10-01,0.9786800742149352,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-10-01,1.0440607070922852,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-10-01,1.019019603729248,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-10-01,1.0017062425613403,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-11-01,1.0335097312927246,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-11-01,1.086870789527893,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-11-01,0.9736853241920472,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-11-01,0.9774742722511292,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-11-01,1.091846585273743,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-11-01,0.9270251393318176,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2023-12-01,1.0095142126083374,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2023-12-01,0.9706751704216005,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2023-12-01,0.8561020493507385,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2023-12-01,1.0697846412658691,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2023-12-01,0.9763588309288024,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2023-12-01,0.9352107644081116,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-01-01,1.047463059425354,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-01-01,1.0404778718948364,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-01-01,0.9361920356750488,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-01-01,1.0472077131271362,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-01-01,0.9689958691596984,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-01-01,0.996157169342041,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-02-01,0.996135711669922,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-02-01,1.0833808183670044,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-02-01,1.0754709243774414,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-02-01,1.0904754400253296,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-02-01,1.0501220226287842,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-02-01,0.9848109483718872,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-03-01,1.0002894401550293,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-03-01,1.0451053380966189,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-03-01,1.0318026542663574,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-03-01,1.1123205423355105,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-03-01,1.0231760740280151,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-03-01,1.050221562385559,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-04-01,1.0661685466766355,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-04-01,0.977977216243744,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-04-01,0.9375478625297546,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-04-01,1.0149682760238647,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-04-01,0.967452883720398,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-04-01,1.0290968418121338,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-05-01,1.0778725147247314,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-05-01,0.9641132950782776,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-05-01,1.030182719230652,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-05-01,1.1020565032958984,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-05-01,1.0232946872711182,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-05-01,1.091155171394348,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
+2024-06-01,0.9121680855751038,Company,Satisfaction Score,Satisfaction Score: Residential Cooling Systems,Residential Cooling Systems,North America,Score,Internal,,20241709,,,76.47958
+2024-06-01,0.96565443277359,Company,Satisfaction Score,Satisfaction Score: Residential Heating Systems,Residential Heating Systems,North America,Score,Internal,,20241709,,,77.41752
+2024-06-01,0.9872490763664246,Company,Satisfaction Score,Satisfaction Score: Residential Air Quality & Controls,Residential Air Quality & Controls,North America,Score,Internal,,20241709,,,81.66765
+2024-06-01,0.9425317645072936,Company,Satisfaction Score,Satisfaction Score: Commercial Large-scale HVAC Systems,Commercial Large-scale HVAC Systems,North America,Score,Internal,,20241709,,,81.6544
+2024-06-01,1.0059062242507937,Company,Satisfaction Score,Satisfaction Score: Commercial Industrial Solutions,Commercial Industrial Solutions,North America,Score,Internal,,20241709,,,86.64779
+2024-06-01,1.0412877798080444,Company,Satisfaction Score,Satisfaction Score: Commercial Building Automation,Commercial Building Automation,North America,Score,Internal,,20241709,,,82.79189
