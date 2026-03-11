@@ -286,7 +286,7 @@ class PolarsDataLoader(AbstractDataLoader):
             )
 
         # Extract unique driver classifications from the data
-        driver_classes = source['driver_classification'].unique().to_list()
+        driver_classes = source['driver_classification'].unique().sort().to_list()
         assert len(driver_classes) > 0, 'Driver classes list cannot be empty.'
 
         # Build global date-to-index mapping for all drivers
@@ -308,7 +308,7 @@ class PolarsDataLoader(AbstractDataLoader):
             # Filter data to current classification
             class_df = source.filter(pl.col('driver_classification') == driver_class)
             # Extract unique driver names within this classification
-            driver_names = class_df['driver_unique_name'].unique().to_list()
+            driver_names = class_df['driver_unique_name'].unique().sort().to_list()
 
             # Initialize array for this classification: rows = drivers, columns = dates
             class_arr: ArrayF = np.zeros(

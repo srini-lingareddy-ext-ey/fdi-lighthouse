@@ -73,6 +73,10 @@ class ExponentialSmoothingAccountForecastingMethod(AbstractAccountForecastingMet
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.EXPONENTIAL_SMOOTHING
 
+    @staticmethod
+    def is_linear() -> bool:
+        return False
+
     def _detect_seasonality(self, data: ArrayF) -> tuple[bool, float]:
         """
         Detect if time series has significant seasonality.
@@ -191,3 +195,33 @@ class ExponentialSmoothingAccountForecastingMethod(AbstractAccountForecastingMet
         # Generate forecasts using fitted Exponential Smoothing model
         forecast = self.fitted_model.forecast(steps=n_forecast)
         return np.array(forecast)
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Vectorized apply method for Exponential Smoothing.
+
+        Since Exponential Smoothing is a univariate time series method, this method will
+        ignore the input and simply call the standard apply method to generate forecasts.
+
+        Parameters
+        ----------
+        arr_input : ArrayF
+            Input array (ignored by this method).
+
+        Returns
+        -------
+        ArrayF
+            Predicted account values for the forecast period.
+
+        Raises
+        ------
+        ModelNotTrainedError
+            If the model has not been trained yet.
+        """
+        if self.fitted_model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        forecast = self.apply()
+
+        all_forecasts = np.tile(forecast, (arr_input.shape[0], 1))
+        return all_forecasts

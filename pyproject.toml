@@ -51,6 +51,9 @@ pytest --cov=lh_v2 --cov-report=html --cov-report=term
 test-unit = "cd $(git rev-parse --show-toplevel) && pytest -m unit"
 test-integration = "cd $(git rev-parse --show-toplevel) && pytest -m integration"
 test-verbose = "cd $(git rev-parse --show-toplevel) && pytest -vv"
+
+cloc = "cd $(git rev-parse --show-toplevel) && cloc . --exclude-dir=.venv,__pycache__,htmlcov"
+
 verify = "task format && task test && task check"
 
 [tool.ruff.format]

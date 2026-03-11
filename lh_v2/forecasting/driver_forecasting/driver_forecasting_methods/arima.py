@@ -8,8 +8,11 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 import lh_v2.datatypes as dts
 import lh_v2.params as params
 from lh_v2.shared import ArrayF
+from lh_v2.util import get_logger
 
 from .abstract_class import AbstractDriverForecastingMethod
+
+logger = get_logger(__name__)
 
 
 class ARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
@@ -128,12 +131,12 @@ class ARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
 
             if use_seasonal:
                 self.seasonal_order = (1, 0, 0, self.seasonal_period)
-                print(
+                logger.info(
                     f"ARIMA: Detected seasonality in '{self.driver_info.name}' "
                     f'(strength: {self.seasonal_strength:.2%}), using SARIMA'
                 )
             else:
-                print(
+                logger.info(
                     f"ARIMA: No significant seasonality in '{self.driver_info.name}' "
                     f'(strength: {self.seasonal_strength:.2%}), using non-seasonal ARIMA'
                 )
@@ -151,8 +154,8 @@ class ARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
             self.model = self.fitted_model
         except Exception as e:
             # Fall back to simpler ARIMA(1,1,0) if fitting fails
-            print(f'ARIMA fitting failed with order {self.order}: {e}')
-            print('Falling back to (1, 1, 0) without seasonality')
+            logger.warning(f'ARIMA fitting failed with order {self.order}: {e}')
+            logger.info('Falling back to (1, 1, 0) without seasonality')
             self.order = (1, 1, 0)
             arima_model = ARIMA(
                 training_data,

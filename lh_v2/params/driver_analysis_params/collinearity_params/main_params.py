@@ -63,6 +63,8 @@ class CollinearityParams(BaseParamsModel):
     methods_removed: Sequence[CollinearityMethodEnum] = ()
     b_selected: bool = False
     methods_selected: Sequence[CollinearityMethodEnum] = ()
+    threashold_base_removal: float = 0.7
+    threashold_base_pruning: float = 0.85
     correlation_collinearity_params: CorrelationCollinearityParams = Field(
         default_factory=CorrelationCollinearityParams
     )

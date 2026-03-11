@@ -1,7 +1,8 @@
 import pathlib as pth
 
 # import lh_v2.datatypes as dts
-import lh_v2.datatypes.forecasting_types.account_forecasting_types as aft
+# import lh_v2.datatypes.forecasting_types.account_forecasting_types as aft
+from lh_v2.data_analysis.account_plotting_util import plot_account_forecast
 from lh_v2.driver_analysis import analyze_drivers_full
 from lh_v2.forecasting import train_and_validate_models
 from lh_v2.forecasting.account_forecasting.model_validation.model_training_types import (
@@ -9,6 +10,8 @@ from lh_v2.forecasting.account_forecasting.model_validation.model_training_types
 )
 from lh_v2.io.data_loading import load_data_driver_ranking
 from lh_v2.params import parse_yaml
+
+b_plot = True
 
 if __name__ == '__main__':
     path = pth.Path.cwd()
@@ -31,6 +34,7 @@ if __name__ == '__main__':
         accounts_drivers_info=dr_data,
         general_params=params.general_params,
         da_params=params.driver_analysis_params,
+        output_params=params.output_params,
     )
 
     # Prepare model training input
@@ -46,17 +50,21 @@ if __name__ == '__main__':
         general_params=params.general_params,
         af_params=params.account_forecast_params,
         df_params=params.driver_forecast_params,
+        output_params=params.output_params,
     )
 
+    selected_methods = training_results.select_forecast_methods()
+
     # plot forecast for last account
-    training_results.plot_forecast(
-        account=dr_data.accounts.get_ordered_accounts()[-1],
-        method=aft.AccountForecastingMethodEnum.XGBOOST,
-        forecast_daterange=(
-            params.general_params.validation_start_date,
-            params.general_params.validation_end_date,
-        ),
-    )
+    if b_plot:
+        for account in dr_data.accounts.get_ordered_accounts():
+            plot_account_forecast(
+                acc=training_results.forecasted_accounts[
+                    training_results.account_map[account]
+                ][training_results.method_map[account][selected_methods[account]]],
+                forecast_daterange=params.general_params.get_validation_daterange(),
+                base_acc=dr_data.accounts[account],
+            )
 
     # Select the best method for each account based on validation metrics (default: RMSE%)
     # selected_models = training_results.select_forecast_methods()

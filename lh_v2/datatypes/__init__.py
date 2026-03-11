@@ -1,4 +1,4 @@
-from . import data_loader_types
+from . import data_loader_types, scenario_planning_types
 from .account_driver_types import (
     AccountClassifiedDriverGroups,
     AccountDriverGroup,
@@ -40,5 +40,6 @@ __all__ = [
     'AccountGroupSelectedDrivers',
     'ranking_types',
     'collinearity_types',
+    'scenario_planning_types',
     'data_loader_types',
 ]

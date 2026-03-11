@@ -36,18 +36,6 @@ general_params:
     testing_start_date: '2024-01-01' # default: '01-01-2025'
     testing_end_date: '2024-06-01' # default: '01-12-2025'
 
-    # Number of months to forecast the accounts in the future
-    #n_forecast_horizon: 6 # default: 6
-
-    # Whether to retrain models after model validation and selection
-    # Allows for model selection and model testing to be done in 
-    # different python instances
-    #b_retrain_models: true # default: true
-
-    # Whether to retrain models with training and validation data after 
-    # model validation and selection
-    #b_retrain_with_validation: false # default: false
-
 # Data Loading Params:
 load_data_params:
     # Selected data loading method
@@ -55,7 +43,7 @@ load_data_params:
 
 # Driver Analysis Params:
 driver_analysis_params:
-    # Number of Final  Drivers per Classification
+    # Number of Drivers Selected per Classification
     n_final_drivers_per_classification: 3 # default: 3
 
     # Whether to use PCA to for entirety of driver analysis
@@ -103,8 +91,8 @@ driver_analysis_params:
             b_remove: true # default: true
 
             # Specific methods to be removed in list format, only works if b_remove is true
-            methods_removed: [rfe, boruta, ridge] 
-            # default: [rfe, boruta, ridge]
+            methods_removed: [rfe, boruta]
+            # default: [rfe, boruta]
 
             # Allows you to select driver ranking methods from scratch
             b_selected: false # default: false
@@ -113,10 +101,9 @@ driver_analysis_params:
             methods_selected: [spearman_correlation, slr, ridge] 
             # default: []
 
-        llm_ranking_params:
-            # Select ranking metrics to be sent to LLM for ranking
-            # total_rank is always included as a metric
-            llm_metrics: [avg_rank, pearson_correlation]
+        # Select ranking metrics to be sent to calculated for ranking
+        # total_rank is always included as a metric
+        ranking_metrics: [avg_rank, pearson_correlation]
 
         # Specific Parameters for Moving Average Ranking
         ma_ranking_params:
@@ -147,7 +134,7 @@ driver_analysis_params:
         # Specific Parameters for Lasso Ranking
         lasso_ranking_params:
             # number of different models trained using lasso regression
-            n_iter: 400 # default: 400
+            n_iter: 100 # default: 100
 
             # maximum number of iterations for the underlying lasso solver
             max_iter: 50 # default: 50
@@ -219,6 +206,12 @@ driver_analysis_params:
 
         # Specific methods to be used, only works if b_selected is true
         methods_selected: [] # default: []
+
+        # Threashold base for collinearity removal
+        threashold_base_removal: 0.7 # default: 0.7
+
+        # Threashold base for collinearity removal when doing pruning for LLM selection
+        threashold_base_pruning: 0.85 # default: 0.85
 
         # Specific Parameters for Corrleation Collinearity Removal
         correlation_collinearity_params:
@@ -366,8 +359,8 @@ account_forecast_params:
         b_remove: true # default: true
 
         # Specific methods to be removed in list format, only works if b_remove is true
-        # default: [lr_drivers, sarimax]
-        methods_removed: [sarimax]
+        # default: [sarimax, hyperlasso]
+        methods_removed: [sarimax, hyperlasso]
 
         # Allows you to select collinearity removal methods from scratch
         b_selected: false # default: false
@@ -525,26 +518,62 @@ account_reconciliation_params:
     method: mint_adjustment # default: mint_adjustment
 
 
+scenario_planning_params:
+    # Whether to perform scenario planning analysis
+    b_scenario_plan: true # default: true
+
+    # Scenario Planning Driver Forecasting Params
+    sp_driver_forecasting_params:
+        # Selected method for driver perturbation
+        selected_perturbation_method: var_based # default: var_based
+
+        # Variance based driver perturbation parameters
+        variance_based_params:
+            # Peacewise linear regression segment length to use when
+            # calculating variance of local noise in driver
+            multi_slr_seg_len: 8 # default: 8
+            # Multiplier on the variance of local noise
+            # higher values will lead to more extreme perturbations
+            time_scaling_factor: 0.33333 # default: 0.166667
+            # (equivalent to change of 1 SD every 6 months)
+            # Threshold for determining if seasonality is strong enough to
+            # deseasonalize before calculating variance
+            seasonality_threshold: 0.1 # default: 0.1
+            # List of periods to check for seasonality in the driver time series
+            period_checks: [6, 12] # default: [6, 12]
+
+    # Scenario Planning Extrema Estimation Params
+    sp_extrema_estimation_params:
+        # Method for estimating extrema of scenarios for driver perturbation
+        extrema_estimation_method: sampling # default: auto
+
+        # Parameters for sampling based method
+        sampling_extrema_estimation_params:
+            # Number of samples to generate when estimating extrema of scenarios
+            n_samples: 500 # default: 500
+
+        
+
 ## Args for file outputs
 output_params:
-    # Whether to create the data required to complete the driver analysis file
-    # this includes doing driver analysis at the product group and total level
-    # The additional data will only be created if a driver analysis file is created
-    b_finish_driver_analysis_file: true # default: true
-    # Whether to fit the account forecasts to a base forecast
-    b_use_fit_forecasts: false # default: true
-    # Type of file to output account forecasts in
-    account_file_format: csv # default: parquet
-    # Delimiter for csv's to use when outputting data
-    csv_delimiter: ',' # default: ","
-    # Whether to split driver up in the output files 
-    # with each one having its own column
-    # # of columns changes with n_final_drivers
-    b_split_drivers: false # default: false
-    # Whether or not to make output file 
-    # saving paths as the set testing path for
-    # each of the possible file outputs
-    b_test_outputs: false # default: false
+    # Whether to save information used to make decisions in the pipeline in output files
+    # Includes config, driver ranking method outcomes for both lag optimization, 
+    # and driver ranking, driver collinearity info,
+    # driver forecasts for model validation and model forecasting,
+    # forecasts for all methods in model validation,
+    # final account forecasts for selected method
+    # final account forecasts after reconciliation
+    b_save_info: false # default: false
+
+    # Add a unique prefix to output directory for easier identification
+    unique_prefix: 'test' # default: '' (empty string)
+
+    # File format to save tabular outputs in, options: csv, parquet
+    table_file_format: csv # default: csv
+
+    # File format to save non-tabular outputs in, options: json
+    other_file_format: json # default: json
+    
 
 ## Defines logging levels across the package
 ## If use_default true, set to logging.WARNING
@@ -572,13 +601,13 @@ logging:
         lag_handling: WARNING # Default: WARNING
 
         # Logging level for Driver Ranking
-        driver_ranking: WARNING # Default: WARNING
+        driver_ranking: TIMING # Default: WARNING
 
         # Logging level for Collinearity Removal
         collinearity_removal: WARNING # Default: WARNING
     
-    forecasting:
     # Logging levels for Forecasting
+    forecasting:
         # General logging level for Forecasting
         general: WARNING # Default: WARNING
 

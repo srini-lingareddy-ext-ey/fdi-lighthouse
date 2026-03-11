@@ -110,6 +110,10 @@ def peacewise_slr(ts: ArrayF, n_months_per: int = 12) -> ArrayF:
     return arr_approx
 
 
+def std_peacewise_slr_single(ts: ArrayF, n_months_per: int = 20) -> float:
+    return float((ts - peacewise_slr(ts=ts, n_months_per=n_months_per)).std())
+
+
 def std_slr(arr_ts: ArrayF) -> float:
     return float(
         (

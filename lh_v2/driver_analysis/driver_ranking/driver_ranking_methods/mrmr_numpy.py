@@ -8,6 +8,7 @@ import numpy as np
 import lh_v2.datatypes as dts
 import lh_v2.params.driver_analysis_params.ranking_params as dr_params
 import lh_v2.stats as stats
+from lh_v2.datatypes.driver_analysis_types.ranking_types import DriverRankingEnum
 from lh_v2.shared import ArrayF
 
 from .abstract_class import AbstractRankingMethod
@@ -71,6 +72,10 @@ class MRMRRankingNumpy(AbstractRankingMethod):
     @staticmethod
     def name():
         return 'mRMR_Numpy'
+
+    @staticmethod
+    def get_enum() -> DriverRankingEnum:
+        return DriverRankingEnum.MRMR
 
     def _discretize(self, x: ArrayF, n_bins: int = 10) -> np.ndarray:
         """

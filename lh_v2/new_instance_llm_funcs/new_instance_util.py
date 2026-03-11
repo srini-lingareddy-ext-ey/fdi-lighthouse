@@ -54,6 +54,7 @@ def handle_driver_analysis(
     accounts_drivers_info: DriverAnalysisInput,
     general_params: params.GeneralParams,
     da_params: params.DriverAnalysisParams,
+    output_params: params.OutputParams,
     selected_drivers: Optional[
         dict[dts.AccountType, dict[dts.DriverClassification, list[dts.DriverName]]]
     ] = None,
@@ -102,6 +103,7 @@ def handle_driver_analysis(
             accounts_drivers_info=accounts_drivers_info,
             general_params=general_params,
             da_params=da_params,
+            output_params=output_params,
         )
         # Extract the selected drivers from analysis results
         selected_drivers = analysis_results.selected_drivers

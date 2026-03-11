@@ -55,7 +55,6 @@ class XGBoostAccountForecastingMethod(AbstractAccountForecastingMethod):
         self.model_params = model_params
         self.training_info: Optional[dts.AccountDriverGroup] = None
         self.forecasting_input_info: Optional[dts.AccountDriverGroup] = None
-        self.forecasting_input_info_: Optional[dts.DriverGroup] = None
         self.validation_info: Optional[dts.AccountInfo] = None
 
         # Model will be trained later
@@ -68,6 +67,10 @@ class XGBoostAccountForecastingMethod(AbstractAccountForecastingMethod):
     @staticmethod
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.XGBOOST
+
+    @staticmethod
+    def is_linear() -> bool:
+        return False
 
     def train(self) -> None:
         """
@@ -96,22 +99,6 @@ class XGBoostAccountForecastingMethod(AbstractAccountForecastingMethod):
 
         self.model.fit(X, y)
 
-    def set_forecasting_input_data_(self) -> None:
-        self.forecasting_input_info_ = self.info.drivers.apply_daterange_lags(
-            start_date=self.forecast_daterange[0],
-            end_date=self.forecast_daterange[1],
-            lags=self.best_lags,
-            b_training=False,
-        )
-        return
-
-    def get_forecasting_input_data_(self) -> dts.DriverGroup:
-        if self.forecasting_input_info_ is None:
-            self.set_forecasting_input_data_()
-
-        assert self.forecasting_input_info_ is not None
-        return self.forecasting_input_info_
-
     def apply(self) -> ArrayF:
         """
         Apply the trained model to generate predictions.
@@ -130,16 +117,26 @@ class XGBoostAccountForecastingMethod(AbstractAccountForecastingMethod):
             raise ModelNotTrainedError(method_name=self.name())
 
         # Get forecasted driver data for the forecast period
-
-        """forecasting_data = self.get_forecasting_input_data()
+        forecasting_data = self.get_forecasting_input_data()
         forecasting_data = forecasting_data.drivers.apply_daterange_lags(
             start_date=self.forecast_daterange[0],
             end_date=self.forecast_daterange[1],
             lags=self.best_lags,
             b_training=False,
-        )"""
-
-        X = self.get_forecasting_input_data_().arr.T
+        )
+        X = forecasting_data.arr.T
         predictions = self.model.predict(X)
 
         return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        new_shape = (arr_input.shape[0] * arr_input.shape[2], arr_input.shape[1])
+        out_shape = (arr_input.shape[0], arr_input.shape[2])
+        arr_flattened = arr_input.swapaxes(1, 2).reshape(new_shape)
+
+        arr_predict: ArrayF = self.model.predict(arr_flattened)
+
+        return arr_predict.reshape(out_shape)

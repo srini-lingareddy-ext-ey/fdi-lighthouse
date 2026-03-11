@@ -72,6 +72,10 @@ class ProphetAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.PROPHET
 
+    @staticmethod
+    def is_linear() -> bool:
+        return False
+
     def _prepare_training_dataframe(self) -> pd.DataFrame:
         """
         Prepare Prophet training dataframe with 'ds' (date) and 'y' (value) columns.
@@ -156,3 +160,35 @@ class ProphetAccountForecastingMethod(AbstractAccountForecastingMethod):
         forecast_values = forecast['yhat'].values
 
         return np.array(forecast_values, dtype=np.float64)
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the trained model to a vectorized input array.
+
+        Since Prophet is a time-series method that does not use driver features,
+        this method will ignore the input array and produce the same forecast
+        for each sample based on the forecast period.
+
+        The input array should be of shape (n_forecasts, n_features, n_samples),
+        but since Prophet does not use features, it will ignore the n_features
+        dimension and produce the same forecast for each sample.
+
+        Returns
+        -------
+        ArrayF
+            Predicted account values for each sample in the input array.
+            Shape: (n_forecasts, n_samples)
+        """
+        if self.fitted_model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        # Get number of samples from input array
+        n_samples = arr_input.shape[2]
+
+        # Get forecast values using apply method
+        forecast_values = self.apply()  # shape: (n_forecasts,)
+
+        # Repeat forecast values for each sample
+        repeated_forecast = np.tile(forecast_values[:, np.newaxis], (1, n_samples))
+
+        return repeated_forecast.astype(np.float64)

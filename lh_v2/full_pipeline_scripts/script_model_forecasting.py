@@ -1,6 +1,8 @@
 import pathlib as pth
 import time
 
+from lh_v2.data_analysis.account_plotting_util import plot_account_forecast
+
 # import lh_v2.datatypes as dts
 from lh_v2.driver_analysis import analyze_drivers_full
 from lh_v2.forecasting import create_account_forecasts, train_and_validate_models
@@ -14,7 +16,7 @@ from lh_v2.io.data_loading import load_data_driver_ranking
 from lh_v2.params import parse_yaml
 
 b_time_parts = True
-b_plot = False
+b_plot = True
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -42,6 +44,7 @@ if __name__ == '__main__':
         accounts_drivers_info=dr_data,
         general_params=lh_params.general_params,
         da_params=lh_params.driver_analysis_params,
+        output_params=lh_params.output_params,
     )
 
     driver_analysis_time = time.time() - last_time
@@ -60,6 +63,7 @@ if __name__ == '__main__':
         general_params=lh_params.general_params,
         af_params=lh_params.account_forecast_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_training_time = time.time() - last_time
@@ -87,6 +91,7 @@ if __name__ == '__main__':
         forecasting_input=forecasting_input,
         general_params=lh_params.general_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_forecasting_time = time.time() - last_time
@@ -116,4 +121,8 @@ if __name__ == '__main__':
     if b_plot:
         for account in forecasting_results.accounts_forecasts.get_ordered_accounts():
             print(f'Plotting forecast for {account}')
-            forecasting_results.plot_forecast(account_type=account)
+            plot_account_forecast(
+                acc=forecasting_results.accounts_forecasts[account],
+                forecast_daterange=lh_params.general_params.get_testing_daterange(),
+                base_acc=dr_data.accounts[account],
+            )

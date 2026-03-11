@@ -1,6 +1,6 @@
 import datetime
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 from dateutil.relativedelta import relativedelta
@@ -513,6 +513,33 @@ class AccountGroupSelectedDrivers:
             self.drivers.classification_groups.keys()
         ), 'Account types in drivers must match those in accounts.account_map.'
         return
+
+    @staticmethod
+    def from_acc_driver_groups(
+        acc_driver_group_lst: Sequence[AccountDriverGroup],
+    ) -> AccountGroupSelectedDrivers:
+        accounts_lst = [
+            acc_driver_group_lst[idx].account
+            for idx in range(len(acc_driver_group_lst))
+        ]
+        drivers_lst = [
+            acc_driver_group_lst[idx].drivers
+            for idx in range(len(acc_driver_group_lst))
+        ]
+        classification_groups = {
+            accounts_lst[idx].account_type: idx
+            for idx in range(len(acc_driver_group_lst))
+        }
+        return AccountGroupSelectedDrivers(
+            accounts=AccountGroupInfo.from_account_lst(account_lst=accounts_lst),
+            drivers=ClassifiedDriverGroups.from_driver_group_lst(
+                driver_group_lst=drivers_lst,
+                classification_groups=classification_groups,
+            ),
+            np_dtype=acc_driver_group_lst[0].np_dtype
+            if len(acc_driver_group_lst) > 0
+            else BASE_NP_DTYPE,
+        )
 
     def __getitem__(self, key: AccountType) -> AccountDriverGroup:
         """

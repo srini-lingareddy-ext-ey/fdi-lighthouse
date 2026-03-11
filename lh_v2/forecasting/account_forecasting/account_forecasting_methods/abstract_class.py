@@ -119,6 +119,11 @@ class AbstractAccountForecastingMethod(ABC):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         raise NotImplementedError()
 
+    @staticmethod
+    @abstractmethod
+    def is_linear() -> bool:
+        raise NotImplementedError()
+
     def set_model_params(self, model_params: BaseAccountForecastParams) -> None:
         assert type(model_params) is type(self.model_params), (
             'model_params must be of the same type as the existing model_params.'
@@ -196,22 +201,46 @@ class AbstractAccountForecastingMethod(ABC):
         assert self.training_info is not None
         return self.training_info
 
-    def set_forecasting_input_data(self) -> None:
-        self.forecasting_input_info = dts.AccountDriverGroup(
-            account=self.info.account.apply_daterange(
-                start_date=self.training_daterange[0]
-                + relativedelta(months=max(self.best_lags.values())),
-                end_date=self.forecast_daterange[0] - relativedelta(months=1),
-            ),
-            drivers=self.info.drivers.apply_daterange_lags(
-                start_date=self.training_daterange[0],
-                end_date=self.forecast_daterange[1],
-                lags=self.best_lags,
-                b_training=True,
-            ),
-            np_dtype=self.info.np_dtype,
-        )
-        return
+    def set_forecasting_input_data(
+        self, new_drivers_data: dts.DriverGroup | None = None
+    ) -> None:
+        if new_drivers_data is None:
+            self.forecasting_input_info = dts.AccountDriverGroup(
+                account=self.info.account.apply_daterange(
+                    start_date=self.training_daterange[0]
+                    + relativedelta(months=max(self.best_lags.values())),
+                    end_date=self.forecast_daterange[0] - relativedelta(months=1),
+                ),
+                drivers=self.info.drivers.apply_daterange_lags(
+                    start_date=self.training_daterange[0],
+                    end_date=self.forecast_daterange[1],
+                    lags=self.best_lags,
+                    b_training=True,
+                ),
+                np_dtype=self.info.np_dtype,
+            )
+            return
+
+        else:
+            assert set(new_drivers_data.get_ordered_drivers()) == set(
+                self.info.drivers.get_ordered_drivers()
+            ), 'new_drivers_data must contain the same drivers as self.info.drivers.'
+
+            self.forecasting_input_info = dts.AccountDriverGroup(
+                account=self.info.account.apply_daterange(
+                    start_date=self.training_daterange[0]
+                    + relativedelta(months=max(self.best_lags.values())),
+                    end_date=self.forecast_daterange[0] - relativedelta(months=1),
+                ),
+                drivers=new_drivers_data.apply_daterange_lags(
+                    start_date=self.training_daterange[0],
+                    end_date=self.forecast_daterange[1],
+                    lags=self.best_lags,
+                    b_training=True,
+                ),
+                np_dtype=self.info.np_dtype,
+            )
+            return
 
     def get_forecasting_input_data(self) -> dts.AccountDriverGroup:
         """
@@ -305,6 +334,14 @@ class AbstractAccountForecastingMethod(ABC):
         ------
         NotImplementedError
             This method must be implemented by subclasses.
+        """
+        raise NotImplementedError()
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the forecasting method to a vectorized input array.
+        The array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
         """
         raise NotImplementedError()
 

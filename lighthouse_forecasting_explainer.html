@@ -1,0 +1,2721 @@
+?<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lighthouse Forecasting — How It Works</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  /* ── Reset & Base ──────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ey-yellow: #FFE600;
+    --ey-dark:   #1A1A24;
+    --ey-mid:    #2E2E38;
+    --ey-grey:   #747480;
+    --ey-light:  #F6F6FA;
+    --ey-blue:   #188CE5;
+    --ey-green:  #2DB757;
+    --ey-red:    #C4262E;
+    --step1:     #FFE600;
+    --step2:     #FFCA3A;
+    --step3:     #6EC6E6;
+    --step4:     #188CE5;
+    --step5:     #2DB757;
+    --step6:     #B649C4;
+    --radius:    12px;
+    --sidebar-w: 240px;
+    --transition: 0.35s cubic-bezier(.4,0,.2,1);
+  }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--ey-dark);
+    color: #E8E8F0;
+    line-height: 1.65;
+  }
+
+  /* ── Scrollbar ─────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--ey-mid); }
+  ::-webkit-scrollbar-thumb { background: var(--ey-grey); border-radius: 3px; }
+
+  /* ── Layout ────────────────────────────────────────────────────────── */
+  #app { display: flex; min-height: 100vh; }
+
+  /* ── Sidebar ───────────────────────────────────────────────────────── */
+  #sidebar {
+    position: fixed; top: 0; left: 0;
+    width: var(--sidebar-w); height: 100vh;
+    background: var(--ey-mid);
+    border-right: 1px solid rgba(255,255,255,.08);
+    display: flex; flex-direction: column;
+    padding: 28px 0; z-index: 100;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 0 24px 28px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .sidebar-logo span {
+    display: block; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ey-grey); margin-bottom: 4px;
+  }
+  .sidebar-logo b {
+    font-size: 18px; font-weight: 700; color: var(--ey-yellow);
+  }
+  .nav-items { padding: 20px 0; flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 24px; cursor: pointer;
+    transition: background var(--transition);
+    border-left: 3px solid transparent;
+    text-decoration: none; color: #B0B0C0;
+    font-size: 13px; font-weight: 500;
+  }
+  .nav-item:hover { background: rgba(255,255,255,.05); color: #fff; }
+  .nav-item.active {
+    border-left-color: var(--ey-yellow);
+    background: rgba(255,230,0,.07);
+    color: #fff;
+  }
+  .nav-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    background: rgba(255,255,255,.1);
+    transition: background var(--transition), color var(--transition);
+  }
+  .nav-item.active .nav-dot { background: var(--ey-yellow); color: var(--ey-dark); }
+  .nav-label { line-height: 1.2; }
+  .nav-sub { font-size: 10px; color: var(--ey-grey); font-weight: 400; margin-top: 1px; }
+  .progress-bar-wrap {
+    padding: 20px 24px 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .progress-bar-wrap span { font-size: 10px; color: var(--ey-grey); letter-spacing:.08em; text-transform: uppercase; }
+  .progress-track {
+    margin-top: 8px; height: 4px; background: rgba(255,255,255,.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--ey-yellow);
+    border-radius: 2px; transition: width var(--transition);
+    width: 0%;
+  }
+
+  /* ── Main ──────────────────────────────────────────────────────────── */
+  #main { margin-left: var(--sidebar-w); flex: 1; }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(145deg, var(--ey-dark) 0%, #0D1B36 60%, var(--ey-mid) 100%);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 80px 60px;
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; top: -120px; right: -120px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,230,0,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ey-yellow); font-weight: 700; margin-bottom: 20px;
+  }
+  .hero-headline {
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    font-weight: 800; line-height: 1.12;
+    color: #fff; max-width: 760px; margin-bottom: 24px;
+  }
+  .hero-headline em { color: var(--ey-yellow); font-style: normal; }
+  .hero-sub {
+    font-size: 18px; color: #A8A8C0; max-width: 680px;
+    margin-bottom: 40px; line-height: 1.7;
+  }
+  .hero-intro {
+    font-size: 15px; color: #D0D0E0; max-width: 700px;
+    line-height: 1.8; margin-bottom: 48px;
+  }
+  .hero-steps {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .hero-step-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+    border: 1px solid rgba(255,255,255,.12);
+  }
+  .hero-step-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+  .hero-scroll {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; color: var(--ey-grey); font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; animation: bob 2s ease-in-out infinite;
+  }
+  .hero-scroll svg { opacity: .6; }
+  @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+  /* ── Step Sections ─────────────────────────────────────────────────── */
+  .step-section {
+    min-height: 100vh; padding: 80px 80px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    position: relative;
+  }
+  .step-section:nth-child(odd) { background: var(--ey-dark); }
+  .step-section:nth-child(even) { background: #15151F; }
+  .step-number-tag {
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    font-weight: 700; margin-bottom: 12px;
+  }
+  .step-title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.2;
+  }
+  .step-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; align-items: start; margin-top: 32px;
+  }
+  .step-copy { max-width: 560px; }
+  .step-copy p { font-size: 15px; color: #C0C0D8; line-height: 1.8; margin-bottom: 16px; }
+  .step-copy ul { padding-left: 0; list-style: none; }
+  .step-copy li {
+    padding: 8px 0 8px 24px; position: relative;
+    font-size: 14px; color: #B8B8CC; line-height: 1.6;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  .step-copy li::before {
+    content: ''; position: absolute; left: 0; top: 17px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent, var(--ey-yellow));
+  }
+
+  /* ── Value Callout ─────────────────────────────────────────────────── */
+  .value-callout {
+    margin-top: 28px; padding: 20px 24px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--accent, var(--ey-yellow));
+    background: rgba(255,255,255,.04);
+  }
+  .value-callout .vc-label {
+    font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent, var(--ey-yellow)); font-weight: 700; margin-bottom: 6px;
+  }
+  .value-callout p { font-size: 14px; color: #C8C8D8; line-height: 1.7; }
+
+  /* ── Diagram Panel ─────────────────────────────────────────────────── */
+  .diagram-panel {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    padding: 28px; position: relative; overflow: hidden;
+  }
+  .diagram-title {
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--ey-grey); margin-bottom: 20px; font-weight: 600;
+  }
+
+  /* ── Tech Example ──────────────────────────────────────────────────── */
+  .tech-accordion {
+    margin-top: 20px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .tech-accordion-head {
+    padding: 14px 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,.04);
+    font-size: 13px; font-weight: 600; color: #D0D0E8;
+    transition: background var(--transition); user-select: none;
+  }
+  .tech-accordion-head:hover { background: rgba(255,255,255,.07); }
+  .tech-accordion-head svg { transition: transform var(--transition); }
+  .tech-accordion-head.open svg { transform: rotate(180deg); }
+  .tech-accordion-body {
+    display: none; padding: 20px;
+    background: rgba(0,0,0,.25);
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .tech-accordion-body.open { display: block; }
+  pre.code-block {
+    background: #0D0D16; border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px; padding: 16px 20px;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 12.5px; line-height: 1.7; overflow-x: auto;
+    color: #D0E8FF; tab-size: 2; margin: 10px 0;
+  }
+  pre.code-block .kw { color: #C586C0; }
+  pre.code-block .fn { color: #DCDCAA; }
+  pre.code-block .st { color: #CE9178; }
+  pre.code-block .cm { color: #6A9955; }
+  pre.code-block .nm { color: #9CDCFE; }
+  pre.code-block .nu { color: #B5CEA8; }
+
+  /* ── Interactive Flow Diagrams ─────────────────────────────────────── */
+  .flow-container { position: relative; }
+  .flow-node {
+    border-radius: 10px; padding: 12px 18px;
+    font-size: 12px; font-weight: 600; text-align: center;
+    cursor: pointer; transition: transform .2s, box-shadow .2s;
+    position: relative; user-select: none;
+  }
+  .flow-node:hover { transform: scale(1.04); box-shadow: 0 8px 28px rgba(0,0,0,.5); }
+  .flow-node.active { outline: 2px solid rgba(255,255,255,.6); outline-offset: 2px; }
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ey-grey); font-size: 20px; padding: 4px;
+  }
+  .flow-tooltip {
+    display: none; position: absolute; bottom: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--ey-mid); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 12px; color: #D0D0E8; width: 200px;
+    line-height: 1.5; z-index: 10; pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  }
+  .flow-node:hover .flow-tooltip { display: block; }
+
+  /* ── Bar/Chart Visuals ─────────────────────────────────────────────── */
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { font-size: 12px; color: #A8A8C0; width: 130px; flex-shrink: 0; text-align: right; }
+  .bar-track { flex: 1; height: 22px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    display: flex; align-items: center; padding-left: 8px;
+    font-size: 11px; font-weight: 700; color: var(--ey-dark);
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .bar-fill.animated { width: var(--target-w); }
+
+  /* ── Lag Timeline ──────────────────────────────────────────────────── */
+  .lag-timeline { position: relative; }
+  .lag-track {
+    display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px;
+  }
+  .lag-cell {
+    flex-shrink: 0; width: 44px; height: 44px;
+    border-radius: 8px; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.1);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 10px; color: var(--ey-grey); cursor: pointer;
+    transition: all .2s;
+  }
+  .lag-cell:hover { background: rgba(255,255,255,.12); }
+  .lag-cell.selected { border-color: var(--ey-yellow); background: rgba(255,230,0,.12); }
+  .lag-cell.selected .lag-n { color: var(--ey-yellow); font-weight: 700; }
+  .lag-cell .lag-n { font-size: 15px; font-weight: 600; color: #D0D0E0; }
+  .lag-cell .lag-score { font-size: 9px; margin-top: 2px; }
+  .lag-explain {
+    margin-top: 16px; padding: 12px 16px;
+    background: rgba(255,255,255,.04); border-radius: 8px;
+    font-size: 13px; color: #C0C0D8; line-height: 1.6;
+    min-height: 56px;
+  }
+
+  /* ── Model Funnel ──────────────────────────────────────────────────── */
+  .model-funnel { display: flex; flex-direction: column; gap: 10px; }
+  .funnel-row {
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all .2s; border: 1px solid rgba(255,255,255,.08);
+  }
+  .funnel-row:hover { transform: translateX(4px); }
+  .funnel-badge {
+    font-size: 10px; font-weight: 700; padding: 3px 10px;
+    border-radius: 999px; text-transform: uppercase; letter-spacing: .06em;
+  }
+  .funnel-detail {
+    font-size: 12px; color: #A0A0B8; margin-top: 6px;
+    padding: 0 6px; line-height: 1.5;
+  }
+
+  /* ── Reconciliation Visual ─────────────────────────────────────────── */
+  .recon-grid {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 16px; align-items: center;
+  }
+  .recon-side { display: flex; flex-direction: column; gap: 8px; }
+  .recon-account {
+    padding: 10px 14px; border-radius: 8px;
+    font-size: 12px; border: 1px solid rgba(255,255,255,.1);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .recon-account .val { font-weight: 700; font-family: monospace; font-size: 13px; }
+  .recon-arrow-col {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--ey-grey); font-size: 22px;
+  }
+  .recon-badge {
+    font-size: 9px; text-align: center; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ey-grey); font-weight: 600;
+  }
+
+  /* ── Output Dashboard ──────────────────────────────────────────────── */
+  .dashboard-grid {
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 14px;
+  }
+  .dash-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px; padding: 16px;
+  }
+  .dash-card h4 {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--ey-grey); margin-bottom: 12px; font-weight: 600;
+  }
+  .spark-row { display: flex; align-items: flex-end; gap: 3px; height: 48px; margin-bottom: 8px; }
+  .spark-bar {
+    flex: 1; background: rgba(24,140,229,.4);
+    border-radius: 3px 3px 0 0;
+    transition: height .8s ease;
+  }
+  .spark-bar.forecast { background: rgba(255,230,0,.7); }
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .metric-cell {
+    background: rgba(255,255,255,.04); border-radius: 8px; padding: 12px;
+  }
+  .metric-cell .m-val {
+    font-size: 22px; font-weight: 800; color: var(--ey-yellow);
+  }
+  .metric-cell .m-label { font-size: 10px; color: var(--ey-grey); margin-top: 2px; }
+  .driver-pill-list { display: flex; flex-direction: column; gap: 6px; }
+  .driver-pill {
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 11px; display: flex; align-items: center;
+    justify-content: space-between;
+  }
+  .driver-strength {
+    height: 4px; border-radius: 2px; background: rgba(255,255,255,.15);
+    margin-top: 4px; overflow: hidden;
+  }
+  .driver-strength-fill { height: 100%; border-radius: 2px; }
+
+  /* ── Summary Section ───────────────────────────────────────────────── */
+  #summary {
+    background: linear-gradient(160deg, #0D1B36 0%, var(--ey-dark) 60%);
+    padding: 100px 80px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .summary-headline {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 800; color: #fff; margin-bottom: 16px;
+  }
+  .summary-sub {
+    font-size: 15px; color: var(--ey-grey); max-width: 600px; margin-bottom: 56px;
+  }
+  .summary-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px; margin-bottom: 60px;
+  }
+  .summary-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: var(--radius); padding: 28px 24px;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+  .summary-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.14); }
+  .summary-card .sc-icon {
+    font-size: 28px; margin-bottom: 14px;
+  }
+  .summary-card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .summary-card p { font-size: 13px; color: #A0A0B8; line-height: 1.7; }
+  .summary-footer {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding-top: 40px; text-align: center;
+  }
+  .summary-footer p { font-size: 13px; color: var(--ey-grey); }
+  .summary-footer strong { color: var(--ey-yellow); }
+
+  /* ── Responsive ────────────────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; }
+    .step-grid { grid-template-columns: 1fr; gap: 32px; }
+    .step-section, #hero, #summary { padding: 60px 32px 48px; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .recon-grid { grid-template-columns: 1fr; }
+    .recon-arrow-col { flex-direction: row; }
+    .hero-steps { flex-wrap: wrap; }
+  }
+  @media (max-width: 640px) {
+    .step-section, #hero, #summary { padding: 48px 20px 36px; }
+    .hero-headline { font-size: 1.8rem; }
+    .step-title { font-size: 1.5rem; }
+  }
+
+  /* ── Utility ───────────────────────────────────────────────────────── */
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing:.06em; text-transform: uppercase; }
+  .sr-only { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+  .mt-12 { margin-top: 12px; }
+  .mt-20 { margin-top: 20px; }
+  .gap-cols { column-gap: 24px; }
+  .text-sm { font-size: 13px; }
+  .text-xs { font-size: 11px; }
+  .text-muted { color: var(--ey-grey); }
+
+  /* ── Animate on scroll ─────────────────────────────────────────────── */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-up.in-view { opacity: 1; transform: none; }
+  .fade-up:nth-child(2) { transition-delay: .1s; }
+  .fade-up:nth-child(3) { transition-delay: .2s; }
+  .fade-up:nth-child(4) { transition-delay: .3s; }
+
+  /* ── Algorithm Walkthrough Widget ──────────────────────────────────── */
+  .aw-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius);overflow:hidden;margin-top:36px}
+  .aw-header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)}
+  .aw-header-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--ey-grey);font-weight:600}
+  .aw-algo-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 16px;cursor:pointer;font-size:13px;font-weight:700;color:#E0E0F0;transition:border-color .2s,background .2s}
+  .aw-algo-btn:hover{border-color:var(--ey-yellow)}
+  .aw-algo-btn.arima-active{border-color:#3b82f6;background:rgba(59,130,246,.1);color:#93c5fd}
+  .aw-algo-btn.xgb-active{border-color:#f97316;background:rgba(249,115,22,.1);color:#fdba74}
+  .aw-stepper{display:flex;align-items:center;padding:16px 24px 0;gap:0}
+  .aw-step-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding-bottom:16px;cursor:pointer;background:none;border:none}
+  .aw-step-row{display:flex;align-items:center;width:100%}
+  .aw-step-line{flex:1;height:2px;background:rgba(255,255,255,.1);transition:background .3s}
+  .aw-step-line.done{background:rgba(255,255,255,.5)}
+  .aw-step-line.invis{visibility:hidden}
+  .aw-step-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,.15);color:var(--ey-grey);background:rgba(255,255,255,.04);transition:all .25s}
+  .aw-step-dot.active{border-color:var(--ey-yellow);background:var(--ey-yellow);color:var(--ey-dark)}
+  .aw-step-dot.done{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#D0D0E0}
+  .aw-step-short{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ey-grey);transition:color .2s;white-space:nowrap}
+  .aw-step-short.active{color:var(--ey-yellow);font-weight:700}
+  .aw-step-short.done{color:#A0A0B8}
+  .aw-content{padding:28px 28px 24px;min-height:480px;animation:awFadeIn .22s ease}
+  @keyframes awFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .aw-inner{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+  @media(max-width:900px){.aw-inner{grid-template-columns:1fr}}
+  .aw-explainer{display:flex;flex-direction:column;gap:0}
+  .aw-tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.07);color:var(--ey-grey);margin-bottom:10px}
+  .aw-explainer h2{font-size:15px;font-weight:800;color:#EEEEFF;margin-bottom:10px;line-height:1.25}
+  .aw-explainer p{font-size:12.5px;color:#A8A8C0;line-height:1.75;margin-bottom:8px}
+  .aw-hl{margin-top:12px;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);display:flex;align-items:center;gap:10px}
+  .aw-hl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .aw-hl-val{font-size:11px;font-weight:700;color:#DDDDF0}
+  .aw-hl-sub{font-size:9px;color:var(--ey-grey);text-transform:uppercase;letter-spacing:.08em}
+  .aw-extra{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+  .aw-drv-btn{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:600;cursor:pointer;color:#B0B0C8;background:rgba(255,255,255,.04);transition:all .2s}
+  .aw-drv-btn.active{border-color:var(--ey-yellow);background:rgba(255,230,0,.1);color:var(--ey-yellow)}
+  .aw-chart-area{display:flex;flex-direction:column;gap:14px}
+  .aw-chart-box{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px}
+  .aw-chart-box p{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ey-grey);font-weight:600;margin-bottom:10px}
+  .aw-chart-box canvas{display:block}
+  .aw-info-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px 14px;font-size:12px;color:#A0A0B8;line-height:1.6}
+  .aw-info-box strong{color:#D0D0E8}
+  .aw-bars{display:flex;flex-direction:column;gap:10px}
+  .aw-bar-row{display:flex;align-items:center;gap:10px}
+  .aw-bar-label{font-size:11px;color:#A0A0B8;width:130px;flex-shrink:0;text-align:right}
+  .aw-bar-track{flex:1;height:18px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+  .aw-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:var(--ey-dark)}
+  .aw-bar-pct{font-size:11px;font-weight:700;color:#C0C0D8;width:30px;text-align:right;flex-shrink:0}
+  .aw-slider-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px}
+  .aw-slider-card input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:rgba(255,255,255,.15);outline:none;cursor:pointer;margin:8px 0}
+  .aw-slider-card input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ey-yellow);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+  .aw-slider-ticks{display:flex;justify-content:space-between;font-size:9px;color:var(--ey-grey);margin-top:-4px}
+  .aw-uplift-card{border-radius:10px;padding:16px;background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);margin-top:4px}
+  .aw-uplift-card .u-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,230,0,.6)}
+  .aw-uplift-card .u-val{font-size:28px;font-weight:800;color:var(--ey-yellow);line-height:1.1;margin-top:4px}
+  .aw-uplift-card .u-sub{font-size:10px;color:rgba(255,230,0,.5);margin-top:2px}
+  .aw-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)}
+  .aw-nav-btn{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#D0D0E8;transition:all .2s}
+  .aw-nav-btn:hover:not(:disabled){border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1)}
+  .aw-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+  .aw-nav-btn.primary{background:rgba(255,230,0,.9);border-color:transparent;color:var(--ey-dark)}
+  .aw-nav-btn.primary:hover:not(:disabled){background:#FFE600}
+  .aw-nav-label{font-size:11px;color:var(--ey-grey);text-align:center}
+  .aw-two-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:700px){.aw-two-charts{grid-template-columns:1fr}}
+  .aw-boost-eq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px}
+  .aw-boost-eq .token{padding:4px 10px;border-radius:6px;font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#D0D0E8}
+  .aw-boost-eq .token.result{border-color:var(--ey-yellow);background:rgba(255,230,0,.08);color:var(--ey-yellow);font-weight:700}
+  .aw-boost-eq .sym{font-size:14px;color:var(--ey-grey);font-weight:700}
+  .tree-node-decision{fill:#0D1B36;stroke:#3b82f6;stroke-width:1.5}
+  .tree-node-leaf{fill:#0A1F14;stroke:#22c55e;stroke-width:1.5}
+  .tree-edge{stroke:rgba(255,255,255,.25);stroke-width:1.5;fill:none}
+  .tree-label-yes{fill:#4ade80;font-size:10px;font-weight:600;font-family:system-ui,sans-serif}
+  .tree-label-no{fill:#f87171;font-size:10px;font-weight:600;font-family:system-ui,sans-serif}
+  .tree-text-node{fill:#93c5fd;font-size:10.5px;font-weight:600;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+  .tree-text-leaf{fill:#4ade80;font-size:11px;font-weight:700;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+  .tree-text-sub{fill:rgba(255,255,255,.35);font-size:9px;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+
+  /* ── Driver Selection & Reconciliation deep-dive ─────────────────── */
+  .ds-bar-row{display:flex;align-items:center;gap:8px;padding:2px 0}
+  .ds-bar-name{font-size:11px;color:#A8A8C0;width:148px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s,opacity .4s}
+  .ds-bar-track{flex:1;height:16px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+  .ds-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:9.5px;font-weight:700;transition:width .5s ease,background .4s,opacity .4s}
+  .ds-funnel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .ds-f-box{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;min-width:72px}
+  .ds-f-n{font-size:28px;font-weight:800;color:#EEEEFF;line-height:1}
+  .ds-f-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--ey-grey);margin-top:3px}
+  .ds-f-arrow{font-size:22px;color:var(--ey-grey)}
+  .ds-mx-tbl{border-collapse:collapse;font-size:10px;width:100%}
+  .ds-mx-tbl th{font-size:9px;color:var(--ey-grey);padding:3px 5px;text-align:center;white-space:nowrap;overflow:hidden}
+  .ds-mx-tbl td{text-align:center;padding:4px 5px;border-radius:3px;transition:opacity .5s,background .5s;font-weight:600;min-width:36px}
+  .ds-surv-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px}
+  .ds-surv-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid;display:inline-block}
+  .rc-tree-svg{width:100%;overflow:visible}
+  .rc-nd{fill:rgba(255,255,255,.04);stroke:rgba(255,255,255,.12);stroke-width:1.5}
+  .rc-nd-total{fill:rgba(255,230,0,.06);stroke:rgba(255,230,0,.45);stroke-width:2}
+  .rc-nd-div{fill:rgba(99,160,255,.05);stroke:rgba(99,160,255,.35);stroke-width:1.5}
+  .rc-nd-acct{fill:rgba(80,220,140,.04);stroke:rgba(80,220,140,.28);stroke-width:1.5}
+  .rc-edge{stroke:rgba(255,255,255,.2);stroke-width:1.5;fill:none}
+  .rc-lbl{fill:#EEEEFF;font-size:11px;font-weight:700;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+  .rc-sub{fill:#A0A0B8;font-size:10px;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+  .rc-gap-lbl{fill:#f87171;font-size:9.5px;font-weight:700;dominant-baseline:middle;text-anchor:middle;font-family:system-ui,sans-serif}
+  .rc-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+  .rc-badge.ok{background:rgba(34,197,94,.1);color:#4ade80;border-color:rgba(34,197,94,.2)}
+  .rc-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+  .rc-tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ey-grey);padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07)}
+  .rc-tbl td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:#C0C0D8}
+  .rc-tbl .rt0>td:first-child{color:var(--ey-yellow);font-weight:700}
+  .rc-tbl .rt1>td:first-child{color:#93c5fd;font-weight:600;padding-left:20px}
+  .rc-tbl .rt2>td:first-child{color:#86efac;padding-left:36px}
+  .rc-delta-pos{color:#4ade80}.rc-delta-neg{color:#f87171}
+
+  /* ── What-If widget ─────────────────────────────────────────────────── */
+  .wi-panel{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden}
+  .wi-phead{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .wi-pbody{display:grid;grid-template-columns:300px 1fr}
+  .wi-pctrls{padding:18px 20px;border-right:1px solid rgba(255,255,255,.06)}
+  .wi-pchart{padding:18px 20px}
+  .wi-scrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+  .wi-scbtn{padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#A8A8C0;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+  .wi-scbtn:hover{background:rgba(255,255,255,.06)}
+  .wi-scbtn.active{background:rgba(255,230,0,.12);border-color:rgba(255,230,0,.45);color:var(--ey-yellow)}
+  .wi-sg{margin-bottom:14px}
+  .wi-sh{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#C0C0D8;font-weight:600;margin-bottom:3px}
+  .wi-sv{color:var(--ey-yellow);font-weight:700;min-width:42px;text-align:right;font-size:12px}
+  .wi-sd{font-size:10px;color:var(--ey-grey);margin-bottom:5px}
+  .wi-slider{width:100%;accent-color:var(--ey-yellow);cursor:pointer}
+  .wi-dcard{margin-top:16px;padding:14px;background:rgba(255,230,0,.05);border:1px solid rgba(255,230,0,.18);border-radius:10px}
+  .wi-dv{font-size:30px;font-weight:800;line-height:1}.wi-dl{font-size:11px;color:var(--ey-grey);margin-top:3px}
+
+  /* ── Comparison table ──────────────────────────────────────────────── */
+  .ct-outer{border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden}
+  .ct-tbl{width:100%;border-collapse:collapse}
+  .ct-tbl thead th{padding:14px 18px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
+  .ct-th-cat{background:rgba(255,255,255,.04);color:var(--ey-grey)}
+  .ct-th-man{background:rgba(239,68,68,.05);color:#f87171;border-left:1px solid rgba(239,68,68,.15)}
+  .ct-th-lh{background:rgba(255,230,0,.06);color:var(--ey-yellow);border-left:1px solid rgba(255,230,0,.2)}
+  .ct-tbl tbody tr{border-top:1px solid rgba(255,255,255,.05)}
+  .ct-tbl tbody tr:hover td{filter:brightness(1.05)}
+  .ct-td-cat{padding:16px 18px;font-weight:700;color:#EEEEFF;font-size:13px;vertical-align:top;background:rgba(255,255,255,.015);width:180px}
+  .ct-td-man{padding:14px 18px;font-size:12.5px;color:#C0A8A8;border-left:1px solid rgba(239,68,68,.07);vertical-align:top;background:rgba(239,68,68,.018)}
+  .ct-td-lh{padding:14px 18px;font-size:12.5px;color:#B8C8A0;border-left:1px solid rgba(255,230,0,.07);vertical-align:top;background:rgba(255,230,0,.012)}
+  .ct-badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;margin-bottom:5px;border:1px solid}
+  .ct-badge.bad{background:rgba(239,68,68,.1);color:#f87171;border-color:rgba(239,68,68,.25)}
+  .ct-badge.mid{background:rgba(251,191,36,.08);color:#fbbf24;border-color:rgba(251,191,36,.25)}
+  .ct-badge.good{background:rgba(34,197,94,.09);color:#4ade80;border-color:rgba(34,197,94,.25)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SIDEBAR �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+<nav id="sidebar" aria-label="Page navigation">
+  <div class="sidebar-logo">
+    <span>EY Lighthouse</span>
+    <b>Forecasting</b>
+  </div>
+  <div class="nav-items">
+    <a class="nav-item active" href="#hero" data-target="hero">
+      <div class="nav-dot">&#9641;</div>
+      <div class="nav-label">Overview<div class="nav-sub">Introduction</div></div>
+    </a>
+    <a class="nav-item" href="#step1" data-target="step1">
+      <div class="nav-dot" style="background:rgba(255,230,0,.15);color:var(--step1)">1</div>
+      <div class="nav-label">Business Data<div class="nav-sub">Inputs &amp; Hierarchy</div></div>
+    </a>
+    <a class="nav-item" href="#step2" data-target="step2">
+      <div class="nav-dot" style="background:rgba(110,198,230,.15);color:var(--step3)">2</div>
+      <div class="nav-label">Driver Selection<div class="nav-sub">Ranking &amp; Filtering</div></div>
+    </a>
+    <a class="nav-item" href="#driver-dive" data-target="driver-dive">
+      <div class="nav-dot" style="background:rgba(110,198,230,.1);color:var(--step3);font-size:13px">�?</div>
+      <div class="nav-label">Deep Dive<div class="nav-sub">Driver Pipeline</div></div>
+    </a>
+    <a class="nav-item" href="#step3" data-target="step3">
+      <div class="nav-dot" style="background:rgba(24,140,229,.15);color:var(--step4)">3</div>
+      <div class="nav-label">Timing &amp; Lags<div class="nav-sub">Delay Optimization</div></div>
+    </a>
+    <a class="nav-item" href="#step4" data-target="step4">
+      <div class="nav-dot" style="background:rgba(45,183,87,.15);color:var(--step5)">4</div>
+      <div class="nav-label">Model Selection<div class="nav-sub">Best-Fit Forecast</div></div>
+    </a>
+    <a class="nav-item" href="#algo-dive" data-target="algo-dive">
+      <div class="nav-dot" style="background:rgba(255,230,0,.1);color:var(--ey-yellow);font-size:14px">⚡</div>
+      <div class="nav-label">Deep Dive<div class="nav-sub">ARIMA &amp; XGBoost</div></div>
+    </a>
+    <a class="nav-item" href="#step5" data-target="step5">
+      <div class="nav-dot" style="background:rgba(182,73,196,.15);color:var(--step6)">5</div>
+      <div class="nav-label">Reconciliation<div class="nav-sub">Financial Consistency</div></div>
+    </a>
+    <a class="nav-item" href="#recon-dive" data-target="recon-dive">
+      <div class="nav-dot" style="background:rgba(182,73,196,.1);color:var(--step6);font-size:13px">∑</div>
+      <div class="nav-label">Deep Dive<div class="nav-sub">MINT Walkthrough</div></div>
+    </a>
+    <a class="nav-item" href="#step6" data-target="step6">
+      <div class="nav-dot" style="background:rgba(255,230,0,.15);color:var(--ey-yellow)">6</div>
+      <div class="nav-label">Outputs<div class="nav-sub">Trusted Results</div></div>
+    </a>
+    <a class="nav-item" href="#whatif" data-target="whatif">
+      <div class="nav-dot" style="background:rgba(24,140,229,.1);color:var(--ey-blue);font-size:14px">?</div>
+      <div class="nav-label">What-If<div class="nav-sub">Scenario Planning</div></div>
+    </a>
+    <a class="nav-item" href="#compare" data-target="compare">
+      <div class="nav-dot" style="background:rgba(255,230,0,.1);color:var(--ey-yellow);font-size:12px">⚖</div>
+      <div class="nav-label">vs. Manual<div class="nav-sub">Comparison</div></div>
+    </a>
+    <a class="nav-item" href="#summary" data-target="summary">
+      <div class="nav-dot">&#9670;</div>
+      <div class="nav-label">Impact<div class="nav-sub">Business Value</div></div>
+    </a>
+  </div>
+  <div class="progress-bar-wrap">
+    <span>Reading Progress</span>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+  </div>
+</nav>
+
+<!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? MAIN �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+<main id="main">
+
+<!-- ─────────── HERO ─────────── -->
+<section id="hero" data-section="hero">
+  <div class="hero-tag">EY Lighthouse · Financial Forecasting Platform</div>
+  <h1 class="hero-headline">Turning Data into <em>Confident</em><br/>Financial Decisions</h1>
+  <p class="hero-sub">A driver-based, automated forecasting capability that delivers accurate, explainable, and reconciled forecasts across the enterprise.</p>
+  <p class="hero-intro">Lighthouse Forecasting replaces manual, inconsistent forecasting approaches with a repeatable, data-driven process. It integrates internal performance data and external market drivers to produce forecasts that are not only accurate, but transparent, explainable, and aligned to financial logic — at scale, across every account in the business.</p>
+  <div class="hero-steps">
+    <a class="hero-step-pill" href="#step1" style="background:rgba(255,230,0,.1);color:var(--step1)">① Business Data</a>
+    <a class="hero-step-pill" href="#step2" style="background:rgba(110,198,230,.1);color:var(--step3)">② Driver Selection</a>
+    <a class="hero-step-pill" href="#step3" style="background:rgba(24,140,229,.1);color:var(--step4)">③ Timing &amp; Lags</a>
+    <a class="hero-step-pill" href="#step4" style="background:rgba(45,183,87,.1);color:var(--step5)">④ Model Selection</a>
+    <a class="hero-step-pill" href="#step5" style="background:rgba(182,73,196,.1);color:var(--step6)">⑤ Reconciliation</a>
+    <a class="hero-step-pill" href="#step6" style="background:rgba(255,230,0,.1);color:var(--ey-yellow)">⑥ Outputs</a>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll to explore</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none"><rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"><animate attributeName="cy" values="8;14;8" dur="1.8s" repeatCount="indefinite"/></circle></svg>
+  </div>
+</section>
+
+<!-- ─────────── STEP 1: Business Data ─────────── -->
+<section class="step-section" id="step1" data-section="step1" style="--accent:var(--step1)">
+  <div class="step-number-tag" style="color:var(--step1)">Step 01 of 06</div>
+  <h2 class="step-title">Build the Business Foundation</h2>
+  <div class="step-grid">
+    <!-- Left: copy -->
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Lighthouse begins with the same data finance leaders already trust — historical financial performance and the operational and market signals that influence results.</p>
+        <ul>
+          <li>Historical financial accounts (volume, revenue, costs, margins)</li>
+          <li>Internal business drivers (pricing, backlog, production plans)</li>
+          <li>External drivers (economic indicators, industry trends, demand signals)</li>
+          <li>Business hierarchies: product, region, and segment groupings</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Forecasts are grounded in real business structure — not abstract models — making results immediately usable for FP&A, operations, and leadership discussions.</p>
+        </div>
+      </div>
+
+      <!-- Tech Example 1 -->
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Data Structure &amp; Hierarchy Typing</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">Each account is registered with typed metadata that encodes its position in the business hierarchy. Drivers are separately classified as <em>internal</em> or <em>external</em>, each with its own loading and alignment logic.</p>
+          <pre class="code-block"><span class="cm"># Simplified illustration of Lighthouse data structures</span>
+<span class="cm"># lh_v2/datatypes/account_types.py &amp; driver_types.py</span>
+
+<span class="kw">from</span> <span class="nm">dataclasses</span> <span class="kw">import</span> <span class="fn">dataclass</span>
+<span class="kw">from</span> <span class="nm">enum</span> <span class="kw">import</span> <span class="fn">Enum</span>
+
+<span class="kw">class</span> <span class="fn">DriverClassification</span>(<span class="fn">Enum</span>):
+    INTERNAL = <span class="st">"internal"</span>   <span class="cm"># Pricing, backlog, production</span>
+    EXTERNAL = <span class="st">"external"</span>   <span class="cm"># GDP, CPI, sector indices</span>
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="fn">AccountHierarchyNode</span>:
+    account_type: <span class="nm">str</span>          <span class="cm"># e.g. "Revenue", "COGS", "Margin"</span>
+    product:      <span class="nm">str</span>          <span class="cm"># e.g. "ProductLine_A"</span>
+    region:       <span class="nm">str</span>          <span class="cm"># e.g. "EMEA"</span>
+    segment:      <span class="nm">str</span>          <span class="cm"># e.g. "Enterprise"</span>
+
+<span class="cm"># Accounts and drivers are stored as named, typed arrays</span>
+<span class="cm"># aligned on a shared monthly time index</span>
+AccountGroupClassifiedDriverGroups(
+    accounts=AccountGroup(arr=shape(n_accounts, T)),
+    internal_drivers=DriverGroup(arr=shape(n_int, T)),
+    external_drivers=DriverGroup(arr=shape(n_ext, T)),
+)</pre>
+          <p class="text-xs text-muted mt-12">All data is date-aligned during loading so that accounts and drivers share a single, consistent time axis before any analysis begins.</p>
+        </div>
+      </div>
+
+      <!-- Tech Example 2 -->
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Config-Driven Data Pipeline</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">The entire data loading pipeline is declared in a YAML configuration, enabling teams to onboard new data sources without touching Python code.</p>
+          <pre class="code-block"><span class="cm"># config.yml — simplified excerpt</span>
+accounts:
+  source: <span class="st">"accounts.csv"</span>
+  date_col: <span class="st">"period"</span>
+  value_col: <span class="st">"amount"</span>
+  hierarchy_cols: [<span class="st">"product"</span>, <span class="st">"region"</span>, <span class="st">"segment"</span>]
+  account_col:    <span class="st">"account_name"</span>
+
+drivers:
+  internal:
+    source: <span class="st">"drivers.csv"</span>
+    type: <span class="st">"internal"</span>
+  external:
+    source: <span class="st">"external_indicators.csv"</span>
+    type: <span class="st">"external"</span>
+
+general:
+  training_start_date: <span class="st">"2019-01-01"</span>
+  training_end_date:   <span class="st">"2024-12-31"</span>
+  forecast_horizon:    <span class="nu">12</span>   <span class="cm"># months ahead</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: diagram -->
+    <div class="fade-up">
+      <div class="diagram-panel">
+        <div class="diagram-title">Interactive — Data Flow to Forecast Inputs</div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%">
+            <div class="flow-node" style="background:rgba(255,230,0,.12);border:1px solid rgba(255,230,0,.3);color:#FFE600">
+              📊 Financial Accounts
+              <div class="flow-tooltip">Revenue, COGS, Volume, Margins — the core P&amp;L accounts loaded from finance systems.</div>
+            </div>
+            <div class="flow-node" style="background:rgba(24,140,229,.12);border:1px solid rgba(24,140,229,.3);color:#6EC6E6">
+              �?� Internal Drivers
+              <div class="flow-tooltip">Pricing changes, backlog data, headcount, production schedules.</div>
+            </div>
+            <div class="flow-node" style="background:rgba(45,183,87,.12);border:1px solid rgba(45,183,87,.3);color:#2DB757">
+              �? External Drivers
+              <div class="flow-tooltip">GDP growth, sector indices, commodity prices, employment data.</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#D0D0E8">
+            �?� Hierarchy Assembly (Product × Region × Segment)
+            <div class="flow-tooltip">Data is organised into a 3-level hierarchy so every forecast is linked to a specific business unit.</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node" style="width:100%;background:rgba(255,230,0,.08);border:1px solid rgba(255,230,0,.2);color:#FFE600">
+            ✅ Validated, Date-Aligned Forecast Inputs
+            <div class="flow-tooltip">All arrays share a monthly time index. Gaps are flagged before analysis begins.</div>
+          </div>
+        </div>
+        <p class="text-xs text-muted mt-12">Hover over any node for more detail.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── STEP 2: Driver Selection ─────────── -->
+<section class="step-section" id="step2" data-section="step2" style="--accent:var(--step3)">
+  <div class="step-number-tag" style="color:var(--step3)">Step 02 of 06</div>
+  <h2 class="step-title">Identify the Drivers That Truly Matter</h2>
+  <div class="step-grid">
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Rather than assuming what drives results, Lighthouse systematically determines which internal and external factors actually influence each financial account.</p>
+        <ul>
+          <li>Evaluates a broad candidate pool of drivers per account</li>
+          <li>Runs multiple ranking algorithms simultaneously for robustness</li>
+          <li>Removes duplicates (collinearity) so each driver adds unique signal</li>
+          <li>Different accounts can and do have different drivers</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Finance teams move from "best guesses" to evidence-based forecasting, improving confidence and reducing debate over assumptions in every planning cycle.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Multi-Algorithm Driver Ranking</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">Lighthouse does not rely on a single metric. It runs the driver ranking step through multiple methods, then aggregates scores for a consensus ranking.</p>
+          <pre class="code-block"><span class="cm"># lh_v2/driver_analysis/driver_ranking/driver_ranking_methods/</span>
+<span class="cm"># Available ranking algorithms (pluggable via params):</span>
+
+RANKING_METHODS = [
+    <span class="st">"pearson_correlation"</span>,       <span class="cm"># Linear correlation</span>
+    <span class="st">"spearman_correlation"</span>,       <span class="cm"># Rank-order correlation</span>
+    <span class="st">"lasso"</span>,                      <span class="cm"># L1-penalised regression</span>
+    <span class="st">"ridge"</span>,                      <span class="cm"># L2-penalised regression</span>
+    <span class="st">"linear_regression"</span>,          <span class="cm"># OLS baseline</span>
+    <span class="st">"random_forest_lightgbm"</span>,     <span class="cm"># Tree ensemble importance</span>
+    <span class="st">"xgboost"</span>,                    <span class="cm"># Gradient-boosted importance</span>
+    <span class="st">"mrmr"</span>,                       <span class="cm"># Min-Redundancy Max-Relevance</span>
+    <span class="st">"pca"</span>,                        <span class="cm"># Principal component loadings</span>
+    <span class="st">"boruta"</span>,                     <span class="cm"># Shadow-feature permutation test</span>
+    <span class="st">"recursive_feature_elimination"</span>,
+    <span class="st">"rfe_linear_regression"</span>,
+]
+
+<span class="cm"># After ranking: collinearity pruning</span>
+<span class="cm"># lh_v2/driver_analysis/collinearity/</span>
+<span class="kw">def</span> <span class="fn">remove_collinearity</span>(ranked_drivers, threshold=<span class="nu">0.85</span>):
+    <span class="cm">"""
+    Iteratively drops lower-ranked drivers whose pairwise
+    correlation with a higher-ranked driver exceeds `threshold`.
+    Guarantees each surviving driver adds unique information.
+    """</span></pre>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: mRMR — Minimum Redundancy Maximum Relevance</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">The mRMR algorithm addresses a classic pitfall: selecting many drivers that all measure the same thing. It maximises relevance to the target account while minimising redundancy between selected drivers.</p>
+          <pre class="code-block"><span class="cm"># Conceptual mRMR scoring (lh_v2/.../mrmr.py)</span>
+<span class="cm"># Score = Mutual_Information(driver, account)</span>
+<span class="cm">#       − mean(Mutual_Information(driver, already_selected))</span>
+
+<span class="kw">for</span> candidate <span class="kw">in</span> remaining_drivers:
+    relevance   = <span class="fn">mutual_info</span>(candidate, account)
+    redundancy  = <span class="fn">mean</span>([
+        <span class="fn">mutual_info</span>(candidate, s) <span class="kw">for</span> s <span class="kw">in</span> selected
+    ])
+    score[candidate] = relevance - redundancy
+
+<span class="cm"># Select the driver with the highest score, repeat</span>
+<span class="cm"># Result: a compact set of maximally informative drivers</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: interactive bar chart -->
+    <div class="fade-up">
+      <div class="diagram-panel">
+        <div class="diagram-title">Interactive — Driver Importance Scores (Example Account: Revenue)</div>
+        <div class="bar-chart" id="driverChart">
+          <div class="bar-row"><div class="bar-label">Industrial Output Index</div><div class="bar-track"><div class="bar-fill" style="background:#6EC6E6;--target-w:92%">0.92</div></div></div>
+          <div class="bar-row"><div class="bar-label">Backlog Volume</div><div class="bar-track"><div class="bar-fill" style="background:#6EC6E6;--target-w:85%">0.85</div></div></div>
+          <div class="bar-row"><div class="bar-label">Avg Unit Price</div><div class="bar-track"><div class="bar-fill" style="background:#6EC6E6;--target-w:78%">0.78</div></div></div>
+          <div class="bar-row"><div class="bar-label">GDP Growth Rate</div><div class="bar-track"><div class="bar-fill" style="background:#188CE5;--target-w:71%">0.71</div></div></div>
+          <div class="bar-row"><div class="bar-label">Sector PMI</div><div class="bar-track"><div class="bar-fill" style="background:#188CE5;--target-w:65%">0.65</div></div></div>
+          <div class="bar-row"><div class="bar-label" style="text-decoration:line-through;opacity:.5">Competitor CPI</div><div class="bar-track"><div class="bar-fill" style="background:var(--ey-red);--target-w:61%">Pruned — collinear w/ PMI</div></div></div>
+          <div class="bar-row"><div class="bar-label">Interest Rate Δ</div><div class="bar-track"><div class="bar-fill" style="background:#188CE5;--target-w:48%">0.48</div></div></div>
+        </div>
+        <p class="text-xs text-muted mt-12">Red bar = driver removed due to collinearity. Scores are aggregated across multiple ranking methods.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── DRIVER SELECTION DEEP-DIVE ─────────── -->
+<section class="step-section" id="driver-dive" data-section="driver-dive" style="--accent:var(--step3)">
+  <div class="step-number-tag" style="color:var(--step3)">Driver Selection Deep-Dive</div>
+  <h2 class="step-title">How We Pick Which Drivers Matter</h2>
+  <p style="font-size:15px;color:#A8A8C0;max-width:740px;line-height:1.8;margin-bottom:8px">
+    We start every forecast with dozens of candidate economic series and systematically eliminate those that are weak, noisy, or redundant — leaving only drivers that add genuine, independent predictive signal.
+  </p>
+  <div class="aw-wrap fade-up">
+    <div class="aw-header">
+      <span class="aw-header-label">Process</span>
+      <span style="font-size:13px;font-weight:700;color:#D0D0E8;padding:6px 16px;background:rgba(110,198,230,.08);border:1px solid rgba(110,198,230,.25);border-radius:999px">Driver Selection Pipeline</span>
+      <span style="font-size:11px;color:var(--ey-grey);margin-left:auto">4 stages · candidates → survivors</span>
+    </div>
+    <div class="aw-stepper" id="dd-stepper"></div>
+    <div class="aw-content" id="dd-content"></div>
+    <div class="aw-nav">
+      <button class="aw-nav-btn" id="dd-btn-prev" onclick="ddNavigate(-1)">�? Previous</button>
+      <span class="aw-nav-label" id="dd-step-label"></span>
+      <button class="aw-nav-btn primary" id="dd-btn-next" onclick="ddNavigate(1)">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── STEP 3: Timing & Lags ─────────── -->
+<section class="step-section" id="step3" data-section="step3" style="--accent:var(--step4)">
+  <div class="step-number-tag" style="color:var(--step4)">Step 03 of 06</div>
+  <h2 class="step-title">Understand When Drivers Take Effect</h2>
+  <div class="step-grid">
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Business impacts don't always happen immediately. A contract signed today may not appear in revenue for three months. Lighthouse explicitly accounts for timing and delay between cause and effect.</p>
+        <ul>
+          <li>Tests every driver at lag 0 through n_max_lag periods</li>
+          <li>Identifies the lag that maximises predictive power per driver</li>
+          <li>Prioritises lags that reduce reliance on uncertain future inputs</li>
+          <li>Validates that time-series length supports the chosen lag depth</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Forecasts align with how the business actually behaves over time — not how a spreadsheet assumes it behaves. A lagged driver also often means the signal is available <em>before</em> the financial impact occurs, improving real-time forecast accuracy.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Lag Selection Algorithm</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <pre class="code-block"><span class="cm"># lh_v2/driver_analysis/lagging/lag_handling.py</span>
+
+<span class="kw">def</span> <span class="fn">select_best_lags</span>(info, da_params):
+    <span class="cm">"""
+    For every driver d and every lag k in [0 … n_max_lag]:
+      1. Shift d backward by k periods
+      2. Run the ranking algorithm on the shifted driver
+      3. Record the rank score for (d, k)
+    Then: choose the highest lag among the top-N ranked
+    (d, k) pairs — preferring longer lags to maximise the
+    look-ahead advantage in real-time forecasting.
+    """</span>
+    best_lags = {}
+    <span class="kw">for</span> driver <span class="kw">in</span> all_drivers:
+        scores = {}
+        <span class="kw">for</span> k <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">0</span>, da_params.lag_params.n_max_lag + <span class="nu">1</span>):
+            shifted = <span class="fn">shift_driver</span>(driver, lag=k)
+            scores[k] = <span class="fn">rank_single</span>(shifted, account)
+        top_k = <span class="fn">top_n</span>(scores, n=da_params.lag_params.n_top_considered)
+        best_lags[driver] = <span class="fn">max</span>(top_k)   <span class="cm"># prefer longer lags</span>
+    <span class="kw">return</span> best_lags</pre>
+          <p class="text-xs text-muted mt-12">Constraint: time series must be at least <code>n_max_lag + 2</code> periods long to allow proper cross-validation after shifting.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Why Long Lags Are Preferred</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">When two lags (e.g. lag-2 and lag-5) perform equally well, Lighthouse selects lag-5. This is a deliberate design choice: a driver at lag-5 means that by the time a forecast is needed, the driver value for the relevant historical period is already known and recorded — eliminating a source of forecast error.</p>
+          <pre class="code-block"><span class="cm"># Practical example: Industrial Output Index</span>
+<span class="cm">#   Lag 0 → score 0.78  (requires current-month data)</span>
+<span class="cm">#   Lag 1 → score 0.80  (last month's data — available)</span>
+<span class="cm">#   Lag 3 → score 0.80  (3-months-ago data — firmly available)</span>
+<span class="cm">#   Lag 5 → score 0.79  (5-months-ago — maximum look-ahead)</span>
+<span class="cm">#</span>
+<span class="cm"># top_n=3 selects lags {1, 3, 5} → best_lag = 5</span>
+<span class="cm"># Using Q-3 Industrial Output to forecast current revenue</span>
+<span class="cm"># means the driver value is always known and verified.</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: animated time-series lag chart -->
+    <div class="fade-up">
+      <div class="diagram-panel" style="padding-bottom:16px">
+        <div class="diagram-title">Interactive — Time Series Overlay: Revenue vs Industrial Output Index</div>
+
+        <!-- Legend -->
+        <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#D0D0E8">
+            <span style="display:inline-block;width:22px;height:3px;background:#FFE600;border-radius:2px;box-shadow:0 0 6px rgba(255,230,0,.5)"></span>
+            Revenue (target)
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#D0D0E8">
+            <span style="display:inline-block;width:22px;height:2px;background:rgba(110,198,230,.3);border-radius:2px;border-top:2px dashed rgba(110,198,230,.4)"></span>
+            IOI unshifted (lag 0)
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#D0D0E8">
+            <span style="display:inline-block;width:22px;height:3px;background:#6EC6E6;border-radius:2px"></span>
+            IOI shifted by lag k
+          </div>
+        </div>
+
+        <!-- Canvas chart -->
+        <div style="position:relative">
+          <canvas id="lagChart" style="width:100%;display:block;border-radius:6px"></canvas>
+        </div>
+
+        <!-- Correlation badge -->
+        <div id="lagCorr" style="margin:12px 0 10px;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:center;gap:0"></div>
+
+        <!-- Lag selector -->
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ey-grey);font-weight:600;margin-bottom:8px">Select lag offset (months) — watch the cyan line slide:</div>
+          <div class="lag-track" id="lagTrack"></div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="lag-explain" id="lagExplain">Click a lag period above to explore.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── STEP 4: Model Selection ─────────── -->
+<section class="step-section" id="step4" data-section="step4" style="--accent:var(--step5)">
+  <div class="step-number-tag" style="color:var(--step5)">Step 04 of 06</div>
+  <h2 class="step-title">Select the Best Forecast Approach Automatically</h2>
+  <div class="step-grid">
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Instead of forcing one forecasting method across the entire business, Lighthouse selects the most reliable approach for each individual account independently.</p>
+        <ul>
+          <li>Trains multiple models per account in parallel</li>
+          <li>Evaluates accuracy using walk-forward cross-validation</li>
+          <li>Uses finance-standard error metrics (MAPE, MAE, RMSE)</li>
+          <li>Hyperparameter optimisation via Bayesian search for top candidates</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Forecast quality improves without requiring analysts to manually choose or tune models. High-volume stable accounts and volatile low-volume accounts receive methods tailored to their statistical profile.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Forecasting Method Library</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <pre class="code-block"><span class="cm"># lh_v2/forecasting/account_forecasting/account_forecasting_methods/</span>
+
+FORECASTING_METHODS = {
+    <span class="st">"linear_regression"</span>:     <span class="st">"OLS — baseline, interpretable"</span>,
+    <span class="st">"lr_drivers"</span>:            <span class="st">"OLS with selected drivers"</span>,
+    <span class="st">"lasso"</span>:                 <span class="st">"L1 regularised — sparse solutions"</span>,
+    <span class="st">"hyperlasso"</span>:            <span class="st">"Adaptive Lasso with cross-val λ"</span>,
+    <span class="st">"ridge"</span>:                 <span class="st">"L2 regularised — stable coefficients"</span>,
+    <span class="st">"random_forest"</span>:         <span class="st">"Tree ensemble — non-linear patterns"</span>,
+    <span class="st">"xgboost"</span>:               <span class="st">"Gradient boosting — complex signals"</span>,
+    <span class="st">"sarimax"</span>:               <span class="st">"Seasonal ARIMA + exogenous inputs"</span>,
+    <span class="st">"prophet"</span>:               <span class="st">"Facebook Prophet — seasonality"</span>,
+    <span class="st">"exponential_smoothing"</span>: <span class="st">"ETS — trend + seasonal decomposition"</span>,
+    <span class="st">"moving_average"</span>:        <span class="st">"Simple MA — highly stable accounts"</span>,
+}
+
+<span class="cm"># Model selection via walk-forward cross-validation</span>
+<span class="kw">def</span> <span class="fn">select_best_model</span>(account_ts, drivers, cv_params):
+    results = {}
+    <span class="kw">for</span> method, Model <span class="kw">in</span> FORECASTING_METHODS.items():
+        cv_score = <span class="fn">walk_forward_cv</span>(Model, account_ts, drivers)
+        results[method] = cv_score
+    <span class="kw">return</span> <span class="fn">min</span>(results, key=<span class="kw">lambda</span> m: results[m][<span class="st">'MAPE'</span>])</pre>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Bayesian Hyperparameter Optimisation</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">For models with tunable parameters (e.g. XGBoost, SARIMAX), Lighthouse uses Bayesian optimisation (via HyperOpt) to efficiently search the parameter space — far more efficient than grid search.</p>
+          <pre class="code-block"><span class="cm"># lh_v2/forecasting/account_forecasting/hyperparameter_optimization/</span>
+<span class="cm"># lh_v2/full_pipeline_scripts/script_hyperopt.py</span>
+
+<span class="kw">from</span> <span class="nm">hyperopt</span> <span class="kw">import</span> <span class="fn">fmin</span>, <span class="fn">tpe</span>, <span class="fn">hp</span>
+
+search_space = {
+    <span class="st">"n_estimators"</span>: <span class="fn">hp.quniform</span>(<span class="st">"n_estimators"</span>, <span class="nu">50</span>, <span class="nu">500</span>, <span class="nu">10</span>),
+    <span class="st">"max_depth"</span>:    <span class="fn">hp.choice</span>(<span class="st">"max_depth"</span>, [<span class="nu">3</span>, <span class="nu">4</span>, <span class="nu">5</span>, <span class="nu">6</span>, <span class="nu">8</span>]),
+    <span class="st">"learning_rate"</span>:<span class="fn">hp.loguniform</span>(<span class="st">"lr"</span>, -<span class="nu">4</span>, -<span class="nu">1</span>),   <span class="cm"># [0.018, 0.368]</span>
+    <span class="st">"subsample"</span>:    <span class="fn">hp.uniform</span>(<span class="st">"sub"</span>, <span class="nu">0.6</span>, <span class="nu">1.0</span>),
+}
+
+best = <span class="fn">fmin</span>(
+    fn=<span class="kw">lambda</span> params: <span class="fn">cv_loss</span>(XGBoostModel(**params), account_ts),
+    space=search_space,
+    algo=tpe.suggest,            <span class="cm"># Tree-structured Parzen Estimator</span>
+    max_evals=<span class="nu">100</span>,
+)</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: model funnel -->
+    <div class="fade-up">
+      <div class="diagram-panel">
+        <div class="diagram-title">Interactive — Model Selection Funnel (Example Account)</div>
+        <div class="model-funnel" id="modelFunnel">
+          <div class="funnel-row" style="background:rgba(255,255,255,.05)" onclick="toggleFunnelDetail(this)">
+            <span style="font-weight:600;color:#D0D0E8">① All Methods Trained</span>
+            <span class="funnel-badge" style="background:rgba(255,255,255,.1);color:#D0D0E8">11 methods</span>
+          </div>
+          <div class="funnel-detail" style="display:none">Linear Regression, LR+Drivers, LASSO, HyperLASSO, Ridge, Random Forest, XGBoost, SARIMAX, Prophet, Exponential Smoothing, Moving Average — each trained on the same account time series.</div>
+
+          <div style="text-align:center;color:var(--ey-grey);font-size:18px;padding:4px">↓</div>
+
+          <div class="funnel-row" style="background:rgba(24,140,229,.08);border-color:rgba(24,140,229,.2)" onclick="toggleFunnelDetail(this)">
+            <span style="font-weight:600;color:#6EC6E6">② Walk-Forward CV Scores</span>
+            <span class="funnel-badge" style="background:rgba(24,140,229,.2);color:#6EC6E6">MAPE ranked</span>
+          </div>
+          <div class="funnel-detail" style="display:none">
+            Results: XGBoost 4.2% · HyperLASSO 4.8% · Ridge+Drivers 5.1% · SARIMAX 5.9% · Prophet 7.3% · Random Forest 7.8% · Moving Avg 11.2%
+          </div>
+
+          <div style="text-align:center;color:var(--ey-grey);font-size:18px;padding:4px">↓</div>
+
+          <div class="funnel-row" style="background:rgba(255,165,0,.08);border-color:rgba(255,165,0,.2)" onclick="toggleFunnelDetail(this)">
+            <span style="font-weight:600;color:#FFCA3A">③ Hyperparameter Optimisation</span>
+            <span class="funnel-badge" style="background:rgba(255,165,0,.2);color:#FFCA3A">Top 3 tuned</span>
+          </div>
+          <div class="funnel-detail" style="display:none">Bayesian search (HyperOpt / TPE) over 100 evaluations each for XGBoost, HyperLASSO, and Ridge+Drivers. Final MAPE — XGBoost: 3.7% · HyperLASSO: 4.5% · Ridge: 4.9%.</div>
+
+          <div style="text-align:center;color:var(--ey-grey);font-size:18px;padding:4px">↓</div>
+
+          <div class="funnel-row" style="background:rgba(45,183,87,.1);border-color:rgba(45,183,87,.3)" onclick="toggleFunnelDetail(this)">
+            <span style="font-weight:700;color:#2DB757">④ ✓ Best Model Selected: XGBoost</span>
+            <span class="funnel-badge" style="background:rgba(45,183,87,.2);color:#2DB757">MAPE 3.7%</span>
+          </div>
+          <div class="funnel-detail" style="display:none">XGBoost with tuned hyperparameters (300 estimators, depth=4, lr=0.05) outperformed all alternatives on this account's cross-validation folds. Selected automatically — no analyst intervention required.</div>
+        </div>
+        <p class="text-xs text-muted mt-12">Click each row to expand details about that selection stage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── ALGO DEEP-DIVE ─────────── -->
+<section class="step-section" id="algo-dive" data-section="algo-dive" style="--accent:var(--ey-yellow)">
+  <div class="step-number-tag" style="color:var(--ey-yellow)">Algorithm Deep-Dive</div>
+  <h2 class="step-title">How ARIMA &amp; XGBoost Use Drivers</h2>
+  <p style="font-size:15px;color:#A8A8C0;max-width:740px;line-height:1.8;margin-bottom:8px">
+    Behind the model selection funnel above, each algorithm incorporates economic drivers differently.
+    This interactive walkthrough explains the mechanics of two key methods — ARIMA/ARIMAX and XGBoost — step by step, with live charts you can explore and tune.
+  </p>
+
+  <div class="aw-wrap fade-up">
+    <!-- ── Header ── -->
+    <div class="aw-header">
+      <span class="aw-header-label">Algorithm</span>
+      <div style="position:relative" id="aw-dd-wrap">
+        <button class="aw-algo-btn arima-active" id="aw-dd-btn" onclick="awToggleDd()">
+          <span id="aw-dd-label">ARIMA / ARIMAX</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="aw-dd-menu" style="display:none;position:absolute;left:0;top:calc(100% + 8px);background:var(--ey-mid);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px;z-index:200;min-width:180px;box-shadow:0 12px 40px rgba(0,0,0,.6)">
+          <div onclick="awSelectAlgo('arima')" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:#D0D0E8" onmouseenter="this.style.background='rgba(255,255,255,.06)'" onmouseleave="this.style.background=''">
+            <svg id="aw-chk-arima" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4L12 3" stroke="var(--ey-yellow)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            ARIMA / ARIMAX
+          </div>
+          <div onclick="awSelectAlgo('xgb')" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:#D0D0E8" onmouseenter="this.style.background='rgba(255,255,255,.06)'" onmouseleave="this.style.background=''">
+            <svg id="aw-chk-xgb" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M2 7l4 4L12 3" stroke="var(--ey-yellow)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            XGBoost
+          </div>
+        </div>
+      </div>
+      <span style="font-size:11px;color:var(--ey-grey);margin-left:auto">5 interactive steps per algorithm</span>
+    </div>
+    <!-- ── Stepper ── -->
+    <div class="aw-stepper" id="aw-stepper"></div>
+    <!-- ── Content ── -->
+    <div class="aw-content" id="aw-content"></div>
+    <!-- ── Nav ── -->
+    <div class="aw-nav">
+      <button class="aw-nav-btn" id="aw-btn-prev" onclick="awNavigate(-1)">�? Previous</button>
+      <span class="aw-nav-label" id="aw-step-label"></span>
+      <button class="aw-nav-btn primary" id="aw-btn-next" onclick="awNavigate(1)">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── STEP 5: Reconciliation ─────────── -->
+<section class="step-section" id="step5" data-section="step5" style="--accent:var(--step6)">
+  <div class="step-number-tag" style="color:var(--step6)">Step 05 of 06</div>
+  <h2 class="step-title">Reconcile Forecasts to Financial Reality</h2>
+  <div class="step-grid">
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Independent model forecasts frequently violate accounting identities. Revenue minus COGS should equal Gross Profit — but when each account is modelled separately, this relationship rarely holds exactly. Lighthouse enforces it automatically.</p>
+        <ul>
+          <li>Applies algebraic formulas (e.g. Revenue − COGS = Gross Profit)</li>
+          <li>Optionally uses MINT adjustment for system-wide optimisation</li>
+          <li>Falls back gracefully when MINT prerequisites are not met</li>
+          <li>Full audit trail of every reconciliation adjustment</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Leadership receives forecasts that tie out cleanly, reducing rework, questions, and downstream corrections in the planning cycle.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Two Reconciliation Modes</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <pre class="code-block"><span class="cm"># lh_v2/account_reconciliation/reconcile_accounts.py</span>
+
+<span class="kw">class</span> <span class="fn">AccountReconciliationMethodEnum</span>(<span class="fn">Enum</span>):
+    ALGEBRAIC_FORMULAS = <span class="st">"algebraic"</span>    <span class="cm"># Direct formula application</span>
+    MINT_ADJUSTMENT    = <span class="st">"mint"</span>         <span class="cm"># Minimum-trace reconciliation</span>
+
+<span class="cm"># Mode 1: Algebraic — deterministic, fully auditable</span>
+<span class="cm"># lh_v2/account_reconciliation/reconciliation_methods/apply_formula_direct.py</span>
+<span class="cm"># Example formula set in YAML:</span>
+formulas:
+  - <span class="st">"Gross_Profit = Revenue - COGS"</span>
+  - <span class="st">"EBITDA = Gross_Profit - OpEx"</span>
+  - <span class="st">"EBIT  = EBITDA - D_and_A"</span>
+
+<span class="cm"># Mode 2: MINT — statistical reconciliation across hierarchy</span>
+<span class="cm"># lh_v2/account_reconciliation/reconciliation_methods/apply_formula_mint.py</span>
+<span class="cm"># Minimises trace(WS'SW) subject to 1'ŷ = Sŷb</span>
+<span class="cm"># where S = summing matrix, W = diagonal weight matrix</span>
+<span class="cm"># Result: every level of the hierarchy is internally consistent</span></pre>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: MINT Reconciliation Theory</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">MINT (Minimum Trace) reconciliation — from Wickramasuriya et al. (2019) — finds the linear combination of base forecasts that minimises forecast variance while satisfying all hierarchical constraints simultaneously. This is mathematically superior to post-hoc formula application when forecasts exist at multiple levels.</p>
+          <pre class="code-block"><span class="cm"># MINT reconciliation formula</span>
+<span class="cm"># Ỹ = S (S'W�?�¹S)�?�¹ S'W�?�¹Ŷ</span>
+<span class="cm">#</span>
+<span class="cm"># Ŷ = base forecasts (n_accounts × h)  </span>
+<span class="cm"># S = summing matrix encoding hierarchy</span>
+<span class="cm"># W = diagonal matrix of forecast variances</span>
+<span class="cm"># Ỹ = reconciled forecasts (coherent at all levels)</span>
+<span class="cm">#</span>
+<span class="cm"># Prerequisite check (before attempting MINT):</span>
+<span class="kw">def</span> <span class="fn">verify_mint_adjustment_possible</span>(formulas, precalced_accounts):
+    required = <span class="fn">extract_required_accounts</span>(formulas)
+    missing  = required - precalced_accounts
+    <span class="kw">return</span> <span class="fn">len</span>(missing) == <span class="nu">0</span>   <span class="cm"># all accounts must be forecasted</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: reconciliation before/after -->
+    <div class="fade-up">
+      <div class="diagram-panel">
+        <div class="diagram-title">Before &amp; After Reconciliation</div>
+        <div class="recon-grid">
+          <!-- Before -->
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ey-red);margin-bottom:10px;font-weight:600">⚠ Before Reconciliation</div>
+            <div class="recon-side">
+              <div class="recon-account" style="border-color:rgba(196,38,46,.3);background:rgba(196,38,46,.05)">
+                <span>Revenue</span><span class="val" style="color:#E88">$124.7M</span>
+              </div>
+              <div class="recon-account" style="border-color:rgba(196,38,46,.3);background:rgba(196,38,46,.05)">
+                <span>COGS</span><span class="val" style="color:#E88">−$78.2M</span>
+              </div>
+              <div class="recon-account" style="border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04)">
+                <span>Gross Profit</span><span class="val" style="color:#E88">$44.1M</span>
+              </div>
+              <div style="font-size:11px;color:var(--ey-red);padding:6px 0">
+                ✗ $124.7M − $78.2M = <b>$46.5M</b><br/>
+                But model says $44.1M → <b>$2.4M gap</b>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arrow -->
+          <div class="recon-arrow-col">
+            <svg width="32" height="32" viewBox="0 0 32 32"><path d="M4 16 L24 16 L18 10 M24 16 L18 22" stroke="var(--step6)" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+            <div class="recon-badge">MINT<br/>or<br/>Formula</div>
+          </div>
+
+          <!-- After -->
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ey-green);margin-bottom:10px;font-weight:600">✓ After Reconciliation</div>
+            <div class="recon-side">
+              <div class="recon-account" style="border-color:rgba(45,183,87,.3);background:rgba(45,183,87,.05)">
+                <span>Revenue</span><span class="val" style="color:#8DE">$124.7M</span>
+              </div>
+              <div class="recon-account" style="border-color:rgba(45,183,87,.3);background:rgba(45,183,87,.05)">
+                <span>COGS</span><span class="val" style="color:#8DE">−$78.2M</span>
+              </div>
+              <div class="recon-account" style="border-color:rgba(45,183,87,.4);background:rgba(45,183,87,.08)">
+                <span>Gross Profit</span><span class="val" style="color:#2DB757">$46.5M</span>
+              </div>
+              <div style="font-size:11px;color:var(--ey-green);padding:6px 0">
+                ✓ $124.7M − $78.2M = <b>$46.5M</b><br/>
+                Identity enforced. Zero gap.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:rgba(182,73,196,.06);border-radius:8px;border:1px solid rgba(182,73,196,.2)">
+          <p class="text-xs" style="color:#C0A0D0;line-height:1.6">MINT adjustment simultaneously reconciles <em>all</em> accounts across the P&amp;L hierarchy. The algebraic method provides a rule-based fallback with 100% auditability.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── RECONCILIATION DEEP-DIVE ─────────── -->
+<section class="step-section" id="recon-dive" data-section="recon-dive" style="--accent:var(--step6)">
+  <div class="step-number-tag" style="color:var(--step6)">Reconciliation Deep-Dive</div>
+  <h2 class="step-title">Why Forecasts Don't Add Up — and How We Fix It</h2>
+  <p style="font-size:15px;color:#A8A8C0;max-width:740px;line-height:1.8;margin-bottom:8px">
+    When every account is forecasted independently, the totals rarely sum correctly. MINT reconciliation simultaneously adjusts every level of the hierarchy to restore mathematical coherence — without discarding any model's signal.
+  </p>
+  <div class="aw-wrap fade-up">
+    <div class="aw-header">
+      <span class="aw-header-label">Process</span>
+      <span style="font-size:13px;font-weight:700;color:#D0D0E8;padding:6px 16px;background:rgba(182,73,196,.08);border:1px solid rgba(182,73,196,.3);border-radius:999px">MINT Reconciliation Pipeline</span>
+      <span style="font-size:11px;color:var(--ey-grey);margin-left:auto">4 stages · incoherent → reconciled</span>
+    </div>
+    <div class="aw-stepper" id="rd-stepper"></div>
+    <div class="aw-content" id="rd-content"></div>
+    <div class="aw-nav">
+      <button class="aw-nav-btn" id="rd-btn-prev" onclick="rdNavigate(-1)">�? Previous</button>
+      <span class="aw-nav-label" id="rd-step-label"></span>
+      <button class="aw-nav-btn primary" id="rd-btn-next" onclick="rdNavigate(1)">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── STEP 6: Outputs ─────────── -->
+<section class="step-section" id="step6" data-section="step6" style="--accent:var(--ey-yellow)">
+  <div class="step-number-tag" style="color:var(--ey-yellow)">Step 06 of 06</div>
+  <h2 class="step-title">Deliver Forecasts the Business Can Trust</h2>
+  <div class="step-grid">
+    <div class="fade-up">
+      <div class="step-copy">
+        <p>Lighthouse doesn't just produce numbers — it explains them. Every forecast output is accompanied by the reasoning, accuracy metrics, and decision trail that finance teams need to act with confidence.</p>
+        <ul>
+          <li>Forecasted values by account, product, and region</li>
+          <li>Key drivers identified and ranked per account</li>
+          <li>Forecast accuracy (MAPE, MAE, directional accuracy)</li>
+          <li>Full traceability: which model, which drivers, which lags</li>
+          <li>LLM-powered narrative summaries for stakeholder communication</li>
+        </ul>
+        <div class="value-callout">
+          <div class="vc-label">Why This Matters</div>
+          <p>Finance teams spend less time defending numbers and more time driving decisions. Explainability reduces the "black box" concern and builds lasting trust in the forecasting system.</p>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-20">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: Output Data Model</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <pre class="code-block"><span class="cm"># lh_v2/forecasting/account_forecasting/model_forecasting/</span>
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="fn">ModelForecastingOutput</span>:
+    accounts_forecasts: <span class="nm">AccountsForecastsData</span>
+    date_range:         <span class="nm">DateRange</span>
+    validation_errors:  <span class="nm">ValidationErrorData</span>
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="fn">AccountForecastResult</span>:
+    account:        <span class="nm">AccountType</span>
+    forecast_arr:   <span class="nm">np.ndarray</span>      <span class="cm"># shape (horizon,)</span>
+    actual_arr:     <span class="nm">np.ndarray</span>      <span class="cm"># training period actuals</span>
+    model_used:     <span class="nm">str</span>             <span class="cm"># e.g. "xgboost"</span>
+    drivers_used:   <span class="nm">list[str]</span>       <span class="cm"># selected driver names</span>
+    lags_used:      <span class="nm">dict[str, int]</span>  <span class="cm"># driver → optimal lag</span>
+    cv_metrics:     <span class="nm">ErrorMetrics</span>    <span class="cm"># MAPE, MAE, RMSE</span>
+    is_reconciled:  <span class="nm">bool</span></pre>
+        </div>
+      </div>
+
+      <div class="tech-accordion mt-12">
+        <div class="tech-accordion-head" onclick="toggleAccordion(this)">
+          <span>⚙ Technical Detail: LLM Workflow Integration</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tech-accordion-body">
+          <p class="text-sm text-muted" style="margin-bottom:10px">Lighthouse includes an LLM workflow layer that translates quantitative results into plain-English narratives for each account — explaining which drivers moved, by how much, and why the forecast changed versus prior periods.</p>
+          <pre class="code-block"><span class="cm"># lh_v2/full_pipeline_scripts/script_llm_workflow.py</span>
+<span class="cm"># lh_v2/new_instance_llm_funcs/</span>
+
+<span class="cm"># The LLM receives a structured context object:</span>
+llm_context = {
+    <span class="st">"account"</span>: <span class="st">"Revenue_ProductLine_A_EMEA"</span>,
+    <span class="st">"forecast_change_pct"</span>: <span class="nu">+4.2</span>,
+    <span class="st">"top_drivers"</span>: [
+        {<span class="st">"name"</span>: <span class="st">"Industrial Output Index"</span>, <span class="st">"lag"</span>: <span class="nu">5</span>, <span class="st">"contribution"</span>: <span class="nu">+2.8</span>},
+        {<span class="st">"name"</span>: <span class="st">"Backlog Volume"</span>,           <span class="st">"lag"</span>: <span class="nu">1</span>, <span class="st">"contribution"</span>: <span class="nu">+1.9</span>},
+    ],
+    <span class="st">"model"</span>: <span class="st">"xgboost"</span>,
+    <span class="st">"mape"</span>:  <span class="nu">3.7</span>,
+}
+<span class="cm"># Output: "Revenue for EMEA ProductLine A is forecast to grow 4.2%</span>
+<span class="cm">#  in Q3, driven primarily by improving industrial output (5-month</span>
+<span class="cm">#  lead indicator, +2.8pp contribution) and a strong backlog (+1.9pp)."</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: dashboard mock -->
+    <div class="fade-up">
+      <div class="diagram-panel">
+        <div class="diagram-title">Output Dashboard — Revenue · ProductLine A · EMEA</div>
+        <div class="dashboard-grid">
+          <!-- Sparkline -->
+          <div class="dash-card">
+            <h4>Actual vs Forecast (12-Month Horizon)</h4>
+            <div class="spark-row" id="sparkRow"></div>
+            <div style="display:flex;gap:12px;font-size:10px;color:var(--ey-grey)">
+              <span><span style="display:inline-block;width:10px;height:10px;background:rgba(24,140,229,.5);border-radius:2px;margin-right:4px"></span>Actual</span>
+              <span><span style="display:inline-block;width:10px;height:10px;background:rgba(255,230,0,.7);border-radius:2px;margin-right:4px"></span>Forecast</span>
+            </div>
+          </div>
+          <!-- Metrics -->
+          <div class="dash-card">
+            <h4>Accuracy Metrics</h4>
+            <div class="metric-grid">
+              <div class="metric-cell"><div class="m-val">3.7%</div><div class="m-label">MAPE</div></div>
+              <div class="metric-cell"><div class="m-val">$1.2M</div><div class="m-label">MAE</div></div>
+              <div class="metric-cell"><div class="m-val">94%</div><div class="m-label">Dir. Accuracy</div></div>
+              <div class="metric-cell"><div class="m-val">XGB</div><div class="m-label">Model</div></div>
+            </div>
+          </div>
+          <!-- Drivers -->
+          <div class="dash-card" style="grid-column:1/-1">
+            <h4>Key Drivers &amp; Contribution</h4>
+            <div class="driver-pill-list">
+              <div class="driver-pill" style="background:rgba(110,198,230,.08)">
+                <div>
+                  <div style="font-weight:600;color:#D0D0E8">Industrial Output Index <span style="font-size:10px;color:var(--ey-grey)">(lag 5)</span></div>
+                  <div class="driver-strength"><div class="driver-strength-fill" style="width:85%;background:#6EC6E6"></div></div>
+                </div>
+                <span style="color:#6EC6E6;font-weight:700;font-size:13px">+2.8pp</span>
+              </div>
+              <div class="driver-pill" style="background:rgba(24,140,229,.08)">
+                <div style="flex:1">
+                  <div style="font-weight:600;color:#D0D0E8">Backlog Volume <span style="font-size:10px;color:var(--ey-grey)">(lag 1)</span></div>
+                  <div class="driver-strength"><div class="driver-strength-fill" style="width:72%;background:#188CE5"></div></div>
+                </div>
+                <span style="color:#188CE5;font-weight:700;font-size:13px">+1.9pp</span>
+              </div>
+              <div class="driver-pill" style="background:rgba(45,183,87,.07)">
+                <div style="flex:1">
+                  <div style="font-weight:600;color:#D0D0E8">GDP Growth Rate <span style="font-size:10px;color:var(--ey-grey)">(lag 3)</span></div>
+                  <div class="driver-strength"><div class="driver-strength-fill" style="width:54%;background:#2DB757"></div></div>
+                </div>
+                <span style="color:#2DB757;font-weight:700;font-size:13px">+0.8pp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-muted mt-12">Model: XGBoost (post hyperopt) · Reconciled via MINT · Traceability: full driver, lag, and model audit log available.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── WHAT-IF SCENARIO WIDGET ─────────── -->
+<section class="step-section" id="whatif" data-section="whatif" style="--accent:var(--ey-blue)">
+  <div class="step-number-tag" style="color:var(--ey-blue)">Interactive Scenario Planning</div>
+  <h2 class="step-title">&ldquo;What If?&rdquo; &mdash; Live Forecast Scenarios</h2>
+  <p style="font-size:15px;color:#A8A8C0;max-width:740px;line-height:1.8;margin-bottom:24px">Ask the question every CFO asks: what happens to the forecast if conditions change? Adjust drivers below and watch the 12-month revenue forecast respond in real time &mdash; powered by the same model coefficients Lighthouse uses in production.</p>
+  <div class="wi-panel fade-up">
+    <div class="wi-phead">
+      <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ey-blue);font-weight:700">Scenario Explorer</span>
+      <span style="margin-left:auto;font-size:11px;color:var(--ey-grey)">Account: Revenue &middot; ProductLine A &middot; EMEA &middot; Model: XGBoost</span>
+    </div>
+    <div class="wi-pbody">
+      <div class="wi-pctrls">
+        <div style="font-size:11px;color:var(--ey-grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">Preset Scenarios</div>
+        <div class="wi-scrow">
+          <button class="wi-scbtn active" id="wi-sc-base" onclick="wiScenario('base')">Base Case</button>
+          <button class="wi-scbtn" id="wi-sc-bull" onclick="wiScenario('bull')">Bullish</button>
+          <button class="wi-scbtn" id="wi-sc-bear" onclick="wiScenario('bear')">Bearish</button>
+          <button class="wi-scbtn" id="wi-sc-shock" onclick="wiScenario('shock')">Macro Shock</button>
+        </div>
+        <div style="font-size:11px;color:var(--ey-grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-weight:700">Driver Adjustments</div>
+        <div class="wi-sg">
+          <div class="wi-sh">GDP Growth Rate (lag 3)<span class="wi-sv" id="wi-lbl-gdp">+0.0%</span></div>
+          <div class="wi-sd">Global GDP index. +/&minus; from current +2.1% baseline.</div>
+          <input class="wi-slider" type="range" id="wi-sl-gdp" min="-3" max="3" step="0.1" value="0" oninput="wiSlide('gdp',this.value)">
+        </div>
+        <div class="wi-sg">
+          <div class="wi-sh">Marketing Spend (lag 2)<span class="wi-sv" id="wi-lbl-mkt">+0%</span></div>
+          <div class="wi-sd">Budget change vs. plan. Positive = above-plan investment.</div>
+          <input class="wi-slider" type="range" id="wi-sl-mkt" min="-50" max="50" step="1" value="0" oninput="wiSlide('mkt',this.value)">
+        </div>
+        <div class="wi-sg">
+          <div class="wi-sh">Backlog Volume (lag 1)<span class="wi-sv" id="wi-lbl-blg">+0%</span></div>
+          <div class="wi-sd">Change in sales backlog vs. prior period.</div>
+          <input class="wi-slider" type="range" id="wi-sl-blg" min="-40" max="40" step="1" value="0" oninput="wiSlide('blg',this.value)">
+        </div>
+        <div class="wi-sg">
+          <div class="wi-sh">Headcount Growth (lag 0)<span class="wi-sv" id="wi-lbl-hc">+0%</span></div>
+          <div class="wi-sd">Billable headcount change vs. plan.</div>
+          <input class="wi-slider" type="range" id="wi-sl-hc" min="-20" max="20" step="0.5" value="0" oninput="wiSlide('hc',this.value)">
+        </div>
+        <div class="wi-dcard">
+          <div class="wi-dv" id="wi-dv" style="color:var(--ey-yellow)">$0.0M</div>
+          <div class="wi-dl">Forecast change vs. Base Case (12-month total)</div>
+          <div style="margin-top:8px;font-size:11px;color:var(--ey-grey)" id="wi-drv-note">All drivers at baseline levels.</div>
+        </div>
+      </div>
+      <div class="wi-pchart">
+        <div style="font-size:11px;color:var(--ey-grey);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:700">12-Month Revenue Forecast ($M)</div>
+        <canvas id="wi-canvas" height="190"></canvas>
+        <div style="display:flex;gap:16px;font-size:10px;color:var(--ey-grey);margin-top:8px">
+          <span><span style="display:inline-block;width:20px;height:2px;background:#6EC6E6;border-radius:1px;vertical-align:middle;margin-right:4px"></span>Base Case</span>
+          <span><span style="display:inline-block;width:20px;height:2px;background:var(--ey-yellow);border-radius:1px;vertical-align:middle;margin-right:4px"></span>Scenario Forecast</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── COMPARISON TABLE ─────────── -->
+<section class="step-section" id="compare" data-section="compare" style="--accent:var(--ey-yellow)">
+  <div class="step-number-tag" style="color:var(--ey-yellow)">Lighthouse vs. Manual FP&amp;A</div>
+  <h2 class="step-title">The Case for Change</h2>
+  <p style="font-size:15px;color:#A8A8C0;max-width:740px;line-height:1.8;margin-bottom:24px">Finance teams have always been capable &mdash; the tools have been the constraint. Here is what changes when Lighthouse replaces a manual, spreadsheet-driven forecasting process.</p>
+  <div class="ct-outer fade-up">
+    <table class="ct-tbl">
+      <thead>
+        <tr>
+          <th class="ct-th-cat"></th>
+          <th class="ct-th-man">&#128202; Manual / Excel-Based FP&amp;A</th>
+          <th class="ct-th-lh">&#9889; EY Lighthouse Forecasting</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ct-td-cat">Forecast Cycle Time</td>
+          <td class="ct-td-man"><span class="ct-badge bad">Weeks</span><br/>Multi-week cycles of data pulls, model rebuilds, manual adjustments, and review rounds. Time pressure forces premature submissions.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">Hours</span><br/>Automated pipeline runs end-to-end in hours. Human effort shifts to exception review and narrative &mdash; not rebuilding models every cycle.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Forecast Accuracy (MAPE)</td>
+          <td class="ct-td-man"><span class="ct-badge bad">8&ndash;15%</span><br/>Accuracy depends on analyst experience and time available. No systematic model selection or backtesting to validate assumptions.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">3&ndash;6%</span><br/>Walk-forward CV selects the best model from 11 candidates per account. Accuracy is measured, tracked, and reported &mdash; not assumed.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Consistency Across Accounts</td>
+          <td class="ct-td-man"><span class="ct-badge bad">Low</span><br/>Each analyst uses their own methodology. No shared standards for which drivers, lags, or models to apply. Results vary by person, not by data.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">High</span><br/>Identical pipeline applied to every account: same driver library, same model set, same evaluation criteria. Variance is in the data, not the process.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Explainability</td>
+          <td class="ct-td-man"><span class="ct-badge mid">Partial</span><br/>Analyst knows their own model. Documentation is inconsistent and hard for reviewers to interrogate or challenge.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">Full</span><br/>Every forecast states: which model won, which drivers matter, their lag, and their contribution. LLM commentary translates this into plain English automatically.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Scalability</td>
+          <td class="ct-td-man"><span class="ct-badge bad">Linear Cost</span><br/>Effort scales linearly with account count. More products, regions, or segments means proportionally more analyst time.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">Near-Zero Marginal Cost</span><br/>Pipeline runs identically for 50 or 5,000 accounts. Adding a new account requires only data &mdash; not additional analyst headcount.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Auditability</td>
+          <td class="ct-td-man"><span class="ct-badge bad">Low</span><br/>Spreadsheet lineage is fragile. Version control is inconsistent. Recreating a prior forecast to understand what changed is often impossible.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">Complete</span><br/>Every model, driver selection, lag choice, and reconciliation adjustment is logged. Any forecast can be reproduced exactly for audit or sign-off.</td>
+        </tr>
+        <tr>
+          <td class="ct-td-cat">Scenario Planning</td>
+          <td class="ct-td-man"><span class="ct-badge bad">Manual &amp; Slow</span><br/>Scenario variants require re-running analyst models by hand. Usually limited to 2&ndash;3 scenarios per cycle due to time pressure.</td>
+          <td class="ct-td-lh"><span class="ct-badge good">Instant &amp; Interactive</span><br/>Driver coefficients enable real-time what-if calculation. Any scenario can be evaluated immediately without re-running the full pipeline.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:20px;padding:16px 20px;background:rgba(255,230,0,.04);border:1px solid rgba(255,230,0,.15);border-radius:12px;font-size:13px;color:#C8C8A8;max-width:740px">
+    <strong style="color:var(--ey-yellow)">Bottom line:</strong> Lighthouse doesn&rsquo;t replace FP&amp;A teams &mdash; it removes the low-value work that consumes them, freeing capacity for analysis, communication, and strategic decisions.
+  </div>
+</section>
+
+<!-- ─────────── SUMMARY ─────────── -->
+<section id="summary" data-section="summary">
+  <h2 class="summary-headline">Why Lighthouse Forecasting Changes the Game</h2>
+  <p class="summary-sub">A single, integrated platform that eliminates manual inconsistency and delivers enterprise-grade forecasting at scale.</p>
+  <div class="summary-cards">
+    <div class="summary-card fade-up">
+      <div class="sc-icon">⚡</div>
+      <h3>Faster Forecasting Cycles</h3>
+      <p>Automated driver selection, model training, and reconciliation compress multi-week manual processes into hours — enabling more frequent, timely forecasting runs.</p>
+    </div>
+    <div class="summary-card fade-up">
+      <div class="sc-icon">�?</div>
+      <h3>Consistent Methods Across the Enterprise</h3>
+      <p>The same rigorous, reproducible pipeline is applied to every account. No more "the analyst who owns this account does it differently" — every forecast follows the same evidence-based process.</p>
+    </div>
+    <div class="summary-card fade-up">
+      <div class="sc-icon">🔗</div>
+      <h3>Finance &amp; Operations Alignment</h3>
+      <p>Driver-based forecasts create a shared language between finance and operations teams. When revenue moves, the specific operational signals behind that movement are explicit and traceable.</p>
+    </div>
+    <div class="summary-card fade-up">
+      <div class="sc-icon">✅</div>
+      <h3>Reconciled, Audit-Ready Outputs</h3>
+      <p>Forecasts automatically satisfy accounting identities. Every adjustment is logged. Finance teams can answer "why does this number differ from last month?" with precision, not approximation.</p>
+    </div>
+    <div class="summary-card fade-up">
+      <div class="sc-icon">📈</div>
+      <h3>Improved Leadership Confidence</h3>
+      <p>Explainable forecasts backed by driver evidence, accuracy metrics, and reconciled financials give senior stakeholders the confidence to make high-stakes decisions without demanding manual re-checks.</p>
+    </div>
+    <div class="summary-card fade-up">
+      <div class="sc-icon">🤖</div>
+      <h3>Scalable Foundation for Agentic FP&amp;A</h3>
+      <p>Lighthouse is architected for the next step: agent-driven scenario planning where LLMs interrogate the forecasting engine, generate narrative commentary, and explore what-if scenarios autonomously.</p>
+    </div>
+  </div>
+
+  <!-- Technical depth summary -->
+  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:32px 28px;margin-bottom:48px">
+    <div style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ey-yellow);font-weight:700;margin-bottom:16px">Technical Depth at a Glance</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">12+</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Driver ranking algorithms evaluated per account</div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">11</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Forecasting models trained &amp; compared per account</div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">0–8+</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Lag periods tested per driver</div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">2</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Reconciliation modes (Algebraic + MINT)</div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">100%</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Traceable decisions — every model, driver, lag logged</div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:#fff">LLM</div>
+        <div style="font-size:12px;color:var(--ey-grey)">Narrative workflow for automatic commentary generation</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-footer">
+    <p>Built on the <strong>EY Fabric Platform</strong> · Designed for enterprise FP&A · Powered by <strong>EY Lighthouse</strong></p>
+    <p style="margin-top:8px">© Ernst &amp; Young. This document is for internal briefing purposes.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// ── Accordion ──────────────────────────────────────────────────────────
+function toggleAccordion(head) {
+  const body = head.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  // Close all in same parent
+  const parent = head.closest('.step-copy, .step-section, #summary') || document.body;
+  parent.querySelectorAll('.tech-accordion-body.open').forEach(b => {
+    b.classList.remove('open');
+    b.previousElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    body.classList.add('open');
+    head.classList.add('open');
+  }
+}
+
+// ── Funnel detail toggle ───────────────────────────────────────────────
+function toggleFunnelDetail(row) {
+  const detail = row.nextElementSibling;
+  if (!detail || !detail.classList.contains('funnel-detail')) return;
+  const isOpen = detail.style.display !== 'none';
+  // close all
+  document.querySelectorAll('.funnel-detail').forEach(d => d.style.display = 'none');
+  document.querySelectorAll('.funnel-row').forEach(r => r.style.background = r.dataset.bg || r.style.background);
+  if (!isOpen) detail.style.display = 'block';
+}
+
+// ── Lag selector ───────────────────────────────────────────────────────
+const lagData = [
+  { lag: 0, score: '0.72', desc: 'Lag 0 — Uses same-month Industrial Output. Highest data-availability risk: the index may not be published yet when the forecast is run.' },
+  { lag: 1, score: '0.78', desc: 'Lag 1 — Uses last month\'s published index. Good predictive power with reliable data availability.' },
+  { lag: 2, score: '0.80', desc: 'Lag 2 — Uses index from 2 months ago. Excellent score, always available when forecasting.' },
+  { lag: 3, score: '0.80', desc: 'Lag 3 — Tied with lag-2. Index from Q-1 is firmly published. Preferred over lag-2 when scores tie.' },
+  { lag: 4, score: '0.77', desc: 'Lag 4 — Slight drop in predictive score. Still in top-3 selection pool.' },
+  { lag: 5, score: '0.79', desc: 'Lag 5 ★ SELECTED — Scores competitively and comes from 5 months ago — always available. Maximum look-ahead advantage. Selected by Lighthouse.' },
+  { lag: 6, score: '0.75', desc: 'Lag 6 — Falls outside top-3 selection pool. Not selected.' },
+  { lag: 7, score: '0.70', desc: 'Lag 7 — Growing signal decay. Excluded from top-N candidates.' },
+  { lag: 8, score: '0.65', desc: 'Lag 8 — Signal has largely decayed at this distance. Not competitive.' },
+];
+
+// ── Lag Chart ─────────────────────────────────────────────────────────
+(function initLagChart() {
+  // ── Synthetic data ─────────────────────────────────────────────────
+  // Base signal B[0..38]: a clear 2-cycle wave with slight uptrend
+  const B = [
+    0.50, 0.55, 0.62, 0.68, 0.71, 0.70, 0.65, 0.57, 0.48, 0.41,
+    0.37, 0.38, 0.43, 0.52, 0.60, 0.66, 0.70, 0.71, 0.67, 0.60,
+    0.52, 0.45, 0.40, 0.38, 0.40, 0.46, 0.54, 0.61, 0.67, 0.72,
+    0.74, 0.72, 0.67, 0.59, 0.51, 0.46, 0.44, 0.47, 0.53
+  ];
+  // Deterministic micro-noise using trig
+  function dn(i, a, f, p) { return a * Math.sin(i * f + p); }
+
+  const N = 30;       // visible periods
+  const MAX_LAG = 8;
+
+  // Revenue = B[t] + tiny noise  (the target series)
+  const revenue = Array.from({length: N}, (_, t) =>
+    B[t] + dn(t, 0.018, 5.7, 0) + dn(t, 0.012, 11.3, 1.2));
+
+  // IOI = B[i+5] + tiny noise  (leads revenue by exactly 5 periods)
+  // ioi[i] ≈ revenue[i+5]  →  ioi[t-5] ≈ revenue[t]  →  optimal lag = 5
+  const ioi = Array.from({length: N + MAX_LAG}, (_, i) => {
+    const bi = Math.min(i + 5, B.length - 1);
+    return B[bi] + dn(i, 0.022, 7.3, 0.5) + dn(i, 0.010, 13.1, 2.1);
+  });
+
+  // ── Pearson correlation per lag ────────────────────────────────────
+  function pearson(xs, ys) {
+    const n = xs.length;
+    const mx = xs.reduce((s,v)=>s+v,0)/n, my = ys.reduce((s,v)=>s+v,0)/n;
+    let num=0, dx2=0, dy2=0;
+    for (let i=0;i<n;i++) { const dx=xs[i]-mx, dy=ys[i]-my; num+=dx*dy; dx2+=dx*dx; dy2+=dy*dy; }
+    return num/Math.sqrt(dx2*dy2);
+  }
+  const corrByLag = Array.from({length: MAX_LAG+1}, (_,k) =>
+    pearson(revenue.slice(k), ioi.slice(0, N-k)));
+
+  // ── Canvas state ──────────────────────────────────────────────────
+  const canvas = document.getElementById('lagChart');
+  if (!canvas) return;
+  let currentLagF = 0, targetLag = 0, animId = null;
+  const dpr = window.devicePixelRatio || 1;
+  const PAD = { top: 24, right: 18, bottom: 36, left: 42 };
+  const Y_MIN = 0.26, Y_MAX = 0.84;
+
+  function resizeCanvas() {
+    const w = canvas.offsetWidth || 400;
+    const h = 230;
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.height = h + 'px';
+    drawChart(currentLagF);
+  }
+
+  function tX(t, w) { return PAD.left + (t / (N - 1)) * (w - PAD.left - PAD.right); }
+  function tY(v, h) { return PAD.top + (1-(v-Y_MIN)/(Y_MAX-Y_MIN)) * (h-PAD.top-PAD.bottom); }
+
+  function drawChart(lagF) {
+    const W = canvas.width / dpr, H = canvas.height / dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    // ── Background / grid ──────────────────────────────────────────
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(PAD.left-4, PAD.top-4, W-PAD.left-PAD.right+8, H-PAD.top-PAD.bottom+8);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    for (let v = 0.3; v <= 0.8; v += 0.1) {
+      const py = tY(v, H);
+      ctx.beginPath(); ctx.moveTo(PAD.left, py); ctx.lineTo(W-PAD.right, py); ctx.stroke();
+    }
+
+    // ── X axis labels ──────────────────────────────────────────────
+    ctx.fillStyle = '#555568'; ctx.font = '9px Segoe UI,sans-serif'; ctx.textAlign = 'center';
+    for (let t = 0; t < N; t += 5)
+      ctx.fillText('M'+(t+1), tX(t,W), H - PAD.bottom + 14);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#444458';
+    ctx.font = '9px Segoe UI,sans-serif';
+    ctx.fillText('Months', W - PAD.right - 18, H - PAD.bottom + 14);
+
+    // ── Y axis labels ──────────────────────────────────────────────
+    ctx.textAlign = 'right'; ctx.fillStyle = '#555568';
+    for (let v = 0.3; v <= 0.8; v += 0.1)
+      ctx.fillText(v.toFixed(1), PAD.left - 5, tY(v, H) + 3);
+
+    // ── Alignment glow when near lag=5 ────────────────────────────
+    const alignAlpha = Math.max(0, 1 - Math.abs(lagF - 5) / 2.2) * 0.07;
+    if (alignAlpha > 0.002) {
+      const grd = ctx.createLinearGradient(0, PAD.top, 0, H-PAD.bottom);
+      grd.addColorStop(0, `rgba(45,183,87,0)`);
+      grd.addColorStop(0.5, `rgba(45,183,87,${alignAlpha})`);
+      grd.addColorStop(1, `rgba(45,183,87,0)`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(PAD.left, PAD.top, W-PAD.left-PAD.right, H-PAD.top-PAD.bottom);
+    }
+
+    // ── IOI reference line (always at lag=0, very dim dashed) ──────
+    ctx.save();
+    ctx.strokeStyle = 'rgba(110,198,230,0.18)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 5]);
+    ctx.beginPath();
+    for (let t = 0; t < N; t++) {
+      const x = tX(t, W), y = tY(ioi[t], H);
+      t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // ── Shaded "lag gap" zone (unfilled left edge when lag > 0) ────
+    if (lagF > 0.05) {
+      const xBoundary = tX(lagF, W);
+      const grd2 = ctx.createLinearGradient(PAD.left, 0, xBoundary, 0);
+      grd2.addColorStop(0, 'rgba(0,0,0,0.55)');
+      grd2.addColorStop(1, 'rgba(0,0,0,0.0)');
+      ctx.fillStyle = grd2;
+      ctx.fillRect(PAD.left, PAD.top, xBoundary - PAD.left, H - PAD.top - PAD.bottom);
+      if (lagF > 1.2) {
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.font = `bold ${Math.min(11, lagF * 2.2)}px Segoe UI,sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(`�? ${Math.round(lagF)}m`, PAD.left + (xBoundary - PAD.left) / 2, H / 2 + 4);
+      }
+    }
+
+    // ── Active lagged IOI line (shifts right as lagF increases) ────
+    // ioi[i] is plotted at x = tX(i + lagF, W)
+    // so the whole IOI curve slides rightward as lagF grows
+    ctx.save();
+    ctx.strokeStyle = '#6EC6E6';
+    ctx.lineWidth = 2.8;
+    ctx.shadowColor = 'rgba(110,198,230,0.35)';
+    ctx.shadowBlur = 7;
+    ctx.beginPath();
+    let started = false;
+    for (let i = 0; i < N + MAX_LAG; i++) {
+      const tPos = i + lagF;  // where on the time axis this IOI point falls
+      if (tPos < 0) continue;
+      if (tPos > N - 1 + 0.5) break;
+      const x = tX(tPos, W);
+      const y = tY(ioi[i], H);
+      if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+
+    // ── Revenue line (target, always fixed) ────────────────────────
+    ctx.save();
+    ctx.strokeStyle = '#FFE600';
+    ctx.lineWidth = 2.8;
+    ctx.shadowColor = 'rgba(255,230,0,0.45)';
+    ctx.shadowBlur = 9;
+    // Area fill under revenue
+    ctx.beginPath();
+    ctx.moveTo(tX(0,W), tY(revenue[0],H));
+    for (let t = 1; t < N; t++) ctx.lineTo(tX(t,W), tY(revenue[t],H));
+    ctx.lineTo(tX(N-1,W), H-PAD.bottom);
+    ctx.lineTo(tX(0,W), H-PAD.bottom);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,230,0,0.04)';
+    ctx.fill();
+    // Line
+    ctx.beginPath();
+    for (let t = 0; t < N; t++) {
+      const x = tX(t,W), y = tY(revenue[t],H);
+      t === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+
+    // ── Peak alignment annotation at lag=5 ─────────────────────────
+    if (lagF > 4.5 && lagF < 5.5) {
+      const alpha = 1 - Math.abs(lagF - 5) / 0.5;
+      // Peak 1: revenue peaks at t≈6, ioi[1] shifted to t=6
+      // Peak 2: revenue peaks at t≈17, ioi[12] shifted to t=17
+      [[6, 0.71], [17, 0.71], [11, 0.37]].forEach(([t, v]) => {
+        const x = tX(t, W), y = tY(v, H);
+        ctx.save();
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.strokeStyle = '#2DB757';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.font = 'bold 8px Segoe UI,sans-serif';
+        ctx.fillStyle = '#2DB757';
+        ctx.textAlign = 'center';
+        ctx.fillText('✓', x, PAD.top - 4);
+        ctx.restore();
+      });
+    }
+
+    // ── r value watermark inside chart ─────────────────────────────
+    const r = corrByLag[Math.round(Math.min(lagF, MAX_LAG))];
+    const rColor = r > 0.72 ? '#2DB757' : r > 0.52 ? '#FFCA3A' : '#C4262E';
+    ctx.font = 'bold 13px Segoe UI,sans-serif';
+    ctx.fillStyle = rColor;
+    ctx.globalAlpha = 0.9;
+    ctx.textAlign = 'right';
+    ctx.fillText(`r = ${r.toFixed(2)}`, W - PAD.right - 2, PAD.top + 14);
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Animation ─────────────────────────────────────────────────────
+  function animate() {
+    animId = requestAnimationFrame(animate);
+    const diff = targetLag - currentLagF;
+    if (Math.abs(diff) < 0.006) {
+      currentLagF = targetLag; cancelAnimationFrame(animId); animId = null;
+    } else {
+      currentLagF += diff * 0.09;
+    }
+    drawChart(currentLagF);
+  }
+
+  function setLag(k) {
+    targetLag = k;
+    if (!animId) animate();
+    // Correlation badge
+    const r = corrByLag[k];
+    const rColor = r > 0.72 ? '#2DB757' : r > 0.52 ? '#FFCA3A' : '#C4262E';
+    const bar = Math.round(r * 100);
+    const corrEl = document.getElementById('lagCorr');
+    if (corrEl) {
+      corrEl.innerHTML =
+        `<div style="flex:1">`+
+        `<div style="display:flex;align-items:baseline;gap:10px">`+
+        `<span style="color:${rColor};font-size:24px;font-weight:800;line-height:1">r = ${r.toFixed(2)}</span>`+
+        `<span style="font-size:11px;color:#747480">Pearson correlation · lag ${k}</span></div>`+
+        `<div style="margin-top:6px;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden">`+
+        `<div style="height:100%;width:${bar}%;background:${rColor};border-radius:3px;transition:width .5s ease"></div></div></div>`;
+    }
+    // Lag cells
+    document.querySelectorAll('.lag-cell').forEach(c => {
+      c.classList.toggle('selected', parseInt(c.dataset.lag) === k);
+    });
+    // Explanation
+    const ex = document.getElementById('lagExplain');
+    if (ex) ex.textContent = lagData[k].desc;
+  }
+
+  // ── Build lag-selector cells ───────────────────────────────────────
+  const track = document.getElementById('lagTrack');
+  if (track) {
+    lagData.forEach((d, k) => {
+      const cell = document.createElement('div');
+      cell.className = 'lag-cell';
+      cell.dataset.lag = k;
+      cell.innerHTML = `<span class="lag-n">${d.lag}</span><span class="lag-score">${d.score}</span>`;
+      cell.addEventListener('click', () => setLag(k));
+      track.appendChild(cell);
+    });
+  }
+
+  // ── Responsive resize ─────────────────────────────────────────────
+  const ro = new ResizeObserver(() => resizeCanvas());
+  ro.observe(canvas.parentElement || canvas);
+
+  // ── Auto-animate to lag=5 on first scroll into view ───────────────
+  let autoPlayed = false;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        resizeCanvas();
+        if (!autoPlayed) {
+          autoPlayed = true;
+          setLag(0);
+          setTimeout(() => setLag(5), 1200);
+        }
+      }
+    });
+  }, { threshold: 0.4 });
+  io.observe(canvas);
+
+  resizeCanvas();
+  setLag(0);
+})();
+
+// ── Spark bars ─────────────────────────────────────────────────────────
+function buildSparkRow() {
+  const row = document.getElementById('sparkRow');
+  if (!row) return;
+  const actuals  = [82, 88, 79, 92, 96, 85, 90, 95, 88, 72, 80, 85];
+  const forecast = [null, null, null, null, null, null, null, null, null, 75, 83, 89, 94, 98, 102, 106];
+  const allVals = [...actuals, 94, 98, 102, 106];
+  const maxV = Math.max(...allVals);
+  actuals.forEach(v => {
+    const b = document.createElement('div');
+    b.className = 'spark-bar';
+    b.style.height = Math.round((v / maxV) * 100) + '%';
+    row.appendChild(b);
+  });
+  [94, 98, 102, 106].forEach(v => {
+    const b = document.createElement('div');
+    b.className = 'spark-bar forecast';
+    b.style.height = Math.round((v / maxV) * 100) + '%';
+    row.appendChild(b);
+  });
+}
+buildSparkRow();
+
+// ── Animate bars on scroll ─────────────────────────────────────────────
+function animateBars(entries) {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(b => b.classList.add('animated'));
+    }
+  });
+}
+const barObserver = new IntersectionObserver(animateBars, { threshold: 0.2 });
+document.querySelectorAll('.diagram-panel').forEach(p => barObserver.observe(p));
+
+// ── Fade-up on scroll ──────────────────────────────────────────────────
+const fadeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+
+// ── Active nav + progress ──────────────────────────────────────────────
+const sections = document.querySelectorAll('[data-section]');
+const navItems = document.querySelectorAll('.nav-item[data-target]');
+const progressFill = document.getElementById('progress');
+
+function onScroll() {
+  const scrollY = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  if (progressFill) progressFill.style.width = Math.round((scrollY / docH) * 100) + '%';
+
+  let current = 'hero';
+  sections.forEach(sec => {
+    if (scrollY >= sec.offsetTop - 200) current = sec.dataset.section;
+  });
+  navItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.target === current);
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// ── Smooth nav click ───────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+// ALGORITHM DEEP-DIVE  (ARIMA / ARIMAX  +  XGBoost)
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+(function(){
+
+// ── Data ────────────────────────────────────────────────────────────
+const MO_ACT=['Jan 24','Feb 24','Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24'];
+const MO_FC =['Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25'];
+const MO_ALL=[...MO_ACT,...MO_FC];
+const REV_ACT=[105,112,108,120,118,130,125,138,140,132,145,150];
+const ARIMA_BT=[107,110,110,118,120,128,127,136,141,131,144,151];
+const ARIMA_FC=[148,153,155,160,158,165];
+const ARIMAX_FC=[156,162,166,171,171,179];
+const DRV_DATA={
+  marketing:   {label:'Marketing Spend ($K)',color:'rgba(255,180,80,1)', data:[800,900,850,1100,1000,1200,950,1300,1350,1100,1400,1500,1600,1700,1600,1800,1750,1900]},
+  headcount:   {label:'Headcount Growth (%)',color:'rgba(90,210,230,1)', data:[2.1,3.2,2.5,4.0,3.5,5.2,4.1,6.0,5.5,4.2,6.3,7.0,8.0,9.1,8.5,10.0,9.2,11.0]},
+  marketindex: {label:'Market Index',         color:'rgba(230,200,60,1)', data:[100,102,101,105,104,108,106,112,114,110,116,120,122,125,124,128,126,131]},
+};
+const DRV_DESC={
+  marketing:'Monthly marketing investment. Higher planned spend is expected to lift revenue.',
+  headcount:'Month-over-month headcount growth. Growing teams drive higher sales capacity.',
+  marketindex:'Macro market indicator. A rising index signals favourable external conditions.',
+};
+const DRV_KEYS=['marketing','headcount','marketindex'];
+const DRV_IMP=[
+  {name:'Marketing Spend', value:0.75,color:'rgba(255,180,80,1)'},
+  {name:'Headcount Growth',value:0.62,color:'rgba(90,210,230,1)'},
+  {name:'Market Index',    value:0.48,color:'rgba(230,200,60,1)'},
+];
+const A_CONTRIB={marketing:[4,4,5,5,6,6],headcount:[2,3,3,3,4,4],marketindex:[2,2,3,3,3,4]};
+const XGB_BT_R1 =[115,115,117,122,122,127,127,140,138,132,142,148];
+const XGB_BT_R10=[108,111,109,119,119,130,126,138,140,131,144,150];
+const XGB_BT_R20=[106,112,108,120,118,130,125,138,140,132,145,150];
+const XGB_FC_BASE=[149,154,157,162,161,167];
+const XGB_ROUNDS=Array.from({length:20},(_,i)=>i+1);
+const XGB_LOSS=[11.8,9.2,7.5,6.1,5.2,4.4,3.8,3.3,3.0,2.7,2.5,2.4,2.3,2.3,2.2,2.2,2.2,2.1,2.1,2.1];
+const XGB_FEAT_IMP=[
+  {name:'Revenue (t-1)',   value:0.42,color:'rgba(160,140,255,1)'},
+  {name:'Marketing Spend', value:0.28,color:'rgba(255,180,80,1)'},
+  {name:'Headcount Growth',value:0.17,color:'rgba(90,210,230,1)'},
+  {name:'Month-of-Year',   value:0.08,color:'rgba(160,160,160,1)'},
+  {name:'Market Index',    value:0.05,color:'rgba(230,200,60,1)'},
+];
+const X_CONTRIB={marketing:[3,4,4,5,5,6],headcount:[2,2,3,3,3,4],marketindex:[1,1,1,1,1,1]};
+
+// ── State ──────────────────────────────────────────────────────────
+let awAlgo='arima',awStep=0,awActiveDriver='marketing';
+let awChart1=null,awChart2=null;
+const WA={marketing:1,headcount:1,marketindex:1};
+const WX={marketing:1,headcount:1,marketindex:1};
+const n12=()=>Array(12).fill(null);
+const n6 =()=>Array(6).fill(null);
+const AC='rgba(99,160,255,1)',XC='rgba(255,140,80,1)';
+const DG='rgba(255,255,255,0.05)',DT={color:'rgba(255,255,255,0.35)',font:{size:9}};
+const STEPS_A=[{id:1,short:'Target'},{id:2,short:'ARIMA'},{id:3,short:'Drivers'},{id:4,short:'Impact'},{id:5,short:'Tune'}];
+const STEPS_X=[{id:1,short:'Target'},{id:2,short:'Trees'},{id:3,short:'Boosting'},{id:4,short:'Features'},{id:5,short:'Tune'}];
+const LABELS_A=['Target Variable','ARIMA Foundation','Meet the Drivers','Driver Importance','Tune Weights'];
+const LABELS_X=['Target Variable','Decision Trees','Gradient Boosting','Feature Importance','Tune Features'];
+
+// ── Chart factory ──────────────────────────────────────────────────
+function mkC(id,data,extra){
+  const el=document.getElementById(id); if(!el)return null;
+  const base={responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{color:'rgba(255,255,255,0.65)',font:{size:9.5},boxWidth:11,padding:8}}},
+    scales:{x:{grid:{color:DG},ticks:DT},y:{grid:{color:DG},ticks:DT}}};
+  if(extra&&extra.animation!==undefined)base.animation=extra.animation;
+  if(extra&&extra.plugins)Object.assign(base.plugins,extra.plugins);
+  if(extra&&extra.scales)Object.assign(base.scales,extra.scales);
+  return new Chart(el,{type:'line',data,options:base});
+}
+function awKill(){if(awChart1){awChart1.destroy();awChart1=null;}if(awChart2){awChart2.destroy();awChart2=null;}}
+
+// ── Explainer helper ───────────────────────────────────────────────
+function awEx(tag,title,paras,hl,extra){
+  return `<div class="aw-explainer">
+    <span class="aw-tag">${tag}</span>
+    <h2>${title}</h2>
+    ${paras.map(p=>`<p>${p}</p>`).join('')}
+    ${hl?`<div class="aw-hl"><div class="aw-hl-dot" style="background:${hl.color}"></div><div><div class="aw-hl-sub">${hl.label}</div><div class="aw-hl-val">${hl.value}</div></div></div>`:''}
+    ${extra?`<div class="aw-extra">${extra}</div>`:''}
+  </div>`;}
+
+// ── ARIMA step renderers ───────────────────────────────────────────
+function rA1(){return `<div class="aw-inner">${awEx('Step 1 of 5','Your Forecast Target',
+  ['ARIMA begins with a single time series — the variable to predict. Here that\'s monthly <strong style="color:#EEEEFF">Revenue ($M)</strong>.',
+   'The model learns the internal structure of the series: trend, seasonal patterns, and <em>autocorrelation</em> — how past values predict future ones.',
+   'Revenue doesn\'t move in isolation. External forces push and pull it; we layer those drivers in later steps.'],
+  {label:'Target variable',value:'Revenue ($M)',color:'rgba(255,255,255,.7)'})}
+  <div class="aw-chart-area"><div class="aw-chart-box"><p>Monthly Revenue — Actuals (Jan–Dec 2024)</p><div style="height:290px"><canvas id="awc1"></canvas></div></div></div></div>`;}
+function iA1(){awChart1=mkC('awc1',{labels:MO_ACT,datasets:[{label:'Revenue ($M)',data:REV_ACT,
+  borderColor:'rgba(255,230,0,1)',backgroundColor:'rgba(255,230,0,0.06)',tension:0.4,fill:true,pointRadius:4,borderWidth:2.5}]});}
+
+function rA2(){return `<div class="aw-inner">${awEx('Step 2 of 5','The ARIMA Foundation',
+  ['<strong style="color:#EEEEFF">ARIMA(p, d, q)</strong>: <strong>p</strong> = autoregressive lags, <strong>d</strong> = differencing, <strong>q</strong> = moving-average order.',
+   'The dashed line is the <em>in-sample backtest</em>; the solid line is the pure ARIMA forecast — built from the time series alone, no external data.',
+   'It captures the recent trend but cannot react to planned changes in spend or headcount. That gap is what drivers fill.'],
+  {label:'Model spec',value:'ARIMA(2,1,1)',color:AC})}
+  <div class="aw-chart-area">
+    <div class="aw-chart-box"><p>ARIMA Fit &amp; Forecast — Jan 2024 to Jun 2025</p><div style="height:260px"><canvas id="awc2"></canvas></div></div>
+    <div class="aw-info-box"><strong>Shaded region = forecast horizon (Jan–Jun 2025).</strong> Dashed = in-sample backtest fit.</div>
+  </div></div>`;}
+function iA2(){awChart1=mkC('awc2',{labels:MO_ALL,datasets:[
+  {label:'Actuals',       data:[...REV_ACT,...n6()], borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+  {label:'Backtest',      data:[...ARIMA_BT,...n6()],borderColor:AC,backgroundColor:'transparent',tension:0.4,pointRadius:0,borderWidth:2,borderDash:[5,4]},
+  {label:'ARIMA Forecast',data:[...n12(),...ARIMA_FC],borderColor:AC,backgroundColor:'rgba(99,160,255,0.1)',tension:0.4,pointRadius:4,borderWidth:2.5,fill:true},
+]});}
+
+function rA3(){
+  const btns=DRV_KEYS.map(k=>`<button class="aw-drv-btn${awActiveDriver===k?' active':''}" onclick="awSwitchDrv('${k}')">${DRV_DATA[k].label}</button>`).join('');
+  return `<div class="aw-inner">${awEx('Step 3 of 5','Meet the Drivers',
+    ['<em>Exogenous variables</em> are external series whose values are known — or planned — for the forecast horizon.',
+     'ARIMAX learns how each driver correlates with revenue. Select a driver to see its historical and planned values.',
+     'Planned driver values over the forecast window replace uncertain guesses with defensible, business-grounded inputs.'],null,btns)}
+    <div class="aw-chart-area">
+      <div id="aw-drv-desc" class="aw-info-box">${DRV_DESC[awActiveDriver]}</div>
+      <div class="aw-chart-box"><p id="aw-drv-title">Driver: ${DRV_DATA[awActiveDriver].label}</p><div style="height:250px"><canvas id="awc3"></canvas></div></div>
+    </div></div>`;}
+function iA3(){
+  const d=DRV_DATA[awActiveDriver],fade=d.color.replace('1)','0.12)');
+  awChart1=mkC('awc3',{labels:MO_ALL,datasets:[
+    {label:d.label+' – Actuals',data:[...d.data.slice(0,12),...n6()],borderColor:d.color,backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+    {label:d.label+' – Planned', data:[...n12(),...d.data.slice(12)],borderColor:d.color,backgroundColor:fade,tension:0.4,pointRadius:4,borderWidth:2,borderDash:[5,4],fill:true},
+  ]});}
+window.awSwitchDrv=function(k){
+  awActiveDriver=k;
+  document.querySelectorAll('.aw-drv-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes("'"+k+"'")));
+  const t=document.getElementById('aw-drv-title'),des=document.getElementById('aw-drv-desc');
+  if(t)t.textContent='Driver: '+DRV_DATA[k].label;
+  if(des)des.textContent=DRV_DESC[k];
+  if(awChart1){awChart1.destroy();awChart1=null;}iA3();
+};
+
+function rA4(){
+  const bars=DRV_IMP.map(d=>`<div class="aw-bar-row"><span class="aw-bar-label">${d.name}</span>
+    <div class="aw-bar-track"><div class="aw-bar-fill" style="width:${d.value*100}%;background:${d.color}">${(d.value*100).toFixed(0)}%</div></div>
+    <span class="aw-bar-pct">${(d.value*100).toFixed(0)}%</span></div>`).join('');
+  return `<div class="aw-inner">${awEx('Step 4 of 5','How Drivers Shape the Forecast',
+    ['After fitting ARIMAX, the model assigns a <strong style="color:#EEEEFF">coefficient</strong> to each driver — larger = stronger predictive pull.',
+     'With planned driver values fed in, the ARIMAX forecast (green) sits above the pure ARIMA line, reflecting anticipated growth.',
+     'Unlike ARIMA\'s fixed trend, the driver coefficients let the model react to business decisions.'])}
+    <div class="aw-chart-area">
+      <div class="aw-chart-box"><p>ARIMA vs ARIMAX Forecast</p><div style="height:170px"><canvas id="awc4a"></canvas></div></div>
+      <div class="aw-chart-box"><p>Driver Importance (learned coefficient magnitude)</p>
+        <div class="aw-bars" style="padding:4px 0">${bars}</div>
+        <p style="font-size:10px;color:var(--ey-grey);margin-top:8px">Normalised to [0,1].</p>
+      </div>
+    </div></div>`;}
+function iA4(){awChart1=mkC('awc4a',{labels:MO_ALL,datasets:[
+  {label:'Actuals',          data:[...REV_ACT,...n6()],  borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:2,borderWidth:1.5},
+  {label:'Backtest',         data:[...ARIMA_BT,...n6()], borderColor:AC,backgroundColor:'transparent',borderDash:[3,2],tension:0.4,pointRadius:0,borderWidth:1.5},
+  {label:'ARIMA Forecast',   data:[...n12(),...ARIMA_FC],borderColor:AC,backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+  {label:'ARIMAX w/Drivers', data:[...n12(),...ARIMAX_FC],borderColor:'rgba(80,220,140,1)',backgroundColor:'rgba(80,220,140,0.1)',tension:0.4,pointRadius:3,borderWidth:2.5,fill:true},
+]},{plugins:{legend:{position:'top',labels:{color:'rgba(255,255,255,0.6)',font:{size:9},boxWidth:9,padding:6}}},scales:{x:{grid:{color:DG},ticks:DT},y:{grid:{color:DG},ticks:DT}}});}
+
+function calcA(){return ARIMA_FC.map((b,i)=>Math.round(b+WA.marketing*A_CONTRIB.marketing[i]+WA.headcount*A_CONTRIB.headcount[i]+WA.marketindex*A_CONTRIB.marketindex[i]));}
+function rA5(){
+  const fc=calcA(),up=fc.reduce((s,v,i)=>s+(v-ARIMA_FC[i]),0);
+  const SK=[{key:'marketing',label:'Marketing Spend',color:'rgba(255,180,80,1)'},{key:'headcount',label:'Headcount Growth',color:'rgba(90,210,230,1)'},{key:'marketindex',label:'Market Index',color:'rgba(230,200,60,1)'}];
+  const slides=SK.map(s=>`<div class="aw-slider-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:12px;font-weight:600;color:#D0D0E8">${s.label}</span>
+      <span id="aw-la-${s.key}" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:${s.color.replace('1)','0.15)')};color:${s.color}">100%</span>
+    </div>
+    <input type="range" min="0" max="2" step="0.05" value="1" oninput="awSlA('${s.key}',this.value)">
+    <div class="aw-slider-ticks"><span>0%</span><span>100%</span><span>200%</span></div>
+    <p style="font-size:10px;color:var(--ey-grey);margin-top:6px">6-mo contribution: <span id="aw-ca-${s.key}" style="font-weight:700;color:#D0D0E8">+$${A_CONTRIB[s.key].reduce((a,c)=>a+c,0)}M</span></p>
+  </div>`).join('');
+  return `<div class="aw-inner" style="grid-template-columns:280px 1fr">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="aw-tag">Step 5 of 5</span>
+      <h2 style="font-size:15px;font-weight:800;color:#EEEEFF;margin-bottom:4px">Tune Driver Weights</h2>
+      <p style="font-size:12px;color:#A8A8C0;line-height:1.7">Drag each slider to simulate how changing a driver's contribution flows through to the ARIMAX forecast. 1.0 = the model's learned coefficient.</p>
+      ${slides}
+      <div class="aw-uplift-card">
+        <div class="u-label">Total driver uplift</div>
+        <div class="u-val" id="aw-up-a">+$${up.toFixed(0)}M</div>
+        <div class="u-sub">vs pure ARIMA over 6 months</div>
+      </div>
+    </div>
+    <div class="aw-chart-area">
+      <div class="aw-chart-box"><p>Live ARIMAX Forecast — adjust sliders to update</p><div style="height:360px"><canvas id="awc5a"></canvas></div></div>
+    </div>
+  </div>`;}
+function iA5(){const fc=calcA();awChart1=mkC('awc5a',{labels:MO_ALL,datasets:[
+  {label:'Actuals',              data:[...REV_ACT,...n6()], borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+  {label:'ARIMA (no drivers)',   data:[...n12(),...ARIMA_FC],borderColor:AC,backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2,borderDash:[5,4]},
+  {label:'ARIMAX (with drivers)',data:[...n12(),...fc],      borderColor:'rgba(80,220,140,1)',backgroundColor:'rgba(80,220,140,0.12)',tension:0.4,pointRadius:4,borderWidth:2.5,fill:true},
+]},{animation:{duration:250}});}
+window.awSlA=function(key,val){
+  WA[key]=parseFloat(val);
+  const l=document.getElementById('aw-la-'+key);if(l)l.textContent=(val*100).toFixed(0)+'%';
+  const c=document.getElementById('aw-ca-'+key);if(c)c.textContent='+$'+A_CONTRIB[key].reduce((a,v)=>a+v*WA[key],0).toFixed(1)+'M';
+  const fc=calcA();
+  const u=document.getElementById('aw-up-a');if(u)u.textContent='+$'+fc.reduce((s,v,i)=>s+(v-ARIMA_FC[i]),0).toFixed(0)+'M';
+  if(awChart1){awChart1.data.datasets[2].data=[...n12(),...fc];awChart1.update('none');}
+};
+
+// ── XGBoost step renderers ─────────────────────────────────────────
+function rX1(){return `<div class="aw-inner">${awEx('Step 1 of 5','Your Forecast Target',
+  ['XGBoost also predicts Revenue ($M) — but treats it as a <strong style="color:#EEEEFF">supervised regression</strong> problem, not a time series model.',
+   'It constructs a <strong style="color:#EEEEFF">feature table</strong>: lagged values, rolling averages, calendar indicators, and driver values. Each month = one row.',
+   'This lets XGBoost exploit non-linear interactions between drivers — something ARIMA cannot do.'],
+  {label:'Target variable',value:'Revenue ($M)',color:'rgba(255,255,255,.7)'})}
+  <div class="aw-chart-area">
+    <div class="aw-chart-box"><p>Monthly Revenue — Actuals (Jan–Dec 2024)</p><div style="height:240px"><canvas id="awcx1"></canvas></div></div>
+    <div class="aw-info-box" style="border-color:rgba(255,140,80,.3)"><strong style="color:${XC}">Key difference from ARIMA:</strong> XGBoost treats each month as an independent row — temporal ordering comes from engineered lag features.</div>
+  </div></div>`;}
+function iX1(){awChart1=mkC('awcx1',{labels:MO_ACT,datasets:[{label:'Revenue ($M)',data:REV_ACT,
+  borderColor:XC,backgroundColor:'rgba(255,140,80,0.07)',tension:0.4,fill:true,pointRadius:4,borderWidth:2.5}]});}
+
+function treeSVG(){return `<svg viewBox="0 0 700 282" width="100%" style="max-height:240px">
+  <line class="tree-edge" x1="350" y1="54" x2="160" y2="112"/>
+  <line class="tree-edge" x1="350" y1="54" x2="540" y2="112"/>
+  <line class="tree-edge" x1="160" y1="156" x2="72"  y2="216"/>
+  <line class="tree-edge" x1="160" y1="156" x2="248" y2="216"/>
+  <line class="tree-edge" x1="540" y1="156" x2="452" y2="216"/>
+  <line class="tree-edge" x1="540" y1="156" x2="628" y2="216"/>
+  <text class="tree-label-yes" x="228" y="88">Yes</text><text class="tree-label-no"  x="449" y="88">No</text>
+  <text class="tree-label-yes" x="88"  y="194">Yes</text><text class="tree-label-no"  x="188" y="194">No</text>
+  <text class="tree-label-yes" x="468" y="194">Yes</text><text class="tree-label-no"  x="612" y="194">No</text>
+  <rect class="tree-node-decision" x="216" y="10"  width="268" height="44" rx="7"/>
+  <text class="tree-text-node" x="350" y="28">Revenue (t-1) ≤ $138M ?</text>
+  <text class="tree-text-sub"  x="350" y="46">Split on most informative feature</text>
+  <rect class="tree-node-decision" x="54"  y="112" width="212" height="44" rx="7"/>
+  <text class="tree-text-node" x="160" y="130">Mktg Spend ≤ $1,050K ?</text>
+  <text class="tree-text-sub"  x="160" y="148">2nd split — left branch</text>
+  <rect class="tree-node-decision" x="434" y="112" width="212" height="44" rx="7"/>
+  <text class="tree-text-node" x="540" y="130">Headcount Growth ≤ 5.5% ?</text>
+  <text class="tree-text-sub"  x="540" y="148">2nd split — right branch</text>
+  <rect class="tree-node-leaf" x="8"   y="216" width="128" height="42" rx="7"/>
+  <text class="tree-text-leaf" x="72"  y="233">Predict</text><text class="tree-text-leaf" x="72"  y="250">$143M</text>
+  <rect class="tree-node-leaf" x="184" y="216" width="128" height="42" rx="7"/>
+  <text class="tree-text-leaf" x="248" y="233">Predict</text><text class="tree-text-leaf" x="248" y="250">$149M</text>
+  <rect class="tree-node-leaf" x="388" y="216" width="128" height="42" rx="7"/>
+  <text class="tree-text-leaf" x="452" y="233">Predict</text><text class="tree-text-leaf" x="452" y="250">$154M</text>
+  <rect class="tree-node-leaf" x="564" y="216" width="128" height="42" rx="7"/>
+  <text class="tree-text-leaf" x="628" y="233">Predict</text><text class="tree-text-leaf" x="628" y="250">$161M</text>
+</svg>`;}
+function rX2(){return `<div class="aw-inner">${awEx('Step 2 of 5','Decision Trees',
+  ['The core building block of XGBoost is a <strong style="color:#EEEEFF">decision tree</strong>. It partitions the feature space with binary splits, producing a constant prediction in each leaf.',
+   'Each split is chosen to maximally reduce loss (RMSE). The tree below splits first on prior-month revenue, then on driver features.',
+   'A single shallow tree is a <em>weak learner</em>. The power of XGBoost comes from stacking hundreds of these together.'],
+  {label:'Tree depth',value:'max_depth = 2',color:XC})}
+  <div class="aw-chart-area">
+    <div class="aw-chart-box" style="padding:20px">${treeSVG()}</div>
+    <div class="aw-info-box" style="border-color:rgba(99,160,255,.3)">
+      <strong style="color:#93c5fd">Blue = decision split.</strong>
+      <strong style="color:#4ade80;margin-left:8px">Green = leaf prediction.</strong>
+      Each leaf outputs a residual correction added to the ensemble — not a standalone forecast.
+    </div>
+  </div></div>`;}
+function iX2(){}
+
+function rX3(){return `<div class="aw-inner">${awEx('Step 3 of 5','Gradient Boosting',
+  ['XGBoost trains trees <em>sequentially</em>. Each new tree fits the <strong style="color:#EEEEFF">residuals</strong> left by all previous trees — each correcting the last.',
+   'The loss curve drops sharply in early rounds then plateaus. Most learning happens by round 10; further trees yield diminishing returns.',
+   'The chart shows the ensemble\'s fit converging toward actuals — from coarse (round 1) to tight (round 20).'],
+  {label:'Ensemble size',value:'n_estimators = 20',color:XC})}
+  <div class="aw-chart-area">
+    <div class="aw-two-charts">
+      <div class="aw-chart-box"><p>Training Loss (RMSE) per Boosting Round</p><div style="height:190px"><canvas id="awcx3a"></canvas></div></div>
+      <div class="aw-chart-box"><p>Ensemble Predictions vs Actuals</p><div style="height:190px"><canvas id="awcx3b"></canvas></div></div>
+    </div>
+    <div class="aw-boost-eq">
+      <span class="token">F<sub>t-1</sub> = current ensemble</span>
+      <span class="sym">+</span>
+      <span class="token">η × h<sub>t</sub> = learning rate × new tree</span>
+      <span class="sym">=</span>
+      <span class="token result">F<sub>t</sub> = updated ensemble</span>
+    </div>
+  </div></div>`;}
+function iX3(){
+  awChart1=new Chart(document.getElementById('awcx3a'),{type:'line',
+    data:{labels:XGB_ROUNDS,datasets:[{label:'RMSE',data:XGB_LOSS,borderColor:XC,backgroundColor:'rgba(255,140,80,0.1)',tension:0.4,fill:true,pointRadius:2,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{title:{display:true,text:'Boosting round',color:'rgba(255,255,255,.3)',font:{size:9}},ticks:DT,grid:{color:DG}},
+              y:{title:{display:true,text:'RMSE',color:'rgba(255,255,255,.3)',font:{size:9}},ticks:DT,grid:{color:DG}}}}});
+  awChart2=mkC('awcx3b',{labels:MO_ACT,datasets:[
+    {label:'Actuals', data:REV_ACT,    borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+    {label:'Round 1', data:XGB_BT_R1,  borderColor:'rgba(255,140,80,.35)',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:1.5,borderDash:[3,2]},
+    {label:'Round 10',data:XGB_BT_R10, borderColor:'rgba(255,140,80,.75)',backgroundColor:'transparent',tension:0.4,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
+    {label:'Round 20',data:XGB_BT_R20, borderColor:'rgba(80,220,140,1)',backgroundColor:'transparent',tension:0.4,pointRadius:0,borderWidth:2},
+  ]},{plugins:{legend:{position:'top',labels:{color:'rgba(255,255,255,0.6)',font:{size:9},boxWidth:9,padding:6}}},scales:{x:{grid:{color:DG},ticks:DT},y:{grid:{color:DG},ticks:DT}}});}
+
+function rX4(){
+  const bars=XGB_FEAT_IMP.map(f=>`<div class="aw-bar-row"><span class="aw-bar-label">${f.name}</span>
+    <div class="aw-bar-track"><div class="aw-bar-fill" style="width:${(f.value/0.42)*100}%;background:${f.color}">${(f.value*100).toFixed(0)}%</div></div>
+    <span class="aw-bar-pct">${(f.value*100).toFixed(0)}%</span></div>`).join('');
+  return `<div class="aw-inner">${awEx('Step 4 of 5','Feature Importance',
+    ['XGBoost ranks features by <strong style="color:#EEEEFF">gain</strong> — the average loss reduction when a feature is used as a split across all trees.',
+     'Lagged revenue (t-1) dominates because the most recent revenue is the strongest single predictor.',
+     'Unlike ARIMA\'s linear coefficients, XGBoost can capture <em>non-linear interactions</em> — e.g. marketing spend matters more when market conditions are already strong.'],
+    {label:'Importance metric',value:'XGBoost Gain',color:XC})}
+    <div class="aw-chart-area">
+      <div class="aw-chart-box"><p>Lag-only baseline vs full feature set</p><div style="height:160px"><canvas id="awcx4a"></canvas></div></div>
+      <div class="aw-chart-box"><p>Feature Importance by Gain</p>
+        <div class="aw-bars" style="padding:4px 0">${bars}</div>
+        <p style="font-size:10px;color:var(--ey-grey);margin-top:8px">Bars normalised relative to top feature.</p>
+      </div>
+    </div></div>`;}
+function iX4(){awChart1=mkC('awcx4a',{labels:MO_ALL,datasets:[
+  {label:'Actuals',            data:[...REV_ACT,...n6()],     borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:2,borderWidth:1.5},
+  {label:'XGBoost (lag only)', data:[...n12(),...XGB_FC_BASE],borderColor:XC,backgroundColor:'transparent',borderDash:[3,2],tension:0.4,pointRadius:0,borderWidth:1.5},
+  {label:'XGBoost (+drivers)', data:[...n12(),...[155,161,165,171,170,178]],borderColor:'rgba(80,220,140,1)',backgroundColor:'rgba(80,220,140,0.1)',tension:0.4,pointRadius:3,borderWidth:2.5,fill:true},
+]},{plugins:{legend:{position:'top',labels:{color:'rgba(255,255,255,0.6)',font:{size:9},boxWidth:9,padding:6}}},scales:{x:{grid:{color:DG},ticks:DT},y:{grid:{color:DG},ticks:DT}}});}
+
+function calcX(){return XGB_FC_BASE.map((b,i)=>Math.round(b+WX.marketing*X_CONTRIB.marketing[i]+WX.headcount*X_CONTRIB.headcount[i]+WX.marketindex*X_CONTRIB.marketindex[i]));}
+function rX5(){
+  const fc=calcX(),up=fc.reduce((s,v,i)=>s+(v-XGB_FC_BASE[i]),0);
+  const SK=[{key:'marketing',label:'Marketing Spend',color:'rgba(255,180,80,1)'},{key:'headcount',label:'Headcount Growth',color:'rgba(90,210,230,1)'},{key:'marketindex',label:'Market Index',color:'rgba(230,200,60,1)'}];
+  const slides=SK.map(s=>`<div class="aw-slider-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:12px;font-weight:600;color:#D0D0E8">${s.label}</span>
+      <span id="aw-lx-${s.key}" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:${s.color.replace('1)','0.15)')};color:${s.color}">100%</span>
+    </div>
+    <input type="range" min="0" max="2" step="0.05" value="1" oninput="awSlX('${s.key}',this.value)">
+    <div class="aw-slider-ticks"><span>0%</span><span>100%</span><span>200%</span></div>
+    <p style="font-size:10px;color:var(--ey-grey);margin-top:6px">6-mo contribution: <span id="aw-cx-${s.key}" style="font-weight:700;color:#D0D0E8">+$${X_CONTRIB[s.key].reduce((a,c)=>a+c,0)}M</span></p>
+  </div>`).join('');
+  return `<div class="aw-inner" style="grid-template-columns:280px 1fr">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="aw-tag">Step 5 of 5</span>
+      <h2 style="font-size:15px;font-weight:800;color:#EEEEFF;margin-bottom:4px">Tune Feature Contributions</h2>
+      <p style="font-size:12px;color:#A8A8C0;line-height:1.7">Simulate a scenario: what if a driver feature contributes more or less than the model learned? Revenue (t-1) is an internal lag feature, held fixed.</p>
+      ${slides}
+      <div class="aw-uplift-card" style="background:rgba(255,140,80,.07);border-color:rgba(255,140,80,.25)">
+        <div class="u-label" style="color:rgba(255,140,80,.7)">Driver feature uplift</div>
+        <div class="u-val" id="aw-up-x" style="color:${XC}">+$${up.toFixed(0)}M</div>
+        <div class="u-sub" style="color:rgba(255,140,80,.5)">vs lag-only baseline over 6 months</div>
+      </div>
+    </div>
+    <div class="aw-chart-area">
+      <div class="aw-chart-box"><p>Live XGBoost Forecast — adjust sliders to update</p><div style="height:360px"><canvas id="awcx5"></canvas></div></div>
+    </div>
+  </div>`;}
+function iX5(){const fc=calcX();awChart1=mkC('awcx5',{labels:MO_ALL,datasets:[
+  {label:'Actuals',                    data:[...REV_ACT,...n6()],     borderColor:'rgba(255,230,0,1)',backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2},
+  {label:'XGBoost (lag only)',          data:[...n12(),...XGB_FC_BASE],borderColor:XC,backgroundColor:'transparent',tension:0.4,pointRadius:3,borderWidth:2,borderDash:[5,4]},
+  {label:'XGBoost (+driver features)',  data:[...n12(),...fc],          borderColor:'rgba(80,220,140,1)',backgroundColor:'rgba(80,220,140,0.12)',tension:0.4,pointRadius:4,borderWidth:2.5,fill:true},
+]},{animation:{duration:250}});}
+window.awSlX=function(key,val){
+  WX[key]=parseFloat(val);
+  const l=document.getElementById('aw-lx-'+key);if(l)l.textContent=(val*100).toFixed(0)+'%';
+  const c=document.getElementById('aw-cx-'+key);if(c)c.textContent='+$'+X_CONTRIB[key].reduce((a,v)=>a+v*WX[key],0).toFixed(1)+'M';
+  const fc=calcX();
+  const u=document.getElementById('aw-up-x');if(u)u.textContent='+$'+fc.reduce((s,v,i)=>s+(v-XGB_FC_BASE[i]),0).toFixed(0)+'M';
+  if(awChart1){awChart1.data.datasets[2].data=[...n12(),...fc];awChart1.update('none');}
+};
+
+// ── Dispatch tables ────────────────────────────────────────────────
+const RENDERS_A=[rA1,rA2,rA3,rA4,rA5],INITS_A=[iA1,iA2,iA3,iA4,iA5];
+const RENDERS_X=[rX1,rX2,rX3,rX4,rX5],INITS_X=[iX1,iX2,iX3,iX4,iX5];
+
+// ── Engine ─────────────────────────────────────────────────────────
+function awRenderStepper(){
+  const ss=awAlgo==='arima'?STEPS_A:STEPS_X;
+  document.getElementById('aw-stepper').innerHTML=ss.map((s,i)=>{
+    const act=i===awStep,done=i<awStep;
+    const lL=i===0?'invis':done?'done':'',lR=i===ss.length-1?'invis':done||act?'done':'';
+    return `<button class="aw-step-btn" onclick="awGoTo(${i})">
+      <div class="aw-step-row">
+        <div class="aw-step-line ${lL}"></div>
+        <div class="aw-step-dot ${act?'active':done?'done':''}">${done?'✓':s.id}</div>
+        <div class="aw-step-line ${lR}"></div>
+      </div>
+      <span class="aw-step-short ${act?'active':done?'done':''}">${s.short}</span>
+    </button>`;
+  }).join('');}
+
+function awRenderContent(){
+  awKill();
+  const renders=awAlgo==='arima'?RENDERS_A:RENDERS_X;
+  const inits  =awAlgo==='arima'?INITS_A  :INITS_X;
+  document.getElementById('aw-content').innerHTML=renders[awStep]();
+  requestAnimationFrame(()=>inits[awStep]());}
+
+function awRenderFooter(){
+  const ss=awAlgo==='arima'?STEPS_A:STEPS_X;
+  const labels=awAlgo==='arima'?LABELS_A:LABELS_X;
+  document.getElementById('aw-step-label').textContent='Step '+(awStep+1)+' of '+ss.length+' — '+labels[awStep];
+  const prev=document.getElementById('aw-btn-prev'),next=document.getElementById('aw-btn-next');
+  prev.disabled=awStep===0;
+  if(awStep===ss.length-1){next.textContent='✓ Complete';next.classList.remove('primary');next.disabled=true;}
+  else{next.textContent='Next →';next.classList.add('primary');next.disabled=false;}}
+
+function awRenderAlgoUI(){
+  const isA=awAlgo==='arima';
+  const btn=document.getElementById('aw-dd-btn');
+  if(btn)btn.className='aw-algo-btn '+(isA?'arima-active':'xgb-active');
+  document.getElementById('aw-dd-label').textContent=isA?'ARIMA / ARIMAX':'XGBoost';
+  const ca=document.getElementById('aw-chk-arima'),cx=document.getElementById('aw-chk-xgb');
+  if(ca)ca.style.display=isA?'':'none';
+  if(cx)cx.style.display=isA?'none':'';}
+
+window.awToggleDd=function(){
+  const m=document.getElementById('aw-dd-menu');
+  m.style.display=m.style.display==='none'?'block':'none';};
+window.awSelectAlgo=function(a){
+  document.getElementById('aw-dd-menu').style.display='none';
+  if(awAlgo===a)return;
+  awAlgo=a;awStep=0;
+  awRenderAlgoUI();awRenderStepper();awRenderContent();awRenderFooter();};
+window.awNavigate=function(d){awGoTo(awStep+d);};
+window.awGoTo=function(i){
+  const ss=awAlgo==='arima'?STEPS_A:STEPS_X;
+  if(i<0||i>=ss.length)return;
+  awStep=i;awRenderStepper();awRenderContent();awRenderFooter();};
+document.addEventListener('click',function(e){
+  const w=document.getElementById('aw-dd-wrap');
+  if(w&&!w.contains(e.target))document.getElementById('aw-dd-menu').style.display='none';});
+
+// ── Boot ─────────────────────────────────────────────────────────
+awRenderAlgoUI();awGoTo(0);
+
+})();
+
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+// DRIVER SELECTION DEEP-DIVE
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+(function(){
+const DS_ALL=[
+  {id:'mktg', name:'Marketing Spend', corr:.82,vif:2.1,grp:'kept'},
+  {id:'hc',   name:'Headcount Growth',corr:.74,vif:1.8,grp:'kept'},
+  {id:'mkt',  name:'Market Index',    corr:.68,vif:1.5,grp:'kept'},
+  {id:'leads',name:'Sales Leads',     corr:.64,vif:7.2,grp:'collinear'},
+  {id:'cust', name:'Cust. Sat. Score',corr:.62,vif:5.8,grp:'collinear'},
+  {id:'digit',name:'Digital Ad Spend',corr:.61,vif:8.1,grp:'collinear'},
+  {id:'hcatt',name:'HR Attrition',    corr:.57,vif:6.9,grp:'low'},
+  {id:'gdp',  name:'GDP Growth',      corr:.55,vif:4.3,grp:'low'},
+  {id:'int',  name:'Interest Rate Δ', corr:.48,vif:3.2,grp:'low'},
+  {id:'cpi',  name:'CPI Inflation',   corr:.41,vif:2.2,grp:'low'},
+  {id:'oil',  name:'Oil Price Index', corr:.33,vif:1.4,grp:'low'},
+  {id:'wx',   name:'Weather Index',   corr:.28,vif:1.1,grp:'low'},
+];
+const DS_THR=['mktg','hc','mkt','leads','cust','digit'];
+const DS_NM={mktg:'Marketing',hc:'Headcount',mkt:'Market Idx',leads:'Sales Leads',cust:'Cust. Sat.',digit:'Digital Ad'};
+const DS_MX={
+  'mktg-mktg':1.00,'mktg-hc':.31,'mktg-mkt':.28,'mktg-leads':.87,'mktg-cust':.79,'mktg-digit':.91,
+  'hc-mktg':.31,  'hc-hc':1.00,  'hc-mkt':.18, 'hc-leads':.25,  'hc-cust':.35,  'hc-digit':.22,
+  'mkt-mktg':.28, 'mkt-hc':.18,  'mkt-mkt':1.00,'mkt-leads':.19, 'mkt-cust':.31, 'mkt-digit':.21,
+  'leads-mktg':.87,'leads-hc':.25,'leads-mkt':.19,'leads-leads':1.00,'leads-cust':.74,'leads-digit':.82,
+  'cust-mktg':.79,'cust-hc':.35, 'cust-mkt':.31,'cust-leads':.74,'cust-cust':1.00,'cust-digit':.71,
+  'digit-mktg':.91,'digit-hc':.22,'digit-mkt':.21,'digit-leads':.82,'digit-cust':.71,'digit-digit':1.00,
+};
+let ddStep=0,ddThr=0.60;
+const DD_STEPS=[{id:1,short:'Candidates'},{id:2,short:'Threshold'},{id:3,short:'Collinearity'},{id:4,short:'Final Set'}];
+const DD_LABELS=['The Candidate Pool','Correlation Threshold','Collinearity Pruning','The Final Driver Set'];
+
+function bFill(grp,p){if(!p)return'rgba(255,255,255,.18)';if(grp==='kept')return'rgba(80,220,140,1)';if(grp==='collinear')return'rgba(249,115,22,1)';return'rgba(160,160,200,1)';}
+function mkBars(thr){return DS_ALL.map(d=>{const p=d.corr>=thr,op=p?1:.3,c=bFill(d.grp,p);return`<div class="ds-bar-row"><span class="ds-bar-name" style="opacity:${op}">${d.name}</span><div class="ds-bar-track"><div class="ds-bar-fill" style="width:${d.corr*100}%;background:${c};opacity:${op}">${d.corr.toFixed(2)}</div></div></div>`;}).join('');}
+
+function rDD1(){return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 1 of 4</span><h2>Start Wide: All 12 Candidates</h2><p>Before any forecasting begins, we assemble every external series that <em>might</em> be related to revenue.</p><p>The bar shows each driver's Pearson |r| with the target at its best lag. Longer = stronger raw signal.</p><p>At this stage, nothing is excluded — we need to see the full field before cutting.</p><div class="aw-hl"><div class="aw-hl-dot" style="background:rgba(80,220,140,1)"></div><div><div class="aw-hl-sub">Candidate pool</div><div class="aw-hl-val">12 series</div></div></div></div><div class="aw-chart-area"><div class="aw-chart-box"><p>Pearson |r| with revenue — all candidates (sorted high → low)</p><div style="padding:4px 0">${mkBars(0)}</div><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px"><span style="font-size:10px;color:var(--ey-grey)"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(80,220,140,1);margin-right:4px"></span>Will survive</span><span style="font-size:10px;color:var(--ey-grey)"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(249,115,22,1);margin-right:4px"></span>Collinear (to be pruned)</span><span style="font-size:10px;color:var(--ey-grey)"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(160,160,200,1);margin-right:4px"></span>Below threshold</span></div></div></div></div>`;}
+
+function rDD2(){
+  const srv=DS_ALL.filter(d=>d.corr>=ddThr).length;
+  return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 2 of 4</span><h2>Apply a Correlation Threshold</h2><p>Drivers with low correlation are likely picking up noise rather than a real relationship.</p><p>We set a <strong style="color:#EEEEFF">minimum Pearson r threshold</strong> (default 0.60). Drivers below it are excluded regardless of other properties.</p><p>Move the slider to see how the threshold changes which drivers survive to the next stage.</p></div><div class="aw-chart-area"><div class="aw-chart-box"><p>Correlation threshold filter — drag to adjust</p><div style="margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#D0D0E8;font-weight:600">τ = <span id="dd-thr-val">${ddThr.toFixed(2)}</span></span><span class="rc-badge${srv>=4?' ok':''}" id="dd-surv-badge">${srv} of ${DS_ALL.length} pass</span></div><input type="range" style="-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:rgba(255,255,255,.15);outline:none;cursor:pointer" min="0.45" max="0.75" step="0.01" value="${ddThr}" oninput="ddUpdateThr(this.value)"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--ey-grey);margin-top:4px"><span>0.45</span><span>0.60 (Lighthouse default)</span><span>0.75</span></div></div><div id="dd-bars-s2">${mkBars(ddThr)}</div></div><div class="aw-info-box" style="border-color:rgba(255,230,0,.15)">τ = 0.60 is the Lighthouse default. Per-account configuration is available — noisier series may benefit from a stricter threshold.</div></div></div>`;}
+function iDD2(){}
+window.ddUpdateThr=function(v){
+  ddThr=parseFloat(v);
+  const t=document.getElementById('dd-thr-val');if(t)t.textContent=ddThr.toFixed(2);
+  const srv=DS_ALL.filter(d=>d.corr>=ddThr).length;
+  const b=document.getElementById('dd-surv-badge');if(b){b.textContent=srv+' of '+DS_ALL.length+' pass';b.className='rc-badge'+(srv>=4?' ok':'');}
+  const bars=document.getElementById('dd-bars-s2');if(bars)bars.innerHTML=mkBars(ddThr);};
+
+function rDD3(){
+  const hd=DS_THR.map(k=>`<th>${DS_NM[k]}</th>`).join('');
+  const rb=DS_THR.map(row=>{
+    const pruned=['leads','cust','digit'].includes(row);
+    const cells=DS_THR.map(col=>{const r=DS_MX[row+'-'+col]||0;const bg=r>=.85?'rgba(239,68,68,.35)':r>=.70?'rgba(249,115,22,.25)':r>=.50?'rgba(255,180,80,.12)':'rgba(255,255,255,.04)';const tc=r>=.85?'#f87171':r>=.70?'#fdba74':r>=.50?'#fcd34d':'#808090';return`<td id="dm-${row}-${col}" style="background:${bg};color:${tc}">${r===1?'—':r.toFixed(2)}</td>`;}).join('');
+    return`<tr id="dm-row-${row}"><th style="text-align:right;font-size:10px;padding:3px 6px;color:${pruned?'#f87171':'#A0A0B8'}" id="dm-lbl-${row}">${DS_NM[row]}</th>${cells}</tr>`;
+  }).join('');
+  return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 3 of 4</span><h2>Remove Collinear Drivers</h2><p>Even among correlated drivers, some carry <em>redundant information</em>. Marketing Spend, Sales Leads, and Digital Ad Spend all track the same underlying signal.</p><p>We calculate pairwise correlations. Any pair with r &gt; 0.75 retains only the one with <strong style="color:#EEEEFF">lower VIF</strong>.</p><p>Cells in <span style="color:#f87171">red</span> or <span style="color:#fdba74">orange</span> indicate collinear pairs that trigger removal.</p><div class="aw-extra"><button onclick="ddRunPrune()" id="dd-prune-btn" class="aw-nav-btn primary" style="font-size:11px">Run Pruning →</button><div id="dd-prune-msg" style="font-size:11px;color:#4ade80;display:none;margin-top:4px">✓ 3 removed. 3 independent drivers remain.</div></div></div><div class="aw-chart-area"><div class="aw-chart-box" style="overflow-x:auto"><p>Pairwise correlation matrix — 6 threshold survivors</p><table class="ds-mx-tbl"><thead><tr><th></th>${hd}</tr></thead><tbody>${rb}</tbody></table><p style="font-size:10px;color:var(--ey-grey);margin-top:8px"><span style="color:#f87171">■</span> r &gt; 0.85 &nbsp;<span style="color:#fdba74">■</span> r &gt; 0.70 &nbsp;pruning threshold: r &gt; 0.75</p></div></div></div>`;}
+function iDD3(){}
+window.ddRunPrune=function(){
+  const pr=['leads','cust','digit'];
+  pr.forEach((id,i)=>setTimeout(()=>{
+    const row=document.getElementById('dm-row-'+id);if(row)row.style.opacity='0.15';
+    const lbl=document.getElementById('dm-lbl-'+id);if(lbl){lbl.style.textDecoration='line-through';lbl.style.color='#555568';}
+    DS_THR.forEach(col=>{const c1=document.getElementById('dm-'+id+'-'+col);if(c1)c1.style.opacity='0.15';const c2=document.getElementById('dm-'+col+'-'+id);if(c2)c2.style.opacity='0.15';});
+  },i*450));
+  setTimeout(()=>{const btn=document.getElementById('dd-prune-btn');if(btn)btn.disabled=true;const msg=document.getElementById('dd-prune-msg');if(msg)msg.style.display='block';},pr.length*450+300);};
+
+function rDD4(){
+  const kept=[
+    {name:'Marketing Spend', corr:.82,vif:2.1,lag:1,color:'rgba(255,180,80,1)', desc:'Strongest predictor. Marketing investment precedes revenue realisation by ~1 month.'},
+    {name:'Headcount Growth',corr:.74,vif:1.8,lag:0,color:'rgba(90,210,230,1)',  desc:'Concurrent driver. Headcount changes in the same period directly correlate with capacity and output.'},
+    {name:'Market Index',    corr:.68,vif:1.5,lag:2,color:'rgba(230,200,60,1)',  desc:'Macro leading indicator. Conditions 2 months prior influence buying decisions.'},
+  ];
+  const cards=kept.map(k=>`<div class="ds-surv-card"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:700;color:#EEEEFF">${k.name}</span><span class="ds-surv-pill" style="background:${k.color.replace('1)','0.1)')};border-color:${k.color};color:${k.color}">SELECTED</span></div><p style="font-size:11px;color:#909090;line-height:1.6;margin:0">${k.desc}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="font-size:10px;background:rgba(255,255,255,.06);padding:2px 8px;border-radius:4px;color:#C0C0D8">r = <strong>${k.corr.toFixed(2)}</strong></span><span style="font-size:10px;background:rgba(255,255,255,.06);padding:2px 8px;border-radius:4px;color:#C0C0D8">VIF = <strong>${k.vif.toFixed(1)}</strong></span><span style="font-size:10px;background:rgba(255,255,255,.06);padding:2px 8px;border-radius:4px;color:#C0C0D8">Best lag = <strong>${k.lag} mo</strong></span></div><div style="height:5px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden"><div style="height:100%;width:${k.corr*100}%;background:${k.color};border-radius:3px"></div></div></div>`).join('');
+  return`<div><div class="aw-inner" style="margin-bottom:20px"><div class="aw-explainer"><span class="aw-tag">Stage 4 of 4</span><h2>The Final Driver Set</h2><p>After two elimination rounds — threshold filtering and collinearity pruning — 3 drivers emerge with strong, <strong style="color:#EEEEFF">independent</strong>, non-redundant signal.</p><p>These 3 form the exogenous input vector for ARIMAX and the feature set for XGBoost, selected entirely by data.</p><div class="ds-funnel"><div class="ds-f-box"><div class="ds-f-n">12</div><div class="ds-f-lbl">Candidates</div></div><div class="ds-f-arrow">→</div><div class="ds-f-box" style="border-color:rgba(255,180,80,.3)"><div class="ds-f-n" style="color:#fdba74">6</div><div class="ds-f-lbl">Pass τ threshold</div></div><div class="ds-f-arrow">→</div><div class="ds-f-box" style="border-color:rgba(80,220,140,.4)"><div class="ds-f-n" style="color:#4ade80">3</div><div class="ds-f-lbl">Final survivors</div></div></div></div><div style="display:flex;flex-direction:column;gap:12px">${cards}</div></div></div>`;}
+function iDD4(){}
+
+function ddRdrStepper(){document.getElementById('dd-stepper').innerHTML=DD_STEPS.map((s,i)=>{const a=i===ddStep,d=i<ddStep;const lL=i===0?'invis':d?'done':'',lR=i===DD_STEPS.length-1?'invis':d||a?'done':'';return`<button class="aw-step-btn" onclick="ddGoTo(${i})"><div class="aw-step-row"><div class="aw-step-line ${lL}"></div><div class="aw-step-dot ${a?'active':d?'done':''}">${d?'✓':s.id}</div><div class="aw-step-line ${lR}"></div></div><span class="aw-step-short ${a?'active':d?'done':''}">${s.short}</span></button>`;}).join('');}
+function ddRdrContent(){const R=[rDD1,rDD2,rDD3,rDD4],I=[function(){},iDD2,iDD3,iDD4];document.getElementById('dd-content').innerHTML=R[ddStep]();requestAnimationFrame(()=>I[ddStep]());}
+function ddRdrFooter(){document.getElementById('dd-step-label').textContent='Stage '+(ddStep+1)+' of '+DD_STEPS.length+' — '+DD_LABELS[ddStep];const p=document.getElementById('dd-btn-prev'),n=document.getElementById('dd-btn-next');p.disabled=ddStep===0;if(ddStep===DD_STEPS.length-1){n.textContent='✓ Complete';n.classList.remove('primary');n.disabled=true;}else{n.textContent='Next →';n.classList.add('primary');n.disabled=false;}}
+window.ddNavigate=function(d){ddGoTo(ddStep+d);};
+window.ddGoTo=function(i){if(i<0||i>=DD_STEPS.length)return;ddStep=i;ddRdrStepper();ddRdrContent();ddRdrFooter();};
+ddGoTo(0);
+})();
+
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+// RECONCILIATION DEEP-DIVE
+// �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?
+(function(){
+const RD_RAW={total:520,divA:285,divB:231,prd:168,svc:102,lic:138,con:99};
+const RD_REC={total:520,divA:279,divB:241,prd:173,svc:106,lic:141,con:100};
+let rdStep=0,rdConVal=99,rdReconciled=false;
+const RD_STEPS=[{id:1,short:'Hierarchy'},{id:2,short:'The Problem'},{id:3,short:'MINT Fix'},{id:4,short:'Before/After'}];
+const RD_LABELS=['The Forecast Hierarchy','The Incoherence Problem','MINT Reconciliation','Before vs After'];
+
+function rdTree(v,gaps){
+  const gA=v.divA-(v.prd+v.svc),gB=v.divB-(v.lic+v.con),gT=v.total-(v.divA+v.divB);
+  function nd(cls,x,y,w,nm,val){return`<rect class="rc-nd ${cls}" x="${x}" y="${y}" width="${w}" height="50" rx="7"/><text class="rc-lbl" x="${x+w/2}" y="${y+18}">${nm}</text><text class="rc-sub" x="${x+w/2}" y="${y+35}">$${val}M</text>`;}
+  const gs=gaps?`${gT!==0?`<text class="rc-gap-lbl" x="320" y="78">Δ ${gT>0?'+':''}$${gT}M</text>`:''}${gA!==0?`<text class="rc-gap-lbl" x="140" y="176">Δ ${gA>0?'+':''}$${gA}M</text>`:''}${gB!==0?`<text class="rc-gap-lbl" x="500" y="176">Δ ${gB>0?'+':''}$${gB}M</text>`:''}`:'';
+  return`<svg viewBox="0 0 640 268" class="rc-tree-svg"><line class="rc-edge" x1="320" y1="58" x2="140" y2="110"/><line class="rc-edge" x1="320" y1="58" x2="500" y2="110"/><line class="rc-edge" x1="140" y1="160" x2="55" y2="213"/><line class="rc-edge" x1="140" y1="160" x2="225" y2="213"/><line class="rc-edge" x1="500" y1="160" x2="415" y2="213"/><line class="rc-edge" x1="500" y1="160" x2="580" y2="213"/>${nd('rc-nd-total',240,8,160,'Total Revenue',v.total)}${nd('rc-nd-div',60,110,160,'Division A',v.divA)}${nd('rc-nd-div',420,110,160,'Division B',v.divB)}${nd('rc-nd-acct',0,213,115,'Prod. Sales',v.prd)}${nd('rc-nd-acct',140,213,115,'Services',v.svc)}${nd('rc-nd-acct',360,213,115,'Licensing',v.lic)}${nd('rc-nd-acct',510,213,115,'Consulting',v.con)}${gs}</svg>`;}
+
+function rRD1(){return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 1 of 4</span><h2>The Forecast Hierarchy</h2><p>In a P&amp;L with multiple accounts and divisions, each entity is forecasted <strong style="color:#EEEEFF">independently</strong> using the best model for that series.</p><p>This tree shows three levels: <em>Total Company</em>, two <em>Divisions</em>, and four <em>Accounts</em>. Each value is that entity's own model output — unconstrained by the others.</p><p>At this stage, there is no guarantee the numbers add up. Each model optimises for its own series.</p><div class="aw-hl" style="margin-top:12px"><div class="aw-hl-dot" style="background:var(--ey-yellow)"></div><div><div class="aw-hl-sub">Top-down total forecast</div><div class="aw-hl-val">$520M</div></div></div></div><div class="aw-chart-area"><div class="aw-chart-box" style="padding:16px">${rdTree(RD_RAW,false)}</div><div class="aw-info-box">Account bottom-up sum = <strong>$507M</strong>. Top-level direct = <strong>$520M</strong>. These don't match yet — that's the reconciliation problem.</div></div></div>`;}
+
+function rdGaps(con){const prd=168,svc=102,lic=138,divA=285,divB=231,total=520,buA=prd+svc,buB=lic+con,buT=buA+buB;return{gA:divA-buA,gB:divB-buB,gT:total-buT,buA,buB,buT};}
+
+function rRD2(){
+  const g=rdGaps(rdConVal);
+  return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 2 of 4</span><h2>The Incoherence Problem</h2><p>When Division A's forecast is <strong style="color:#93c5fd">$285M</strong> but its accounts sum to <strong style="color:#86efac">$270M</strong>, which number appears in the board report?</p><p>This creates a <strong style="color:#f87171">mathematical inconsistency</strong> — an analyst reading account-level detail reaches a different total than the headline.</p><p>Drag the slider to adjust the Consulting forecast and watch how incoherence cascades through all three levels.</p><div style="margin-top:14px"><div class="aw-slider-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:#D0D0E8">Consulting Forecast ($M)</span><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(182,73,196,.12);color:#d98eef" id="rd-con-lbl">$${rdConVal}M</span></div><input type="range" min="80" max="120" step="1" value="${rdConVal}" oninput="rdSetCon(this.value)"><div class="aw-slider-ticks"><span>$80M</span><span>$99M (base)</span><span>$120M</span></div></div></div></div><div class="aw-chart-area"><div style="display:flex;flex-direction:column;gap:8px"><div class="aw-info-box" style="border-color:rgba(249,115,22,.35)"><div style="font-size:9px;text-transform:uppercase;color:var(--ey-grey);letter-spacing:.08em">Division A gap (Direct vs account sum)</div><div id="rd-gA" style="font-size:18px;font-weight:800;color:#fdba74;margin:4px 0">${g.gA>0?'+':''}$${g.gA}M</div><div style="font-size:9px;color:var(--ey-grey)">$285M direct vs $${g.buA}M bottom-up</div></div><div class="aw-info-box" style="border-color:rgba(239,68,68,.35)"><div style="font-size:9px;text-transform:uppercase;color:var(--ey-grey);letter-spacing:.08em">Division B gap &amp; Total gap</div><div style="display:flex;gap:16px;margin-top:4px"><div><div id="rd-gB" style="font-size:18px;font-weight:800;color:#f87171">${g.gB>0?'+':''}$${g.gB}M</div><div style="font-size:9px;color:var(--ey-grey)">Div B gap</div></div><div><div id="rd-gT" style="font-size:18px;font-weight:800;color:#f87171">${g.gT>0?'+':''}$${g.gT}M</div><div style="font-size:9px;color:var(--ey-grey)">Total ($520M vs $<span id="rd-buT">${g.buT}</span>M)</div></div></div></div></div></div></div>`;}
+function iRD2(){}
+window.rdSetCon=function(v){rdConVal=parseInt(v);const l=document.getElementById('rd-con-lbl');if(l)l.textContent='$'+rdConVal+'M';const g=rdGaps(rdConVal);const gA=document.getElementById('rd-gA');if(gA)gA.textContent=(g.gA>0?'+':'')+'$'+g.gA+'M';const gB=document.getElementById('rd-gB');if(gB)gB.textContent=(g.gB>0?'+':'')+'$'+g.gB+'M';const gT=document.getElementById('rd-gT');if(gT)gT.textContent=(g.gT>0?'+':'')+'$'+g.gT+'M';const bt=document.getElementById('rd-buT');if(bt)bt.textContent=g.buT;};
+
+function rRD3(){return`<div class="aw-inner"><div class="aw-explainer"><span class="aw-tag">Stage 3 of 4</span><h2>MINT Reconciliation</h2><p><strong style="color:#EEEEFF">MinT (Minimum Trace)</strong> solves a constrained least-squares problem: find the smallest adjustments that make every level add up.</p><p>Adjustments are weighted by <em>forecast uncertainty</em> — accurate models change less; uncertain forecasts absorb more correction.</p><p>The result is a fully coherent hierarchy where every node is a defensible, model-backed number with a clear audit trail.</p><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px 14px;margin-top:14px"><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ey-grey);margin-bottom:8px">MINT objective (simplified)</div><div style="font-family:monospace;font-size:12px;color:#D0D0E8;line-height:2.2"><div>minimise <span style="color:var(--ey-yellow)">||P·ŷ − ỹ||²</span><sub style="font-size:9px">W</sub></div><div style="font-size:10px;color:#A0A0B8">subject to: S·P·ŷ = P·ŷ &nbsp;(hierarchy sums)</div></div></div><button onclick="rdAnimate()" id="rd-anim-btn" class="aw-nav-btn primary" style="margin-top:12px;font-size:11px">⟳ Apply Reconciliation</button></div><div class="aw-chart-area"><div class="aw-chart-box" style="padding:16px"><p id="rd-tree-lbl">Before: independent (incoherent) forecasts</p><div id="rd-tree-wrap">${rdTree(RD_RAW,true)}</div></div><div class="aw-info-box" id="rd-tree-info">Gap labels show incoherence at each level. Click "Apply Reconciliation" to animate the adjustment.</div></div></div>`;}
+function iRD3(){rdReconciled=false;}
+window.rdAnimate=function(){if(rdReconciled)return;rdReconciled=true;const btn=document.getElementById('rd-anim-btn');if(btn)btn.disabled=true;const wrap=document.getElementById('rd-tree-wrap');if(wrap){wrap.style.transition='opacity .3s';wrap.style.opacity='0';setTimeout(()=>{wrap.innerHTML=rdTree(RD_REC,false);wrap.style.opacity='1';const lbl=document.getElementById('rd-tree-lbl');if(lbl)lbl.textContent='After: MINT reconciled — fully coherent';const info=document.getElementById('rd-tree-info');if(info)info.innerHTML='<strong style="color:#4ade80">✓ Fully coherent.</strong> Every level now sums correctly. Total Revenue = $520M at all levels.';},350);}};
+
+function rRD4(){
+  const rows=[
+    {nm:'Total Revenue',raw:RD_RAW.total,rec:RD_REC.total,cls:'rt0'},
+    {nm:'Division A',   raw:RD_RAW.divA, rec:RD_REC.divA, cls:'rt1'},
+    {nm:'Product Sales',raw:RD_RAW.prd,  rec:RD_REC.prd,  cls:'rt2'},
+    {nm:'Services',     raw:RD_RAW.svc,  rec:RD_REC.svc,  cls:'rt2'},
+    {nm:'Division B',   raw:RD_RAW.divB, rec:RD_REC.divB, cls:'rt1'},
+    {nm:'Licensing',    raw:RD_RAW.lic,  rec:RD_REC.lic,  cls:'rt2'},
+    {nm:'Consulting',   raw:RD_RAW.con,  rec:RD_REC.con,  cls:'rt2'},
+  ];
+  const trs=rows.map(r=>{const d=r.rec-r.raw,ds=(d>0?'+':'')+d+'M',dc=d>0?'rc-delta-pos':d<0?'rc-delta-neg':'',bw=Math.min(Math.abs(d)*9,56),bc=d>0?'rgba(74,222,128,.7)':'rgba(248,113,113,.7)';return`<tr class="${r.cls}"><td>${r.nm}</td><td style="text-align:right">$${r.raw}M</td><td style="text-align:right">$${r.rec}M</td><td style="text-align:right"><span class="${dc}" style="font-weight:700">${d===0?'—':ds}</span><span style="display:inline-block;width:${bw}px;height:5px;border-radius:3px;background:${bc};margin-left:6px;vertical-align:middle"></span></td></tr>`;}).join('');
+  return`<div><div class="aw-inner" style="margin-bottom:20px"><div class="aw-explainer"><span class="aw-tag">Stage 4 of 4</span><h2>Before vs After MINT</h2><p>Every entity has been adjusted by the <strong style="color:#EEEEFF">minimum amount necessary</strong> to achieve coherence — each model's forecast signal is preserved.</p><p>Higher-level aggregates receive larger adjustments; leaf-level accounts from well-tuned models change the least.</p><p>Every number traces back to the MINT optimisation — transparent, auditable, and free of manual overrides.</p></div><div><div class="aw-chart-box"><p>MINT adjustment — all hierarchy levels</p><table class="rc-tbl"><thead><tr><th>Entity</th><th style="text-align:right">Raw</th><th style="text-align:right">Reconciled</th><th style="text-align:right">Adjustment</th></tr></thead><tbody>${trs}</tbody></table><div style="margin-top:12px;padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:#86efac">✓ All levels sum correctly. Total held at $520M. Largest adjustment: +$10M (Division A).</div></div></div></div></div>`;}
+
+function rdRdrStepper(){document.getElementById('rd-stepper').innerHTML=RD_STEPS.map((s,i)=>{const a=i===rdStep,d=i<rdStep;const lL=i===0?'invis':d?'done':'',lR=i===RD_STEPS.length-1?'invis':d||a?'done':'';return`<button class="aw-step-btn" onclick="rdGoTo(${i})"><div class="aw-step-row"><div class="aw-step-line ${lL}"></div><div class="aw-step-dot ${a?'active':d?'done':''}">${d?'✓':s.id}</div><div class="aw-step-line ${lR}"></div></div><span class="aw-step-short ${a?'active':d?'done':''}">${s.short}</span></button>`;}).join('');}
+function rdRdrContent(){const R=[rRD1,rRD2,rRD3,rRD4],I=[function(){},iRD2,iRD3,function(){}];document.getElementById('rd-content').innerHTML=R[rdStep]();requestAnimationFrame(()=>I[rdStep]());}
+function rdRdrFooter(){document.getElementById('rd-step-label').textContent='Stage '+(rdStep+1)+' of '+RD_STEPS.length+' — '+RD_LABELS[rdStep];const p=document.getElementById('rd-btn-prev'),n=document.getElementById('rd-btn-next');p.disabled=rdStep===0;if(rdStep===RD_STEPS.length-1){n.textContent='✓ Complete';n.classList.remove('primary');n.disabled=true;}else{n.textContent='Next →';n.classList.add('primary');n.disabled=false;}}
+window.rdNavigate=function(d){rdGoTo(rdStep+d);};
+window.rdGoTo=function(i){if(i<0||i>=RD_STEPS.length)return;rdStep=i;rdRdrStepper();rdRdrContent();rdRdrFooter();};
+rdGoTo(0);
+})();
+
+
+// ── What-If Scenario Widget ───────────────────────────────────────────
+(function(){'use strict';
+var wiChart=null;
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// 12-month baseline forecast ($M)
+var BASE=[100.2,101.8,103.5,104.1,105.7,107.2,108.4,109.6,111.0,112.3,113.8,115.1];
+// Per-driver contribution vectors (per unit of slider change)
+var DR={
+  gdp:[0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0],       // grows with horizon
+  mkt:[0.0,0.2,0.4,0.6,0.8,1.0,1.1,1.2,1.3,1.4,1.5,1.5],        // delayed ramp (per 10%)
+  blg:[1.5,1.2,1.0,0.8,0.6,0.4,0.3,0.2,0.1,0.1,0.0,0.0],        // immediate, decays (per 10%)
+  hc: [0.0,0.1,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0],        // long ramp (per 5%)
+};
+var PRESETS={
+  base: {gdp:0,   mkt:0,   blg:0,   hc:0},
+  bull: {gdp:1.5, mkt:20,  blg:15,  hc:5},
+  bear: {gdp:-1.5,mkt:-15, blg:-20, hc:-5},
+  shock:{gdp:-2.5,mkt:-30, blg:-35, hc:-10},
+};
+function wiVal(s){return BASE.map(function(b,i){return Math.round((b+s.gdp*DR.gdp[i]+(s.mkt/10)*DR.mkt[i]+(s.blg/10)*DR.blg[i]+(s.hc/5)*DR.hc[i])*10)/10;});}
+function wiGetSliders(){return{gdp:parseFloat(document.getElementById('wi-sl-gdp').value)||0,mkt:parseFloat(document.getElementById('wi-sl-mkt').value)||0,blg:parseFloat(document.getElementById('wi-sl-blg').value)||0,hc:parseFloat(document.getElementById('wi-sl-hc').value)||0};}
+function wiUpdate(){
+  var s=wiGetSliders();var scen=wiVal(s);
+  var delta=scen.reduce(function(a,b){return a+b;},0)-BASE.reduce(function(a,b){return a+b;},0);
+  var sign=delta>=0?'+':'';var col=delta>0.5?'#4ade80':delta<-0.5?'#f87171':'var(--ey-yellow)';
+  var dv=document.getElementById('wi-dv');if(dv){dv.style.color=col;dv.textContent=sign+delta.toFixed(1)+'M';}
+  var notes=[];
+  if(Math.abs(s.gdp)>0.2) notes.push('GDP '+(s.gdp>0?'+':'')+s.gdp.toFixed(1)+'%');
+  if(Math.abs(s.mkt)>2)   notes.push('Mktg '+(s.mkt>0?'+':'')+s.mkt.toFixed(0)+'%');
+  if(Math.abs(s.blg)>2)   notes.push('Backlog '+(s.blg>0?'+':'')+s.blg.toFixed(0)+'%');
+  if(Math.abs(s.hc)>0.5)  notes.push('HC '+(s.hc>0?'+':'')+s.hc.toFixed(1)+'%');
+  var note=document.getElementById('wi-drv-note');if(note) note.textContent=notes.length?'Active drivers: '+notes.join(' \u00b7 '):'All drivers at baseline \u2014 no change from plan.';
+  if(wiChart){wiChart.data.datasets[1].data=scen;wiChart.update('none');}
+}
+function wiLbl(key,val){var sign=parseFloat(val)>0?'+':'';var dp=(key==='gdp'||key==='hc')?1:0;var el=document.getElementById('wi-lbl-'+key);if(el)el.textContent=sign+parseFloat(val).toFixed(dp)+'%';}
+window.wiSlide=function(key,val){wiLbl(key,val);document.querySelectorAll('.wi-scbtn').forEach(function(b){b.classList.remove('active');});wiUpdate();};
+window.wiScenario=function(name){var p=PRESETS[name];if(!p)return;['gdp','mkt','blg','hc'].forEach(function(k){var el=document.getElementById('wi-sl-'+k);if(el)el.value=p[k];wiLbl(k,p[k]);});document.querySelectorAll('.wi-scbtn').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('wi-sc-'+name);if(btn)btn.classList.add('active');wiUpdate();};
+function wiInit(){
+  var ctx=document.getElementById('wi-canvas');if(!ctx||!window.Chart)return;
+  if(wiChart){try{wiChart.destroy();}catch(e){}} 
+  wiChart=new Chart(ctx,{type:'line',data:{labels:MONTHS,datasets:[
+    {label:'Base Case',data:BASE,borderColor:'rgba(110,198,230,.85)',backgroundColor:'rgba(110,198,230,.07)',borderWidth:2,pointRadius:3,tension:.35,fill:true},
+    {label:'Scenario',data:[...BASE],borderColor:'#FFE600',backgroundColor:'rgba(255,230,0,.05)',borderWidth:2.5,pointRadius:3,tension:.35,fill:false}
+  ]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return'$'+c.raw+'M';}}}},scales:{x:{ticks:{color:'#747480',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#747480',font:{size:10},callback:function(v){return'$'+v+'M';}},grid:{color:'rgba(255,255,255,.055)'},beginAtZero:false}},animation:{duration:180}}});}
+// Initialize after DOM is ready (script is at bottom of body so DOM is available)
+wiInit();
+})();
+</script>
+</body>
+</html>

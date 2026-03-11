@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from typing import Any
 
 import numpy as np
@@ -7,8 +8,11 @@ from statsmodels.tsa.statespace.varmax import VARMAX
 import lh_v2.datatypes as dts
 import lh_v2.params as params
 from lh_v2.shared import ArrayF
+from lh_v2.util import get_logger
 
 from .abstract_class import AbstractDriverForecastingMethod
+
+logger = get_logger(__name__)
 
 
 class VARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
@@ -118,31 +122,40 @@ class VARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
         data = self._prepare_multivariate_data()
 
         if self.n_drivers == 1:
-            print(
+            logger.info(
                 f"VARIMA: Only 1 driver provided, falling back to ARIMA-like behavior for '{self.driver_info.name}'"
             )
         else:
             driver_names = [d.name for d in self.all_drivers]
-            print(f'VARIMA: Training on {self.n_drivers} drivers: {driver_names}')
+            logger.info(f'VARIMA: Training on {self.n_drivers} drivers: {driver_names}')
 
         # Fit VARMAX model with configured order and trend
         try:
-            model = VARMAX(
-                endog=data,
-                order=self.order,
-                trend=self.trend,
-                enforce_stationarity=False,
-                enforce_invertibility=False,
-            )
+            with warnings.catch_warnings(record=True) as caught_warnings:
+                warnings.simplefilter('always')
+                model = VARMAX(
+                    endog=data,
+                    order=self.order,
+                    trend=self.trend,
+                    enforce_stationarity=False,
+                    enforce_invertibility=False,
+                )
 
-            self.fitted_model = model.fit(disp=False, maxiter=200)
-            self.model = self.fitted_model
+                self.fitted_model = model.fit(disp=False, maxiter=200)
+                self.model = self.fitted_model
 
-            print(f'VARIMA: Model trained successfully with order {self.order}')
+            for w in caught_warnings:
+                logger.warning(
+                    f"VARIMA: Warning during training for '{self.driver_info.name}': {w.message}"
+                )
+
+            logger.info(f'VARIMA: Model trained successfully with order {self.order}')
 
         except Exception as e:
-            print(f"VARIMA: Training failed for '{self.driver_info.name}': {e}")
-            print('VARIMA: Falling back to mean forecast')
+            logger.warning(
+                f"VARIMA: Training failed for '{self.driver_info.name}': {e}"
+            )
+            logger.info('VARIMA: Falling back to mean forecast')
             self.fitted_model = None
             self.model = True
 
@@ -178,6 +191,8 @@ class VARIMADriverForecastingMethod(AbstractDriverForecastingMethod):
             return primary_forecast.astype(self.driver_info.np_dtype)
 
         except Exception as e:
-            print(f"VARIMA: Forecast failed for '{self.driver_info.name}': {e}")
+            logger.warning(
+                f"VARIMA: Forecast failed for '{self.driver_info.name}': {e}"
+            )
             training_data = self.get_training_data()
             return np.full(n_steps, np.mean(training_data))

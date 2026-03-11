@@ -72,6 +72,10 @@ class RidgeAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.RIDGE
 
+    @staticmethod
+    def is_linear() -> bool:
+        return True
+
     def train(self) -> None:
         """
         Train the Ridge regression model using selected drivers.
@@ -131,3 +135,20 @@ class RidgeAccountForecastingMethod(AbstractAccountForecastingMethod):
         predictions = self.model.predict(X)
 
         return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the trained model to a vectorized input array.
+        The input array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        new_shape = (arr_input.shape[0] * arr_input.shape[2], arr_input.shape[1])
+        out_shape = (arr_input.shape[0], arr_input.shape[2])
+        arr_flattened = arr_input.swapaxes(1, 2).reshape(new_shape)
+
+        arr_predict: ArrayF = self.model.predict(arr_flattened)
+
+        return arr_predict.reshape(out_shape)

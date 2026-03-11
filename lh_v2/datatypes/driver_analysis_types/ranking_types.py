@@ -90,7 +90,7 @@ class DriverRankingEnum(Enum):
     MRMR = 'mrmr'
 
 
-class DriverRankingLLMMetric(Enum):
+class DriverRankingMetric(Enum):
     """
     Enumeration for LLM-based Driver Ranking Metrics.
 
@@ -109,4 +109,16 @@ class DriverRankingLLMMetric(Enum):
 
     FINAL_RANK = 'final_rank'
     AVG_RANK = 'avg_rank'
-    PEARSON_CORRELATION = 'pearson_correlation'
+    PEARSON_CORRELATION = DriverRankingEnum.PEARSON_CORRELATION.value
+    SPEARMAN_CORRELATION = DriverRankingEnum.SPEARMAN_CORRELATION.value
+    SLR = DriverRankingEnum.SLR.value
+    MOVING_AVERAGE = DriverRankingEnum.MOVING_AVERAGE.value
+    PCA = DriverRankingEnum.PCA.value
+    RFE = DriverRankingEnum.RFE.value
+    RFE_LINEAR_REGRESSION = DriverRankingEnum.RFE_LINEAR_REGRESSION.value
+    LASSO = DriverRankingEnum.LASSO.value
+    RIDGE = DriverRankingEnum.RIDGE.value
+    XGBOOST = DriverRankingEnum.XGBOOST.value
+    BORUTA = DriverRankingEnum.BORUTA.value
+    RANDOM_FOREST_LIGHTGBM = DriverRankingEnum.RANDOM_FOREST_LIGHTGBM.value
+    MRMR = DriverRankingEnum.MRMR.value

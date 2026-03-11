@@ -72,4 +72,5 @@ training_results = train_and_validate_models(
     general_params=params.general_params,
     af_params=params.account_forecast_params,
     df_params=params.driver_forecast_params,
+    output_params=params.output_params,
 )

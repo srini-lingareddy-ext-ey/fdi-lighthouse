@@ -2,7 +2,7 @@ from typing import Any, Sequence
 
 from lh_v2.datatypes.driver_analysis_types.ranking_types import (
     DriverRankingEnum,
-    DriverRankingLLMMetric,
+    DriverRankingMetric,
 )
 from lh_v2.util import BaseParamsModel
 
@@ -59,18 +59,18 @@ class LLMRankingParams(BaseParamsModel):
 
     Attributes
     ----------
-    llm_metrics : Sequence[DriverRankingEnum]
+    llm_metrics : Sequence[DriverRankingMetric]
         A sequence of driver ranking metrics to be used in the LLM ranking process.
     """
 
-    llm_metrics: Sequence[DriverRankingLLMMetric] = (
-        DriverRankingLLMMetric.FINAL_RANK,
-        DriverRankingLLMMetric.AVG_RANK,
-        DriverRankingLLMMetric.PEARSON_CORRELATION,
+    llm_metrics: Sequence[DriverRankingMetric] = (
+        DriverRankingMetric.FINAL_RANK,
+        DriverRankingMetric.AVG_RANK,
+        DriverRankingMetric.PEARSON_CORRELATION,
     )
 
     def model_post_init(self, _: Any):
-        if DriverRankingLLMMetric.FINAL_RANK not in self.llm_metrics:
+        if DriverRankingMetric.FINAL_RANK not in self.llm_metrics:
             self.llm_metrics = tuple(
-                [DriverRankingLLMMetric.FINAL_RANK] + list(self.llm_metrics)
+                [DriverRankingMetric.FINAL_RANK] + list(self.llm_metrics)
             )

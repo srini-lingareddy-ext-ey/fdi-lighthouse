@@ -73,8 +73,81 @@ def get_collinearity_method_weights() -> dict[cdt.CollinearityMethodEnum, float]
     }
 
 
+def get_collinearity_arr(
+    acc_lst: list[dts.AccountType],
+    drivers_combined: dts.DriverGroup,
+    da_params: params.DriverAnalysisParams,
+    flattened_lags: dict[
+        dts.AccountType,
+        dict[dts.DriverName, int],
+    ],
+) -> dict[dts.AccountType, ArrayF]:
+    """
+    Compute collinearity matrices for each account's drivers.
+
+    This function performs collinearity analysis across all drivers for each account type
+    by applying optimal lags to driver data and computing collinearity matrices using
+    selected detection methods.
+
+    Parameters
+    ----------
+    acc_lst : list of dts.AccountType
+        List of account types to process.
+    drivers_combined : dts.DriverGroup
+        Combined driver group containing all drivers across classifications.
+    da_params : params.DriverAnalysisParams
+        Driver analysis parameters including collinearity method settings.
+    flattened_lags : dict of {dts.AccountType : dict of {dts.DriverName : int}}
+        Optimal lag values for each driver organized by account type.
+        Used to apply appropriate temporal offsets before collinearity analysis.
+
+    Returns
+    -------
+    dict[dts.AccountType, ArrayF]
+        Collinearity matrices for each account type, where each matrix has shape
+        (n_drivers, n_drivers) containing collinearity scores between driver pairs.
+
+    Notes
+    -----
+    The function performs the following steps:
+    1. Selects collinearity detection methods based on configuration parameters
+    2. Applies optimal lags to driver data for each account
+    3. Computes collinearity matrices using selected methods
+
+    See Also
+    --------
+    run_methods : Executes collinearity detection methods.
+    select_methods : Determines which collinearity methods to use.
+    """
+    # Select which collinearity detection methods to use based on configuration
+    selected_methods = select_methods(collinearity_params=da_params.collinearity_params)
+
+    # Initialize dictionary to store collinearity matrices for each account
+    arr_collinearity_dict: dict[dts.AccountType, ArrayF] = {}
+
+    # Compute collinearity matrix for each account independently
+    for account in acc_lst:
+        # Find the maximum lag across all drivers to determine truncation amount
+        max_lag = max(flattened_lags[account].values())
+
+        # Apply lags to driver data and compute collinearity matrix
+        # Lagging ensures temporal alignment before measuring collinearity
+        arr_collinearity_dict[account] = run_methods(
+            drivers_info=drivers_combined.apply_lags(
+                best_lags=flattened_lags[account], max_lag=max_lag
+            ),
+            selected_methods=selected_methods,
+            collinearity_params=da_params.collinearity_params,
+        )
+
+    return arr_collinearity_dict
+
+
 def use_driver(
-    arr_collinearity: ArrayF, driver_ind: int, used_driver_inds: list[int]
+    arr_collinearity: ArrayF,
+    driver_ind: int,
+    used_driver_inds: list[int],
+    threashold_base: float = 0.7,
 ) -> bool:
     """
     Determine if a driver should be selected based on collinearity with existing drivers.
@@ -126,13 +199,14 @@ def use_driver(
     # Return True if the average collinearity is below the threshold
     # The threshold decreases as more drivers are added (1/sqrt(n) relationship)
     # This ensures that as we add more drivers, we become more selective
-    return col_val < (0.7 / np.sqrt(len(used_driver_inds)))
+    return col_val < (threashold_base / np.sqrt(len(used_driver_inds)))
 
 
 def use_driver_pruning(
     arr_collinearity: ArrayF,
     driver_ind: int,
     used_driver_inds: list[int],
+    threashold_base: float = 0.85,
 ) -> bool:
     """
     Determine if a driver should be allowed for LLM selection based on collinearity.
@@ -189,7 +263,7 @@ def use_driver_pruning(
     # Return True if the average collinearity is below the threshold
     # The threshold decreases as more drivers are added (1/log(n) relationship)
     # This ensures that as we add more drivers, we become more selective
-    return col_val < (0.85 / (np.log(len(used_driver_inds)) + 1))
+    return col_val < (threashold_base / (np.log(len(used_driver_inds)) + 1))
 
 
 def select_methods(

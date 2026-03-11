@@ -45,6 +45,18 @@ class AccountForecastingMethodEnum(str, Enum):
     EXPONENTIAL_SMOOTHING = 'exponential_smoothing'
     PROPHET = 'prophet'
 
+    def is_nonlinear(self) -> bool:
+        """Whether this model is nonlinear and requires sampling-based extrema estimation.
+
+        Used by AUTO extrema estimation routing. Only tree-based models
+        return True; everything else (linear, time-series-only) uses the
+        cheaper correlation method.
+        """
+        return self in {
+            AccountForecastingMethodEnum.RANDOM_FOREST,
+            AccountForecastingMethodEnum.XGBOOST,
+        }
+
 
 class AccountValidationMetricEnum(str, Enum):
     """

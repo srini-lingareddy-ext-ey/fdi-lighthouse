@@ -11,7 +11,6 @@ from lh_v2.datatypes import (
 from lh_v2.datatypes.forecasting_types.account_forecasting_types import (
     AccountForecastingMethodEnum,
 )
-from lh_v2.io.plotting import plot_account_forecast
 from lh_v2.params import AccountForecastParams
 from lh_v2.shared import ArrayF
 
@@ -98,11 +97,3 @@ class ModelForecastingOutput:
             start_date=self.forecast_daterange[0],
             end_date=self.forecast_daterange[1],
         )
-
-    def plot_forecast(self, account_type: AccountType) -> None:
-        account_info = self.accounts_forecasts[account_type]
-        plot_account_forecast(
-            acc=account_info,
-            forecast_daterange=self.forecast_daterange,
-        )
-        return

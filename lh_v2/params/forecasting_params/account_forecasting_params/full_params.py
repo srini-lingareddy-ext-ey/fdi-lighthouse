@@ -38,6 +38,7 @@ class AccountForecastMethodParams(BaseParamsModel):
     b_remove: bool = True
     methods_removed: Sequence[AccountForecastingMethodEnum] = (
         AccountForecastingMethodEnum.SARIMAX,
+        AccountForecastingMethodEnum.HYPERLASSO,
     )
     b_selected: bool = False
     methods_selected: Sequence[AccountForecastingMethodEnum] = ()

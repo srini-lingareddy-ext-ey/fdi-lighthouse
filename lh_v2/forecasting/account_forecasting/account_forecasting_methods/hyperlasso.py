@@ -68,6 +68,10 @@ class HyperLassoAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.HYPERLASSO
 
+    @staticmethod
+    def is_linear() -> bool:
+        return True
+
     def train(self) -> None:
         """
         Train the HyperLasso model with cross-validated hyperparameter tuning.
@@ -120,4 +124,35 @@ class HyperLassoAccountForecastingMethod(AbstractAccountForecastingMethod):
         X = forecasting_data.arr.T
         predictions = self.model.predict(X)
 
+        return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Vectorized apply method for HyperLasso.
+
+        Parameters
+        ----------
+        arr_input : ArrayF
+            Input array (ignored by this method).
+
+        Returns
+        -------
+        ArrayF
+            Predicted account values for the forecast period.
+
+        Raises
+        ------
+        ModelNotTrainedError
+            If the model has not been trained yet.
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        # Reshape input to 2D for prediction
+        n_forecasts, n_features, n_samples = arr_input.shape
+        X = arr_input.reshape(n_forecasts * n_samples, n_features)
+
+        # Predict and reshape back to (n_forecasts, n_samples)
+        predictions = self.model.predict(X)
+        predictions = predictions.reshape(n_forecasts, n_samples)
         return predictions

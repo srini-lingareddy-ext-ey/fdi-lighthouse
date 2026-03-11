@@ -1,6 +1,10 @@
 import pathlib as pth
 
+import numpy as np
+from dateutil.relativedelta import relativedelta
+
 import lh_v2.datatypes as dts
+from lh_v2.data_analysis.driver_plotting_util import plot_driver_forecast
 from lh_v2.forecasting.driver_forecasting import (
     DriverForecastingInput,
     create_driver_forecasts,
@@ -8,9 +12,9 @@ from lh_v2.forecasting.driver_forecasting import (
 from lh_v2.io.data_loading import load_data_driver_ranking
 from lh_v2.params import parse_yaml
 
-if __name__ == '__main__':
-    b_plot: bool = True
+b_plot: bool = True
 
+if __name__ == '__main__':
     path = pth.Path.cwd()
 
     acc_pth = path.parent.parent / 'sample_data' / 'fact_profitability_1205_v23.csv'
@@ -29,7 +33,8 @@ if __name__ == '__main__':
     driver_data = dr_data.classified_drivers[dts.DriverClassification('External')]
 
     lags: dict[dts.DriverName, int] = {
-        driver: 9 for driver in driver_data.get_ordered_drivers()
+        driver: int(np.random.randint(1, 10))
+        for driver in driver_data.get_ordered_drivers()
     }
 
     forecasting_input = DriverForecastingInput(
@@ -50,13 +55,20 @@ if __name__ == '__main__':
         df_params=params.driver_forecast_params,
     )
 
+    forecasted_drivers = dts.DriverGroup(
+        arr=forecasting_output.arr,
+        map=forecasting_output.map,
+        dates=forecasting_output.dates,
+        np_dtype=forecasting_output.np_dtype,
+    )
+
     if b_plot:
-        plotted_driver = driver_data.get_ordered_drivers()[0]
-        forecasting_output.plot_driver_forecasts(
-            driver_name=plotted_driver,
-            lag=lags[plotted_driver],
-            forecast_daterange=(
-                params.general_params.validation_start_date,
-                params.general_params.validation_end_date,
-            ),
-        )
+        for driver in forecasting_output.get_ordered_drivers():
+            plot_driver_forecast(
+                driver=forecasted_drivers.get_driver(driver),
+                forecast_daterange=(
+                    params.general_params.validation_start_date,
+                    params.general_params.validation_end_date
+                    - relativedelta(months=lags[driver]),
+                ),
+            )

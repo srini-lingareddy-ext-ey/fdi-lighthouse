@@ -93,7 +93,7 @@ class LassoRankingParams(BaseRankingParams):
     ----------
     n_iter : int
         The number of iterations to perform during the ranking process.
-        Default is 80.
+        Default is 100.
     max_iter : int
         The maximum number of iterations for the Lasso solver.
         Default is 100.
@@ -102,7 +102,7 @@ class LassoRankingParams(BaseRankingParams):
         stronger regularization. Default is 0.1.
     """
 
-    n_iter: int = 400
+    n_iter: int = 100
     max_iter: int = 50
     alpha: float = 0.5
 

@@ -70,6 +70,10 @@ class LinearRegressionAccountForecastingMethod(AbstractAccountForecastingMethod)
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.LINEAR_REGRESSION
 
+    @staticmethod
+    def is_linear() -> bool:
+        return True
+
     def train(self) -> None:
         """
         Train the simple linear regression model using time as predictor.
@@ -137,3 +141,57 @@ class LinearRegressionAccountForecastingMethod(AbstractAccountForecastingMethod)
             x=x_forecast,
         )
         return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the forecasting method to a vectorized input array.
+        The array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
+        For linear regression with time as predictor, we will ignore the features
+        and just apply the same linear model to each sample.
+
+        Parameters
+        ----------
+        arr_input : ArrayF
+            Input array of shape (n_forecasts, n_features, n_samples)
+
+        Returns
+        -------
+        ArrayF
+            Output array of shape (n_forecasts, n_samples) with predictions.
+
+        Raises
+        ------
+        ModelNotTrainedError
+            If the model has not been trained yet.
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        n_forecasts, _, n_samples = arr_input.shape
+
+        # Generate time indices for forecast period continuing from training
+        training_info = self.get_training_data()
+        training_length = (
+            month_dif(
+                start_date=min(training_info.account.dates.keys()),
+                end_date=max(training_info.account.dates.keys()),
+            )
+            + 1
+        )
+
+        x_forecast = np.arange(training_length, training_length + n_forecasts).astype(
+            float
+        )
+
+        # Apply the same linear model to each sample in the input array
+        predictions = stats.apply_slr(
+            a=self.model[0],
+            b=self.model[1],
+            x=x_forecast[:, np.newaxis],  # shape (n_forecasts, 1)
+        )  # result will be shape (n_forecasts, 1)
+
+        # Repeat predictions across samples to match output shape (n_forecasts, n_samples)
+        predictions_repeated = np.repeat(predictions, repeats=n_samples, axis=1)
+
+        return predictions_repeated

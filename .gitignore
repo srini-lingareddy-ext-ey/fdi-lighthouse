@@ -6,6 +6,9 @@ dist/
 wheels/
 *.egg-info
 
+# Mac files
+.DS_Store
+
 
 # Virtual environments
 .venv
@@ -25,6 +28,9 @@ env/
 /data/
 /sample_data/
 
+# Local Saves
+saves/*
+
 # Jupyter Notebooks
 *.ipynb
 .ipynb_checkpoints/
@@ -37,6 +43,14 @@ env/
 # Random Testing/Other Files
 _test_*.py
 lh_v2/scratch/
+
+# LLM configs
+.codex/
+AGENTS.md
+
+# LLM generated files
+droid/
+codex/
 
 # Test outputs
 .coverage

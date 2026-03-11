@@ -1,3 +1,5 @@
+import datetime
+import json
 import logging
 import pathlib as pth
 from typing import Any
@@ -6,7 +8,7 @@ import yaml
 from pydantic import Field
 
 import lh_v2.datatypes as dts
-from lh_v2.util import BaseParamsModel
+from lh_v2.util import BaseParamsModel, create_output_dir, get_output_dir
 
 from .account_reconciliation_params import (
     AccountReconciliationParams,
@@ -17,8 +19,9 @@ from .forecasting_params import AccountForecastParams, DriverForecastParams
 from .general_params import (
     GeneralParams,
 )
-from .io_params import DataLoadingParams
+from .io_params import DataLoadingParams, OutputParams
 from .logging_params import LoggingParams, setup_logging
+from .scenario_planning_params import ScenarioPlanningParams
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +83,10 @@ class LighthouseParams(BaseParamsModel):
     account_reconciliation_params: AccountReconciliationParams = Field(
         default_factory=AccountReconciliationParams
     )
+    scenario_planning_params: ScenarioPlanningParams = Field(
+        default_factory=ScenarioPlanningParams
+    )
+    output_params: OutputParams = Field(default_factory=OutputParams)
 
     def model_post_init(self, context: Any) -> None:
         if not self.accounts:
@@ -93,6 +100,23 @@ class LighthouseParams(BaseParamsModel):
                 accs_c,
                 self.account_reconciliation_params.formulas,
             )
+
+        # Create the save directory name
+        save_dir_name = ''
+        if self.output_params.unique_prefix:
+            save_dir_name += self.output_params.unique_prefix.replace(' ', '_') + '__'
+
+        save_dir_name += datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + '__'
+
+        save_dir_name += (
+            f'{self.segment.replace(" ", "_")}__{self.region.replace(" ", "_")}__'
+        )
+
+        for acc in self.accounts:
+            save_dir_name += f'{acc.replace(" ", "_")}_'
+        save_dir_name = save_dir_name[:-1]
+
+        self.output_params.save_dir_name = save_dir_name
         return
 
 
@@ -148,7 +172,10 @@ def parse_yaml(yaml_info: pth.Path | dict[str, Any]) -> LighthouseParams:
     # Initialize logging with custom settings from the YAML file (if provided)
     setup_logging(LoggingParams(**(yaml_dict.get('logging', {}))))
     # Create and return a LighthouseParams object populated with values from the YAML file
-    return LighthouseParams(**yaml_dict)
+    params = LighthouseParams(**yaml_dict)
+    _save_lh_params(params)
+
+    return params
 
 
 def _parse_primary_params(yaml_dict: dict[str, Any]) -> LighthouseParams:
@@ -170,3 +197,46 @@ def _parse_primary_params(yaml_dict: dict[str, Any]) -> LighthouseParams:
     default_params.region = region
     default_params.general_params = general_params
     return default_params
+
+
+def _save_lh_params(params: LighthouseParams) -> None:
+    """
+    Save the LighthouseParams object to a JSON file in the output directory.
+
+    Parameters
+    ----------
+    params : LighthouseParams
+        The LighthouseParams object to be saved.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    - The function creates the output directory if it does not already exist.
+    - The parameters are saved in a JSON file named
+        'lighthouse_params.json' within the output directory.
+    - The function uses the `get_save_dir_name` method of the
+        OutputParams to determine the correct output directory.
+    """
+    if not params.output_params.b_save_info:
+        return
+
+    create_output_dir(sub_dir_name=params.output_params.get_save_dir_name())
+
+    output_dir = get_output_dir(sub_dir_name=params.output_params.get_save_dir_name())
+    output_file = output_dir / 'lighthouse_params.json'
+
+    if params.output_params.other_file_format == 'json':
+        with open(output_file, 'w') as f:
+            json.dump(params.model_dump(mode='json'), f, indent=4)
+    else:
+        raise ValueError(
+            f'Unsupported file format: {params.output_params.other_file_format}. '
+            f'Currently, only "json" is supported for saving parameters.'
+        )
+
+    logger.info(f'Saved LighthouseParams to {output_file}')
+
+    return

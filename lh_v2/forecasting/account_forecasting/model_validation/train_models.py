@@ -5,6 +5,11 @@ from typing import Sequence
 import lh_v2.datatypes as dts
 import lh_v2.datatypes.forecasting_types.account_forecasting_types as aft
 import lh_v2.params as params
+from lh_v2.io.output import (
+    save_driver_forecasts,
+    save_model_validation_forecasts,
+    save_model_validation_params,
+)
 from lh_v2.util import get_logger
 
 from ...driver_forecasting import create_driver_forecasts
@@ -279,6 +284,7 @@ def train_and_validate_models(
     af_params: params.AccountForecastParams
     | dict[dts.AccountType, params.AccountForecastParams],
     df_params: params.DriverForecastParams,
+    output_params: params.OutputParams,
 ) -> ModelTrainingOutput:
     """
     Train and validate account forecasting models across multiple accounts and methods.
@@ -302,6 +308,8 @@ def train_and_validate_models(
     df_params : params.DriverForecastParams
         Driver forecasting parameters used to generate driver forecasts for the
         validation period.
+    output_params : params.OutputParams
+        Output parameters including file format and save directory.
 
     Returns
     -------
@@ -367,6 +375,9 @@ def train_and_validate_models(
     updated_af_params_lst: list[params.AccountForecastParams] = []
     method_map: dict[dts.AccountType, dict[aft.AccountForecastingMethodEnum, int]] = {}
 
+    # Housing for information required for possible saving at the end of the function
+    driver_forecasts_all: dict[dts.AccountType, dts.DriverGroup] = {}
+
     # Process each account in the training data
     for account in model_training_info.accounts_drivers.accounts.get_ordered_accounts():
         # Extract account-specific information and optimal lags
@@ -387,13 +398,17 @@ def train_and_validate_models(
             ),
         )
 
+        driver_forecasts = create_driver_forecasts(
+            forecasting_info=df_input,
+            df_params=df_params,
+        )
+
+        driver_forecasts_all[account] = driver_forecasts
+
         # Generate driver forecasts for the validation period
         forecasted_info = dts.AccountDriverGroup(
             account=info.account,
-            drivers=create_driver_forecasts(
-                forecasting_info=df_input,
-                df_params=df_params,
-            ),
+            drivers=driver_forecasts,
             np_dtype=info.np_dtype,
         )
 
@@ -439,11 +454,37 @@ def train_and_validate_models(
             method: idx for idx, method in enumerate(selected_methods_account)
         }
 
-    # Return consolidated training and validation results
-    return ModelTrainingOutput(
+    training_output = ModelTrainingOutput(
         account_map=model_training_info.accounts_drivers.accounts.account_map,
         method_map=method_map,
         forecasted_accounts=forecasts,
         metrics=metrics,
         best_params=updated_af_params_lst,
     )
+
+    save_driver_forecasts(
+        driver_forecasts=driver_forecasts_all,
+        driver_lags=model_training_info.lags,
+        classification_map=model_training_info.classifications,
+        forecasting_daterange=general_params.get_validation_daterange(),
+        forecasting_type='validation',
+        output_params=output_params,
+    )
+
+    save_model_validation_forecasts(
+        account_map=training_output.account_map,
+        method_map=training_output.method_map,
+        account_forecasts=training_output.forecasted_accounts,
+        metrics=training_output.metrics,
+        forecast_daterange=general_params.get_validation_daterange(),
+        output_params=output_params,
+    )
+
+    save_model_validation_params(
+        account_map=training_output.account_map,
+        best_params=training_output.best_params,
+        output_params=output_params,
+    )
+
+    # Return consolidated training and validation results
+    return training_output

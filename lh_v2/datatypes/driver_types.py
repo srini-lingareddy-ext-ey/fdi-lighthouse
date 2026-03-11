@@ -581,6 +581,24 @@ class DriverGroup:
     def __add__(self, other: Any) -> DriverGroup:
         return self.__radd__(other)
 
+    def copy(self) -> DriverGroup:
+        arr_copy: ArrayF = self.arr.copy()
+
+        map_copy: dict[DriverName, int] = {}
+        for driver, idx in self.map.items():
+            map_copy[driver] = idx
+
+        lst_dates_copy: list[dict[datetime.date, int]] = []
+        for dict_dates in self.dates:
+            dict_dates_copy: dict[datetime.date, int] = {}
+            for date, idx in dict_dates.items():
+                dict_dates_copy[date] = idx
+            lst_dates_copy.append(dict_dates_copy)
+
+        return DriverGroup(
+            arr=arr_copy, map=map_copy, dates=lst_dates_copy, np_dtype=self.np_dtype
+        )
+
     def order(self, driver_ordering: list[DriverName]) -> DriverGroup:
         """
         Reorder the drivers in the DriverGroup according to a specified ordering.
@@ -1353,6 +1371,27 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
             np_dtype=self.np_dtype,
         )
 
+    def get_classification_map(self) -> dict[ClassificationOfDriver, list[DriverName]]:
+        """
+        Get a mapping of classifications to their corresponding driver names.
+
+        Returns
+        -------
+        dict[ClassificationOfDriver, list[DriverName]]
+            A dictionary mapping each classification to a list of driver names that belong to it.
+
+        Notes
+        -----
+        The method iterates through the classification_groups and maps to construct a reverse
+        mapping from classifications to their associated drivers.
+        """
+        class_map: dict[ClassificationOfDriver, list[DriverName]] = {}
+        for classification in self.classification_groups.keys():
+            class_map[classification] = list(
+                self.maps[self.classification_groups[classification]].keys()
+            )
+        return class_map
+
     def get_ordered_classifications(
         self,
     ) -> list[ClassificationOfDriver]:
@@ -1436,6 +1475,29 @@ class ClassifiedDriverGroups[ClassificationOfDriver]:
 
         # Return drivers in sequential order by their indices (0, 1, 2, ...)
         return [flipped_full_map[idx] for idx in range(len(flipped_full_map))]
+
+    def get_driver_classification_map(self) -> dict[DriverName, ClassificationOfDriver]:
+        """
+        Get a mapping of driver names to their classifications.
+
+        Returns
+        -------
+        dict[DriverName, ClassificationOfDriver]
+            A dictionary mapping each driver name to its corresponding classification.
+
+        Notes
+        -----
+        The method iterates through each classification and its associated driver map,
+        creating a reverse mapping from driver names to their classifications. If a
+        driver appears in multiple classifications, the last one processed will be
+        the one recorded in the final mapping.
+        """
+        driver_class_map: dict[DriverName, ClassificationOfDriver] = {}
+        for classification in self.classification_groups.keys():
+            class_map = self.maps[self.classification_groups[classification]]
+            for driver in class_map.keys():
+                driver_class_map[driver] = classification
+        return driver_class_map
 
     def flip_dates(self) -> list[dict[int, datetime.date]]:
         """

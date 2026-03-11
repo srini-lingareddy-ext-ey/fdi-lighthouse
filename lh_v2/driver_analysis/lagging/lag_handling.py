@@ -4,6 +4,7 @@ import numpy as np
 
 import lh_v2.datatypes as dts
 import lh_v2.params as params
+from lh_v2.datatypes.driver_analysis_types.ranking_types import DriverRankingMetric
 from lh_v2.util import get_logger
 
 from ..driver_ranking import rank
@@ -53,7 +54,16 @@ def _lag_asserts(
 def select_best_lags(
     info: dts.AccountGroupClassifiedDriverGroups,
     da_params: params.DriverAnalysisParams,
-) -> dict[dts.AccountType, dict[dts.DriverClassification, dict[dts.DriverName, int]]]:
+) -> tuple[
+    dict[dts.AccountType, dict[dts.DriverClassification, dict[dts.DriverName, int]]],
+    dict[
+        dts.AccountType,
+        dict[
+            dts.DriverClassification,
+            dict[dts.DriverName, dict[DriverRankingMetric, float]],
+        ],
+    ],
+]:
     """
     Select optimal lag values for each driver based on ranking performance.
 
@@ -66,9 +76,20 @@ def select_best_lags(
 
     Returns
     -------
-    dict[dts.DriverName, int]
-        A dictionary mapping each driver name to its optimal lag value.
-        Returns lag of 0 for all drivers if lagging is disabled or max_lag is 0.
+    tuple[
+        dict[dts.AccountType, dict[dts.DriverClassification, dict[dts.DriverName, int]]],
+        dict[
+            dts.AccountType,
+            dict[
+                dts.DriverClassification,
+                dict[dts.DriverName, dict[DriverRankingMetric, float]],
+            ],
+        ],
+    ]
+        A tuple containing:
+        - A dictionary mapping each driver name to its optimal lag value.
+          Returns lag of 0 for all drivers if lagging is disabled or max_lag is 0.
+        - A dictionary containing the ranking metrics for each driver at each lag.
 
     Notes
     -----
@@ -109,7 +130,7 @@ def select_best_lags(
                 # Set lag to 0 for each driver in this classification
                 for driver in info.classified_drivers.maps[class_idx].keys():
                     best_lags[account_type][driver_classification][driver] = 0
-        return best_lags
+        return best_lags, {}
 
     # Create array to hold all lagged versions of drivers
     # Rows: (n_max_lag + 1) versions per driver
@@ -164,7 +185,7 @@ def select_best_lags(
         # Move counter forward by number of lagged versions per driver
         c += da_params.lag_params.n_max_lag + 1
 
-    ranking_params_c = da_params.ranking_params.model_copy()
+    ranking_params_c = da_params.ranking_params.model_copy(deep=True)
     ranking_params_c.methods = da_params.lag_params.ranking_methods
 
     # Rank all lagged driver versions using the ranking algorithm
@@ -210,9 +231,16 @@ def select_best_lags(
             # For each driver, find the best lag value
             for driver in drivers:
                 # Invert the ranking dictionary to map rank -> lag value
-                driver_lags_flipped = {
-                    val: key for key, val in lagged_rankings[account][driver].items()
-                }
+                driver_lags_flipped: dict[float, dts.DriverName] = {}
+                for driver_lag in lagged_rankings[account][
+                    dts.DriverClassification(driver)
+                ].keys():
+                    driver_lags_flipped[
+                        lagged_rankings[account][dts.DriverClassification(driver)][
+                            driver_lag
+                        ][DriverRankingMetric.FINAL_RANK]
+                    ] = driver_lag
+
                 # Select the highest lag among the top n_top_considered ranked lags
                 best_lags[account][driver_classification][driver] = sorted(
                     [
@@ -223,4 +251,4 @@ def select_best_lags(
                     ]
                 )[-1]
 
-    return best_lags
+    return best_lags, lagged_rankings

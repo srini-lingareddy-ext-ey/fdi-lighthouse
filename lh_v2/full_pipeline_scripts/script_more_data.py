@@ -138,6 +138,7 @@ if __name__ == '__main__':
         accounts_drivers_info=dr_data,
         general_params=lh_params.general_params,
         da_params=lh_params.driver_analysis_params,
+        output_params=lh_params.output_params,
     )
 
     driver_analysis_time = time.time() - last_time
@@ -156,6 +157,7 @@ if __name__ == '__main__':
         general_params=lh_params.general_params,
         af_params=lh_params.account_forecast_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_training_time = time.time() - last_time
@@ -183,6 +185,7 @@ if __name__ == '__main__':
         forecasting_input=forecasting_input,
         general_params=lh_params.general_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_forecasting_time = time.time() - last_time

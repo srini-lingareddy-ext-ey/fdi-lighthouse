@@ -2,7 +2,8 @@ from lh_v2.datatypes.account_reconciliation_types import AccountReconciliationMe
 from lh_v2.forecasting.account_forecasting.model_forecasting.model_forecasting_types import (
     ModelForecastingOutput,
 )
-from lh_v2.params import AccountReconciliationParams
+from lh_v2.io.output import save_account_reconciliation_forecasts
+from lh_v2.params import AccountReconciliationParams, OutputParams
 from lh_v2.util import get_logger
 
 from .reconciliation_methods import (
@@ -17,6 +18,7 @@ logger = get_logger(__name__)
 def apply_account_reconciliation(
     forecasting_data: ModelForecastingOutput,
     reconciliation_params: AccountReconciliationParams,
+    output_params: OutputParams,
 ) -> ModelForecastingOutput:
     """
     Apply account reconciliation to forecasting data using specified method.
@@ -110,6 +112,12 @@ def apply_account_reconciliation(
             raise NotImplementedError(
                 f'Reconciliation method {reconciliation_params.method} not implemented.'
             )
+
+    save_account_reconciliation_forecasts(
+        account_forecasts=reconciled_data,
+        forecast_daterange=forecasting_data.forecast_daterange,
+        output_params=output_params,
+    )
 
     # Return new ModelForecastingOutput with reconciled account data
     return ModelForecastingOutput(

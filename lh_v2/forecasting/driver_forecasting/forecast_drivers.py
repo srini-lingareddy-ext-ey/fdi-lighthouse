@@ -44,7 +44,7 @@ DRIVER_FORECASTING_METHOD_MAP: dict[
 }
 
 
-def _create_singe_driver_forecast(
+def create_singe_driver_forecast(
     driver_info: dts.Driver,
     df_params: params.DriverForecastParams,
     n_lag: int,
@@ -148,7 +148,7 @@ def _create_forecasts(
     for driver_name in driver_names:
         # Create forecast for current driver using specified method and parameters
         forecasted_drivers_lst.append(
-            _create_singe_driver_forecast(
+            create_singe_driver_forecast(
                 driver_info=drivers_info.get_driver(driver_name),
                 df_params=df_params,
                 n_lag=lags[driver_name],

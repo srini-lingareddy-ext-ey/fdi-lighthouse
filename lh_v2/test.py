@@ -22,6 +22,7 @@ analysis_output = analyze_drivers_full(
     accounts_drivers_info=dr_data,
     general_params=params.general_params,
     da_params=params.driver_analysis_params,
+    output_params=params.output_params,
 )
 
 

@@ -1,11 +1,13 @@
 from .collinearity_methods import (
     AbstractCollinearityMethod,
 )
-from .collinearity_pruning_llm import prune_collinearity
-from .collinearity_removal import remove_collinearity
+from .collinearity_pruning_llm import prune_final_drivers
+from .collinearity_removal import select_final_drivers
+from .collinearity_util import get_collinearity_arr
 
 __all__ = [
     'AbstractCollinearityMethod',
-    'remove_collinearity',
-    'prune_collinearity',
+    'get_collinearity_arr',
+    'select_final_drivers',
+    'prune_final_drivers',
 ]

@@ -4,6 +4,7 @@ from typing import Callable
 import lh_v2.datatypes as dts
 import lh_v2.params.driver_analysis_params.ranking_params as dr_params
 import lh_v2.stats as stats
+from lh_v2.datatypes.driver_analysis_types.ranking_types import DriverRankingEnum
 from lh_v2.shared import ArrayF
 
 from ..driver_ranking_util import order_drivers_allow_ties, rank_array_to_ranking_dict
@@ -77,6 +78,11 @@ class AbstractRankingMethod(ABC):
     def name() -> str:
         raise NotImplementedError
 
+    @staticmethod
+    @abstractmethod
+    def get_enum() -> DriverRankingEnum:
+        raise NotImplementedError
+
     @abstractmethod
     def apply(self) -> ArrayF:
         """
@@ -108,4 +114,12 @@ class AbstractRankingMethod(ABC):
         out_dict: dict[dts.DriverName, float] = {}
         for driver, ind in self.info.drivers.map.items():
             out_dict[driver] = float(vals[ind])
+
         return out_dict
+
+        rank_dict = rank_array_to_ranking_dict(
+            rank_array=order_drivers_allow_ties(values=vals),
+            ordered_drivers=self.info.drivers.get_ordered_drivers(),
+        )
+
+        return out_dict, rank_dict

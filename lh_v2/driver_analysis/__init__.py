@@ -2,9 +2,8 @@ from .analyze_drivers import (
     analyze_drivers_full,
     analyze_drivers_llm,
     driver_ranking_debug,
-    driver_ranking_test,
 )
-from .collinearity import AbstractCollinearityMethod, remove_collinearity
+from .collinearity import AbstractCollinearityMethod, get_collinearity_arr
 from .driver_analysis_types import (
     DriverAnalysisInput,
     DriverAnalysisOutput,
@@ -17,12 +16,11 @@ __all__ = [
     'AbstractRankingMethod',
     'rank',
     'AbstractCollinearityMethod',
-    'remove_collinearity',
+    'get_collinearity_arr',
     'select_best_lags',
     'analyze_drivers_full',
     'analyze_drivers_llm',
     'driver_ranking_debug',
-    'driver_ranking_test',
     'DriverAnalysisInput',
     'DriverAnalysisOutput',
     'DriverAnalysisOutputLLM',

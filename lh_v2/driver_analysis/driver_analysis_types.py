@@ -7,7 +7,7 @@ from lh_v2.datatypes import (
     DriverName,
 )
 from lh_v2.datatypes.driver_analysis_types.ranking_types import (
-    DriverRankingLLMMetric,
+    DriverRankingMetric,
 )
 
 
@@ -49,6 +49,10 @@ class DriverAnalysisOutput:
     """
 
     selected_drivers: dict[AccountType, dict[DriverClassification, list[DriverName]]]
+    metrics: dict[
+        AccountType,
+        dict[DriverClassification, dict[DriverName, dict[DriverRankingMetric, float]]],
+    ]
     lags: dict[AccountType, dict[DriverClassification, dict[DriverName, int]]]
 
     def format_lags(self) -> dict[AccountType, dict[DriverName, int]]:
@@ -159,9 +163,7 @@ class DriverAnalysisOutputLLM:
     selectable_drivers: dict[AccountType, dict[DriverClassification, list[DriverName]]]
     metrics: dict[
         AccountType,
-        dict[
-            DriverClassification, dict[DriverName, dict[DriverRankingLLMMetric, float]]
-        ],
+        dict[DriverClassification, dict[DriverName, dict[DriverRankingMetric, float]]],
     ]
     lags: dict[AccountType, dict[DriverClassification, dict[DriverName, int]]]
 

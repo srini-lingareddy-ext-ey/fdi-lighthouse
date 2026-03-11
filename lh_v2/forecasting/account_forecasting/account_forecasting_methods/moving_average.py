@@ -69,6 +69,10 @@ class MovingAverageAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.MOVING_AVERAGE
 
+    @staticmethod
+    def is_linear() -> bool:
+        return False
+
     def train(self) -> None:
         """
         Calculate the moving average from the training data.
@@ -117,3 +121,30 @@ class MovingAverageAccountForecastingMethod(AbstractAccountForecastingMethod):
 
         # Generate flat forecast using the calculated moving average
         return np.full(n_forecast, self.model, dtype=np.float64)
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the moving average to a vectorized input array.
+
+        The input array should be of shape (n_forecasts, n_features, n_samples),
+        but since Moving Average does not use features, it will ignore the
+        n_features dimension and produce a flat forecast for each sample.
+
+        Returns
+        -------
+        ArrayF
+            Predicted account values for the forecast period, shape (n_forecasts, n_samples).
+            Each forecast is a constant value equal to the moving average.
+
+        Raises
+        ------
+        ModelNotTrainedError
+            If the model has not been trained yet.
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        n_forecasts, _, n_samples = arr_input.shape
+
+        # Generate flat forecast using the calculated moving average
+        return np.full((n_forecasts, n_samples), self.model, dtype=np.float64)

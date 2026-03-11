@@ -68,6 +68,10 @@ class LassoAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.LASSO
 
+    @staticmethod
+    def is_linear() -> bool:
+        return True
+
     def train(self) -> None:
         """
         Train the Lasso regression model using selected drivers.
@@ -120,3 +124,20 @@ class LassoAccountForecastingMethod(AbstractAccountForecastingMethod):
         predictions = self.model.predict(X)
 
         return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the forecasting method to a vectorized input array.
+        The array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        # Reshape input to 2D for prediction
+        n_forecasts, n_features, n_samples = arr_input.shape
+        X = arr_input.reshape(n_forecasts * n_samples, n_features)
+
+        # Predict and reshape back to (n_forecasts, n_samples)
+        predictions = self.model.predict(X)
+        return predictions.reshape(n_forecasts, n_samples)

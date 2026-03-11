@@ -8,8 +8,11 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 import lh_v2.datatypes as dts
 import lh_v2.params as params
 from lh_v2.shared import ArrayF
+from lh_v2.util import get_logger
 
 from .abstract_class import AbstractDriverForecastingMethod
+
+logger = get_logger(__name__)
 
 
 class ExponentialSmoothingDriverForecastingMethod(AbstractDriverForecastingMethod):
@@ -136,13 +139,13 @@ class ExponentialSmoothingDriverForecastingMethod(AbstractDriverForecastingMetho
             if self.seasonal is None:
                 if use_seasonal:
                     self.seasonal = 'add'
-                    print(
+                    logger.info(
                         f"Exponential Smoothing: Detected seasonality in '{self.driver_info.name}' "
                         f'(strength: {self.seasonal_strength:.2%})'
                     )
                 else:
                     self.seasonal = None
-                    print(
+                    logger.info(
                         f"Exponential Smoothing: No significant seasonality in '{self.driver_info.name}' "
                         f'(strength: {self.seasonal_strength:.2%})'
                     )
@@ -171,10 +174,10 @@ class ExponentialSmoothingDriverForecastingMethod(AbstractDriverForecastingMetho
 
         except Exception as e:
             # Fall back to simple exponential smoothing if fitting fails
-            print(
+            logger.warning(
                 f'Exponential Smoothing fitting failed with trend={self.trend}, seasonal={self.seasonal}: {e}'
             )
-            print(
+            logger.info(
                 'Falling back to simple exponential smoothing (no trend, no seasonality)'
             )
 

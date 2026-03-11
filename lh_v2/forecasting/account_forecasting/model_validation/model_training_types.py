@@ -5,7 +5,6 @@ from typing import Sequence
 import lh_v2.datatypes as dts
 import lh_v2.datatypes.forecasting_types.account_forecasting_types as aft
 import lh_v2.params as params
-from lh_v2.io.plotting import plot_account_forecast, plot_account_forecasts
 from lh_v2.shared import ArrayF
 
 from ..account_forecasting_methods import AbstractAccountForecastingMethod
@@ -248,54 +247,3 @@ class ModelTrainingOutput:
             best_params_formatted[account] = self.best_params[account_idx]
 
         return best_params_formatted
-
-    def plot_forecast(
-        self,
-        account: dts.AccountType,
-        method: aft.AccountForecastingMethodEnum,
-        forecast_daterange: tuple[datetime.date, datetime.date],
-    ):
-        # Retrieve the forecasted account data for the specified account and method
-        # Uses nested indexing: first by account, then by method within that account
-        forecasted_account = self.forecasted_accounts[self.account_map[account]][
-            self.method_map[account][method]
-        ]
-
-        # Generate and display the forecast plot
-        plot_account_forecast(
-            acc=forecasted_account, forecast_daterange=forecast_daterange
-        )
-        return
-
-    def plot_all_forecasts(
-        self,
-        account: dts.AccountType,
-        forecast_daterange: tuple[datetime.date, datetime.date],
-        historicals: dts.AccountInfo | None = None,
-    ):
-        # Initialize lists to store account forecasts and their corresponding method labels
-        accs: list[dts.AccountInfo] = []
-        methods: list[str] = []
-
-        selected_method = self.select_forecast_methods()[account]
-
-        # Collect all forecasts and method names for this account
-        for method in self.method_map[account].keys():
-            # Retrieve forecasted account data for this method
-            forecasted_account = self.forecasted_accounts[self.account_map[account]][
-                self.method_map[account][method]
-            ]
-            accs.append(forecasted_account)
-            # Store the method name as a string for plot labeling
-            if method == selected_method:
-                methods.append(f'{method.value} (Selected)')
-            else:
-                methods.append(method.value)
-
-        # Generate comparison plot showing all forecasting methods for this account
-        plot_account_forecasts(
-            accounts=accs,
-            forecast_daterange=forecast_daterange,
-            historicals=historicals,
-            labels=methods,
-        )

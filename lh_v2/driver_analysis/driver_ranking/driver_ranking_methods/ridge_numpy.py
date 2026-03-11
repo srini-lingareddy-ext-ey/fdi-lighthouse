@@ -5,6 +5,7 @@ import numpy as np
 import lh_v2.datatypes as dts
 import lh_v2.params.driver_analysis_params.ranking_params as dr_params
 import lh_v2.stats as stats
+from lh_v2.datatypes.driver_analysis_types.ranking_types import DriverRankingEnum
 from lh_v2.shared import ArrayF
 
 from .abstract_class import AbstractRankingMethod
@@ -61,6 +62,10 @@ class RidgeRankingNumpy(AbstractRankingMethod):
     @staticmethod
     def name():
         return 'Ridge_Numpy'
+
+    @staticmethod
+    def get_enum() -> DriverRankingEnum:
+        return DriverRankingEnum.RIDGE
 
     @staticmethod
     def _fit_ridge(X: ArrayF, y: ArrayF, alpha: float) -> ArrayF:
@@ -146,17 +151,16 @@ class RidgeRankingNumpy(AbstractRankingMethod):
 
         # Set random seed for reproducibility
         rng = np.random.RandomState(42)
+        # Transpose drivers_norm to get features as columns
+        X = drivers_norm.T
+        y = self.info.account.arr
+
+        n_samples = drivers_norm.shape[1]
+        n_train = int(0.8 * n_samples)
 
         # Run multiple iterations of Ridge regression with different random states
         for k in range(self.method_params.n_iter):
             # Split data into training and testing sets (80/20 split)
-            # Transpose drivers_norm to get features as columns
-            X = drivers_norm.T
-            y = self.info.account.arr
-
-            # Create train/test split using numpy
-            n_samples = X.shape[0]
-            n_train = int(0.8 * n_samples)
 
             # Set seed for this iteration
             rng.seed(k)

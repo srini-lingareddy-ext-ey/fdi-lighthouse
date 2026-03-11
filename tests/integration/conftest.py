@@ -83,6 +83,7 @@ def sample_analyze_drivers_full(
             accounts_drivers_info=da_input,
             general_params=sample_params.general_params,
             da_params=sample_params.driver_analysis_params,
+            output_params=sample_params.output_params,
         )
 
     return analysis_results
@@ -113,6 +114,7 @@ def sample_model_training_validation(
             general_params=sample_params.general_params,
             af_params=sample_params.account_forecast_params,
             df_params=sample_params.driver_forecast_params,
+            output_params=sample_params.output_params,
         )
 
     return training_results
@@ -153,6 +155,7 @@ def sample_model_forecasting(
             forecasting_input=forecasting_input,
             general_params=sample_params.general_params,
             df_params=sample_params.driver_forecast_params,
+            output_params=sample_params.output_params,
         )
 
     return forecasting_results
@@ -204,11 +207,13 @@ def sample_account_reconciliation_params_mint_adjustment(
 def sample_account_reconciliation_algebraic_formula(
     sample_model_forecasting: ModelForecastingOutput,
     sample_account_reconciliation_params_algebraic_formula: AccountReconciliationParams,
+    sample_params: LighthouseParams,
 ) -> ModelForecastingOutput:
     """Fixture to run account reconciliation for testing."""
     return apply_account_reconciliation(
         forecasting_data=sample_model_forecasting,
         reconciliation_params=sample_account_reconciliation_params_algebraic_formula,
+        output_params=sample_params.output_params,
     )
 
 
@@ -216,9 +221,11 @@ def sample_account_reconciliation_algebraic_formula(
 def sample_account_reconciliation_mint_adjustment(
     sample_model_forecasting: ModelForecastingOutput,
     sample_account_reconciliation_params_mint_adjustment: AccountReconciliationParams,
+    sample_params: LighthouseParams,
 ) -> ModelForecastingOutput:
     """Fixture to run account reconciliation for testing."""
     return apply_account_reconciliation(
         forecasting_data=sample_model_forecasting,
         reconciliation_params=sample_account_reconciliation_params_mint_adjustment,
+        output_params=sample_params.output_params,
     )

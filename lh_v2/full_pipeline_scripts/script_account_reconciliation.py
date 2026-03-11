@@ -3,6 +3,7 @@ import time
 
 # import lh_v2.datatypes as dts
 from lh_v2.account_reconciliation import apply_account_reconciliation
+from lh_v2.data_analysis.account_plotting_util import plot_account_forecasts
 from lh_v2.driver_analysis import analyze_drivers_full
 from lh_v2.forecasting import create_account_forecasts, train_and_validate_models
 from lh_v2.forecasting.account_forecasting.model_forecasting.model_forecasting_types import (
@@ -17,12 +18,11 @@ from lh_v2.io.output.output_data import (
     save_account_validation_csv,
     save_selected_drivers_csv,
 )
-from lh_v2.io.plotting import plot_account_forecasts
 from lh_v2.params import parse_yaml
 
 b_time_parts = True
 b_save_csv = False
-b_plot = True
+b_plot = False
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -50,6 +50,7 @@ if __name__ == '__main__':
         accounts_drivers_info=dr_data,
         general_params=lh_params.general_params,
         da_params=lh_params.driver_analysis_params,
+        output_params=lh_params.output_params,
     )
 
     driver_analysis_time = time.time() - last_time
@@ -68,20 +69,23 @@ if __name__ == '__main__':
         general_params=lh_params.general_params,
         af_params=lh_params.account_forecast_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_training_time = time.time() - last_time
     last_time = time.time()
+
+    selected_methods = training_results.select_forecast_methods()
 
     # Prepare model forecasting input
     forecasting_input = ModelForecastingInput(
         accounts_drivers=dr_data.select_drivers(analysis_results.selected_drivers),
         lags=analysis_results.format_lags(),
         classifications=analysis_results.format_classifications(),
-        selected_model=training_results.select_forecast_methods(),
+        selected_model=selected_methods,
         best_params=training_results.format_best_params(),
         validation_errors=training_results.get_selected_methods_errors(
-            selected_methods=training_results.select_forecast_methods(),
+            selected_methods=selected_methods,
             actuals=dr_data.accounts,
             val_date_range=(
                 lh_params.general_params.validation_start_date,
@@ -95,6 +99,7 @@ if __name__ == '__main__':
         forecasting_input=forecasting_input,
         general_params=lh_params.general_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
 
     model_forecasting_time = time.time() - last_time
@@ -103,6 +108,7 @@ if __name__ == '__main__':
     reconciliation_results = apply_account_reconciliation(
         forecasting_data=forecasting_results,
         reconciliation_params=lh_params.account_reconciliation_params,
+        output_params=lh_params.output_params,
     )
 
     account_reconciliation_time = time.time() - last_time
@@ -128,12 +134,18 @@ if __name__ == '__main__':
     if b_plot:
         # Plot specific accounts for validation
         for account in training_results.account_map.keys():
-            training_results.plot_all_forecasts(
-                account=account,
-                forecast_daterange=(
-                    lh_params.general_params.validation_start_date,
-                    lh_params.general_params.validation_end_date,
-                ),
+            print(
+                f'Plotting validation forecast for {account} - '
+                f'Selected Method: {selected_methods[account].value}'
+            )
+            plot_account_forecasts(
+                accounts={
+                    method: training_results.forecasted_accounts[
+                        training_results.account_map[account]
+                    ][idx]
+                    for method, idx in training_results.method_map[account].items()
+                },
+                forecast_daterange=lh_params.general_params.get_validation_daterange(),
                 historicals=dr_data.accounts[account],
             )
 
@@ -141,11 +153,16 @@ if __name__ == '__main__':
         for account in reconciliation_results.accounts_forecasts.get_ordered_accounts():
             print(f'Plotting forecast for {account}')
             plot_account_forecasts(
-                accounts=[
-                    forecasting_results.accounts_forecasts[account],
-                    reconciliation_results.accounts_forecasts[account],
-                ],
+                accounts={
+                    f'Original Forecast | {selected_methods[account].value}': forecasting_results.accounts_forecasts[
+                        account
+                    ],
+                    'Reconciled Forecast': reconciliation_results.accounts_forecasts[
+                        account
+                    ],
+                },
                 forecast_daterange=forecasting_results.forecast_daterange,
+                historicals=dr_data.accounts[account],
             )
 
     # Save forecasts to CSV

@@ -9,6 +9,8 @@ from .logging_util import (
     get_logger,
     silence_loud_loggers,
 )
+from .pathing import create_output_dir, get_output_dir, get_root_dir
+from .str_parsing import parse_snake_case
 from .util import flip_dict, flip_seq_dicts
 
 __all__ = [
@@ -27,4 +29,8 @@ __all__ = [
     'ymd2pydate',
     'npdate_add_months',
     'month_dif',
+    'parse_snake_case',
+    'get_root_dir',
+    'create_output_dir',
+    'get_output_dir',
 ]

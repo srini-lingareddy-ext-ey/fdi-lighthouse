@@ -69,6 +69,10 @@ class LinearRegressionDriversAccountForecastingMethod(AbstractAccountForecasting
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.LINEAR_REGRESSION_DRIVERS
 
+    @staticmethod
+    def is_linear() -> bool:
+        return True
+
     def train(self) -> None:
         """
         Train the multiple linear regression model using selected drivers.
@@ -137,3 +141,24 @@ class LinearRegressionDriversAccountForecastingMethod(AbstractAccountForecasting
         predictions = X @ weights + intercept
 
         return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the trained model to a vectorized input array.
+        The array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        weights, intercept = self.model
+
+        # Reshape arr_input to (n_forecasts * n_samples, n_features)
+        n_forecasts, n_features, n_samples = arr_input.shape
+        arr_reshaped = arr_input.transpose(0, 2, 1).reshape(-1, n_features)
+
+        # Generate predictions for each forecast and sample
+        predictions = arr_reshaped @ weights + intercept
+
+        # Reshape back to (n_forecasts, n_samples)
+        return predictions.reshape(n_forecasts, n_samples)

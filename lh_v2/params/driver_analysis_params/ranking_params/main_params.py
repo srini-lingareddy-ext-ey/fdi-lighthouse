@@ -1,11 +1,14 @@
+from typing import Any, Sequence
+
 from pydantic import Field
 
 from lh_v2.datatypes.driver_analysis_types.ranking_types import (
     DriverRankingEnum,
+    DriverRankingMetric,
 )
 from lh_v2.util import BaseParamsModel
 
-from .extra_params import LLMRankingParams, RankingMethodsParams
+from .extra_params import RankingMethodsParams
 from .method_params import (
     BaseRankingParams,
     BorutaRankingParams,
@@ -72,7 +75,11 @@ class RankingParams(BaseParamsModel):
     """
 
     methods: RankingMethodsParams = Field(default_factory=RankingMethodsParams)
-    llm_ranking_params: LLMRankingParams = Field(default_factory=LLMRankingParams)
+    ranking_metrics: Sequence[DriverRankingMetric] = (
+        DriverRankingMetric.FINAL_RANK,
+        DriverRankingMetric.AVG_RANK,
+        DriverRankingMetric.PEARSON_CORRELATION,
+    )
     pearson_ranking_params: PearsonRankingParams = Field(
         default_factory=PearsonRankingParams
     )
@@ -98,6 +105,13 @@ class RankingParams(BaseParamsModel):
         default_factory=RandomForestLightGBMRankingParams
     )
     mrmr_ranking_params: MRMRRankingParams = Field(default_factory=MRMRRankingParams)
+
+    def model_post_init(self, _: Any) -> None:
+        if DriverRankingMetric.FINAL_RANK not in self.ranking_metrics:
+            self.ranking_metrics = tuple(
+                [DriverRankingMetric.FINAL_RANK] + list(self.ranking_metrics)
+            )
+        return
 
     def __getitem__(self, key: DriverRankingEnum) -> BaseRankingParams:
         """

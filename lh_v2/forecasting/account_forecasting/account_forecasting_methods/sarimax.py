@@ -71,6 +71,10 @@ class SARIMAXAccountForecastingMethod(AbstractAccountForecastingMethod):
     def method_enum() -> aft.AccountForecastingMethodEnum:
         return aft.AccountForecastingMethodEnum.SARIMAX
 
+    @staticmethod
+    def is_linear() -> bool:
+        return False
+
     def train(self) -> None:
         """
         Train the SARIMAX model using account history and driver data.
@@ -210,4 +214,25 @@ class SARIMAXAccountForecastingMethod(AbstractAccountForecastingMethod):
         # Convert to numpy array if pandas Series
         if hasattr(predictions, 'values'):
             return predictions.values
+        return predictions
+
+    def apply_vectorized(self, arr_input: ArrayF) -> ArrayF:
+        """
+        Apply the trained model to a vectorized input array.
+        The array should be of shape (n_forecasts, n_features, n_samples)
+        and the output should be of shape (n_forecasts, n_samples).
+        """
+        if self.model is None:
+            raise ModelNotTrainedError(method_name=self.name())
+
+        # SARIMAX does not natively support vectorized predictions, so we will
+        # loop through each forecast and apply the model separately.
+        n_forecasts, _, n_samples = arr_input.shape
+        predictions = np.zeros((n_forecasts, n_samples))
+
+        for i in range(n_forecasts):
+            exog = arr_input[i].T  # Shape: (n_samples, n_features)
+            pred = self.model.forecast(steps=n_samples, exog=exog)
+            predictions[i] = pred
+
         return predictions

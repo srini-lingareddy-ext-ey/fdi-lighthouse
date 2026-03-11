@@ -7,6 +7,7 @@ import sklearn.model_selection as skm
 
 import lh_v2.datatypes as dts
 import lh_v2.params.driver_analysis_params.ranking_params as dr_params
+from lh_v2.datatypes.driver_analysis_types.ranking_types import DriverRankingEnum
 from lh_v2.shared import ArrayF
 
 from .abstract_class import AbstractRankingMethod
@@ -66,6 +67,10 @@ class RFERanking(AbstractRankingMethod):
     @staticmethod
     def name() -> str:
         return 'RFE'
+
+    @staticmethod
+    def get_enum() -> DriverRankingEnum:
+        return DriverRankingEnum.RFE
 
     def apply(self) -> ArrayF:
         """

@@ -8,8 +8,11 @@ from prophet import Prophet
 import lh_v2.datatypes as dts
 import lh_v2.params as params
 from lh_v2.shared import ArrayF
+from lh_v2.util import get_logger
 
 from .abstract_class import AbstractDriverForecastingMethod
+
+logger = get_logger(__name__)
 
 
 class ProphetDriverForecastingMethod(AbstractDriverForecastingMethod):
@@ -136,12 +139,14 @@ class ProphetDriverForecastingMethod(AbstractDriverForecastingMethod):
             self.fitted_model.fit(df)
             self.model = self.fitted_model
 
-            print(f"Prophet: Trained successfully for '{self.driver_info.name}'")
-            print(f'  Seasonality mode: {self.seasonality_mode}')
-            print(f'  Yearly seasonality: {self.yearly_seasonality}')
+            logger.info(f"Prophet: Trained successfully for '{self.driver_info.name}'")
+            logger.info(f'  Seasonality mode: {self.seasonality_mode}')
+            logger.info(f'  Yearly seasonality: {self.yearly_seasonality}')
 
         except Exception as e:
-            print(f"Prophet: Training failed for '{self.driver_info.name}': {e}")
+            logger.warning(
+                f"Prophet: Training failed for '{self.driver_info.name}': {e}"
+            )
             self.fitted_model = None
             self.model = None
 
@@ -194,6 +199,8 @@ class ProphetDriverForecastingMethod(AbstractDriverForecastingMethod):
             return np.array(forecast_values, dtype=self.driver_info.np_dtype)
 
         except Exception as e:
-            print(f"Prophet: Forecast failed for '{self.driver_info.name}': {e}")
+            logger.warning(
+                f"Prophet: Forecast failed for '{self.driver_info.name}': {e}"
+            )
             training_data = self.get_training_data()
             return np.full(n_steps, np.mean(training_data))

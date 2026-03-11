@@ -66,6 +66,7 @@ def train_models_new_llm(
         accounts_drivers_info=dr_data,
         general_params=lh_params.general_params,
         da_params=lh_params.driver_analysis_params,
+        output_params=lh_params.output_params,
         selected_drivers=selected_drivers,
         drivers_lags=drivers_lags,
     )
@@ -87,4 +88,5 @@ def train_models_new_llm(
         general_params=lh_params.general_params,
         af_params=lh_params.account_forecast_params,
         df_params=lh_params.driver_forecast_params,
+        output_params=lh_params.output_params,
     )
