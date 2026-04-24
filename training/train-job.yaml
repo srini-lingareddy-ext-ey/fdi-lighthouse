@@ -1,0 +1,42 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+experiment_name: lighthouse
+display_name: lighthouse-train
+
+tags:
+  app: fdi-lighthouse
+  type: training
+
+compute: azureml:lh-cpu
+
+inputs:
+  accounts:
+    type: uri_file
+    path: azureml:lh-accounts:1
+    mode: ro_mount
+  drivers:
+    type: uri_file
+    path: azureml:lh-drivers:1
+    mode: ro_mount
+  config:
+    type: uri_file
+    path: azureml:lh-config:1
+    mode: ro_mount
+
+outputs:
+  artifacts:
+    type: uri_folder
+    mode: rw_mount
+
+code: ./
+
+command: >-
+  pip install --quiet matplotlib python-dateutil &&
+  python train_entrypoint.py
+  --accounts ${{inputs.accounts}}
+  --drivers ${{inputs.drivers}}
+  --config ${{inputs.config}}
+  --output-dir ${{outputs.artifacts}}
+
+environment:
+  image: ACR_NAME_PLACEHOLDER.azurecr.io/fdi-lighthouse:py314

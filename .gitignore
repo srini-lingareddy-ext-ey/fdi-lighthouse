@@ -63,5 +63,11 @@ coverage.xml
 # Do commit testing data
 !tests/test_data/*.parquet
 
+# Bicep compiler output (run `az bicep build` locally)
+infra/bicep/main.json
+
 # Planning Files
 planning/
+
+# Cursor IDE (local)
+.cursor/

@@ -1,0 +1,42 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: lighthouse_train
+display_name: Lighthouse training
+description: >-
+  Run the Lighthouse (lh_v2) driver-analysis + train/validate + forecast +
+  reconcile pipeline on monthly inputs. Emits CSVs, per-account charts
+  (PNG + JSON), and a manifest.json for the static portal.
+version: "1"
+is_deterministic: true
+
+tags:
+  app: fdi-lighthouse
+
+inputs:
+  accounts:
+    type: uri_file
+    description: Accounts fact CSV
+  drivers:
+    type: uri_file
+    description: Drivers CSV
+  config:
+    type: uri_file
+    description: Lighthouse YAML config
+
+outputs:
+  artifacts:
+    type: uri_folder
+    description: Run artifacts consumed by the static portal (manifest + CSVs + charts)
+
+code: ./
+
+command: >-
+  pip install --quiet matplotlib python-dateutil &&
+  python train_entrypoint.py
+  --accounts ${{inputs.accounts}}
+  --drivers ${{inputs.drivers}}
+  --config ${{inputs.config}}
+  --output-dir ${{outputs.artifacts}}
+
+environment:
+  image: ACR_NAME_PLACEHOLDER.azurecr.io/fdi-lighthouse:py314

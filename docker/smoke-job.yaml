@@ -1,0 +1,27 @@
+# Azure ML v2 — smoke test (imports lh_v2 inside the ACR image).
+# Replace the image with: <output acrLoginServer from Bicep>/fdi-lighthouse:py314
+# Usage:
+#   az ml job create -f docker/smoke-job.yaml -g <rg> -w <ml-workspace-name>
+#
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+experiment_name: lighthouse
+display_name: fdi-lighthouse-smoke
+tags:
+  app: fdi-lighthouse
+  type: smoke
+
+# Must match the AmlCompute name from Bicep (default: lh-cpu)
+compute: azureml:lh-cpu
+
+# Single-line command for widest CLI compatibility
+command: python -c "import sys, lh_v2; print('python', sys.version); print('lh_v2 import ok')"
+
+# Self-contained custom image (Lighthouse in /opt/lh-v2; see docker/Dockerfile)
+environment:
+  # Replace ACR with your Bicep output `acrLoginServer` (e.g. fdiacrxxx.azurecr.io) + repository:tag
+  image: ACR_NAME_PLACEHOLDER.azurecr.io/fdi-lighthouse:py314
+
+# Optional: set via CLI --name
+# name: smoke-{timestamp} is not templateable here; use:
+#  az ml job create ... --name fdi-lh-smoke-001

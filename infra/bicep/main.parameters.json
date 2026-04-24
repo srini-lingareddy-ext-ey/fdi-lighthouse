@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": { "value": "fdilh" },
+    "location": { "value": "eastus" },
+    "mlWorkspaceName": { "value": "fdi-lighthouse-ml" },
+    "computeClusterName": { "value": "lh-cpu" },
+    "vmSize": { "value": "Standard_DS3_v2" },
+    "maxNodeCount": { "value": 4 },
+    "tags": { "value": { "app": "fdi-lighthouse", "component": "ml" } }
+  }
+}

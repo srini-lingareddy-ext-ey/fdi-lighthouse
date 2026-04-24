@@ -1,0 +1,79 @@
+name: Run Lighthouse AML pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_portal:
+        description: Also publish artifacts + portal to $web after the run
+        type: boolean
+        default: true
+  # Safety-net trigger: if Azure ML schedule is ever disabled, re-run from GitHub
+  # on the first of each month at 02:15 UTC.
+  schedule:
+    - cron: '15 2 1 * *'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  RESOURCE_GROUP: rg-fdi-lighthouse-ml
+  WORKSPACE: fdi-lighthouse-ml
+  ACR_FQDN: acregfdilhreg6kqxjx2266ii6.azurecr.io
+  STORAGE_ACCOUNT: sfdilhst6kqxjx2266ii6
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Azure ML CLI extension
+        run: az extension add --name ml --yes --upgrade
+
+      - name: Submit pipeline job
+        id: submit
+        run: |
+          WORK=$(mktemp -d)
+          sed "s|ACR_NAME_PLACEHOLDER.azurecr.io|${ACR_FQDN}|g" training/component.yaml > "$WORK/component.yaml"
+          cp training/pipeline.yaml "$WORK/pipeline.yaml"
+          cp training/train_entrypoint.py "$WORK/train_entrypoint.py"
+          JOB=$(az ml job create --file "$WORK/pipeline.yaml" -g "$RESOURCE_GROUP" -w "$WORKSPACE" --query name -o tsv)
+          echo "Submitted $JOB"
+          echo "job=$JOB" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for job to finish
+        run: |
+          az ml job stream -n "${{ steps.submit.outputs.job }}" -g "$RESOURCE_GROUP" -w "$WORKSPACE"
+          STATUS=$(az ml job show -n "${{ steps.submit.outputs.job }}" -g "$RESOURCE_GROUP" -w "$WORKSPACE" --query status -o tsv)
+          echo "Final status: $STATUS"
+          [[ "$STATUS" == "Completed" ]] || exit 1
+
+      - name: Download artifacts
+        if: ${{ inputs.publish_portal }}
+        run: |
+          mkdir -p /tmp/lh-artifacts
+          az ml job download -n "${{ steps.submit.outputs.job }}" --all -g "$RESOURCE_GROUP" -w "$WORKSPACE" --download-path /tmp/lh-artifacts
+          ls -la /tmp/lh-artifacts
+
+      - name: Publish portal + artifacts to $web
+        if: ${{ inputs.publish_portal }}
+        run: |
+          ARTIFACTS_DIR=$(find /tmp/lh-artifacts -type d -name artifacts | head -n1)
+          if [[ -z "$ARTIFACTS_DIR" ]]; then echo "No artifacts dir found"; exit 1; fi
+          az storage blob service-properties update --account-name "$STORAGE_ACCOUNT" \
+            --static-website --index-document index.html --404-document index.html --auth-mode login
+          az storage blob upload --account-name "$STORAGE_ACCOUNT" --auth-mode login \
+            --container-name '$web' --file portal/index.html --name index.html --overwrite
+          az storage blob upload-batch --account-name "$STORAGE_ACCOUNT" --auth-mode login \
+            --destination '$web/data' --source "$ARTIFACTS_DIR" --overwrite
+          WEB_URL=$(az storage account show -n "$STORAGE_ACCOUNT" --query "primaryEndpoints.web" -o tsv)
+          echo "### Portal" >> "$GITHUB_STEP_SUMMARY"
+          echo "[$WEB_URL]($WEB_URL)" >> "$GITHUB_STEP_SUMMARY"

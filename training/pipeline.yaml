@@ -1,0 +1,42 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+experiment_name: lighthouse
+display_name: lighthouse-monthly-pipeline
+
+tags:
+  app: fdi-lighthouse
+  type: pipeline
+
+settings:
+  default_compute: azureml:lh-cpu
+  continue_on_step_failure: false
+
+inputs:
+  accounts:
+    type: uri_file
+    path: azureml:lh-accounts@latest
+    mode: ro_mount
+  drivers:
+    type: uri_file
+    path: azureml:lh-drivers@latest
+    mode: ro_mount
+  config:
+    type: uri_file
+    path: azureml:lh-config@latest
+    mode: ro_mount
+
+outputs:
+  artifacts:
+    type: uri_folder
+    mode: rw_mount
+
+jobs:
+  train:
+    type: command
+    component: ./component.yaml
+    inputs:
+      accounts: ${{parent.inputs.accounts}}
+      drivers: ${{parent.inputs.drivers}}
+      config: ${{parent.inputs.config}}
+    outputs:
+      artifacts: ${{parent.outputs.artifacts}}

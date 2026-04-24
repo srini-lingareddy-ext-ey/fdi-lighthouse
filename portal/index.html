@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lighthouse — forecast portal</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff; --accent:#2563eb; --accent-2:#0ea5e9; --warn:#d97706; --ok:#16a34a; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); }
+    header { padding: 1.5rem 2rem; background: linear-gradient(90deg, #0f172a, #1e293b); color: #fff; }
+    header h1 { margin: 0; font-size: 1.4rem; letter-spacing: .2px; }
+    header .sub { color: #94a3b8; font-size: .9rem; margin-top: .25rem; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem 4rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .75rem; margin-top: 1rem; }
+    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+    .kpi .lbl { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+    .kpi .val { margin-top: .15rem; font-size: 1.1rem; font-weight: 600; word-break: break-word; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 1px 2px rgba(15, 23, 42, .04); }
+    .card h3 { margin: 0 0 .6rem; font-size: 1rem; }
+    .card .foot { color: var(--muted); font-size: .8rem; margin-top: .5rem; }
+    .chart-wrap { position: relative; height: 260px; }
+    details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: .75rem 1rem; margin-top: 1rem; }
+    details > summary { cursor: pointer; font-weight: 600; }
+    pre { overflow: auto; background: #0f172a; color: #e2e8f0; padding: .8rem; border-radius: 8px; font-size: .8rem; }
+    table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+    th, td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--line); }
+    th { background: #f1f5f9; position: sticky; top: 0; }
+    .tag { display: inline-block; padding: .12rem .5rem; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: .75rem; margin-right: .25rem; }
+    .tag.warn { background: #fef3c7; color: #92400e; }
+    .tag.ok { background: #dcfce7; color: #14532d; }
+    a { color: var(--accent); }
+    .banner { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: .75rem 1rem; border-radius: 8px; margin-top: 1rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .5rem; }
+    .toolbar input { flex: 1; min-width: 200px; padding: .4rem .6rem; border-radius: 6px; border: 1px solid var(--line); font-size: .85rem; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Lighthouse forecast portal</h1>
+    <div class="sub">Run summary, forecasts, driver rankings, reconciliation, and audit.</div>
+  </header>
+  <main class="wrap">
+    <div id="banner"></div>
+    <section id="summary"></section>
+    <section id="charts" class="grid"></section>
+    <details open>
+      <summary>Selected drivers</summary>
+      <div id="drivers">—</div>
+    </details>
+    <details>
+      <summary>Validation (actuals vs candidate methods)</summary>
+      <div id="validation">—</div>
+    </details>
+    <details>
+      <summary>Account forecasts (pre-reconciliation)</summary>
+      <div id="forecasts">—</div>
+    </details>
+    <details>
+      <summary>Account forecasts (reconciled)</summary>
+      <div id="reconciled">—</div>
+    </details>
+    <details>
+      <summary>Audit / run metadata</summary>
+      <div id="audit">—</div>
+    </details>
+    <details>
+      <summary>Raw manifest.json</summary>
+      <pre id="raw">—</pre>
+    </details>
+  </main>
+
+  <script>
+    (async function () {
+      const $ = (id) => document.getElementById(id);
+      const qs = new URLSearchParams(location.search);
+      const base = location.href.replace(/\/[^/]*$/, '/');
+      const manifestUrl = qs.get('manifest') || (base + 'data/manifest.json');
+      const baseHref = manifestUrl.replace(/[^/]+$/, '');
+
+      const showErr = (msg) => { $('banner').innerHTML = '<div class="banner">' + msg + '</div>'; };
+      const abs = (rel) => new URL(rel, baseHref).href;
+
+      let m;
+      try {
+        const r = await fetch(manifestUrl, { credentials: 'same-origin' });
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + manifestUrl);
+        m = await r.json();
+      } catch (e) {
+        showErr('Could not load manifest: ' + e.message);
+        $('raw').textContent = String(e);
+        return;
+      }
+      $('raw').textContent = JSON.stringify(m, null, 2);
+
+      const kpi = (lbl, val) => '<div class="kpi"><div class="lbl">' + lbl + '</div><div class="val">' + (val ?? '—') + '</div></div>';
+      const fmtRange = (r) => Array.isArray(r) ? r[0] + ' → ' + r[1] : '—';
+      const acctsTags = (m.accounts || []).map(a => '<span class="tag">' + a + '</span>').join('');
+
+      $('summary').innerHTML = `
+        <div class="kpi-row">
+          ${kpi('Run ID', '<code>' + (m.run_id || '—') + '</code>')}
+          ${kpi('Generated (UTC)', m.generated_at || '—')}
+          ${kpi('Segment / Region', (m.segment || '—') + ' / ' + (m.region || '—'))}
+          ${kpi('Accounts', acctsTags || '—')}
+          ${kpi('Training', fmtRange(m?.daterange?.training))}
+          ${kpi('Validation', fmtRange(m?.daterange?.validation))}
+          ${kpi('Testing', fmtRange(m?.daterange?.testing))}
+        </div>`;
+
+      // Charts
+      const chartsRoot = $('charts');
+      chartsRoot.innerHTML = '';
+      for (const c of (m.charts || [])) {
+        const card = document.createElement('div'); card.className = 'card';
+        card.innerHTML = `
+          <h3>${c.account}</h3>
+          <div class="chart-wrap"><canvas id="chart-${c.account}"></canvas></div>
+          <div class="foot">
+            <a href="${abs(c.json)}">JSON</a>
+            ${c.png ? ' · <a href="' + abs(c.png) + '">PNG</a>' : ''}
+          </div>`;
+        chartsRoot.appendChild(card);
+        try {
+          const data = await (await fetch(abs(c.json))).json();
+          const ds = [
+            { label: 'actual', data: data.actual ?? data.actuals ?? [], borderColor: '#0f172a', backgroundColor: 'transparent', borderWidth: 2, tension: .15 },
+            { label: 'forecast', data: data.forecast ?? [], borderColor: '#2563eb', backgroundColor: 'transparent', borderDash: [6, 4], borderWidth: 2, tension: .15 },
+          ];
+          if (data.reconciled && data.reconciled.some(v => v !== null && v !== undefined)) {
+            ds.push({ label: 'reconciled', data: data.reconciled, borderColor: '#16a34a', backgroundColor: 'transparent', borderDash: [2, 2], borderWidth: 2, tension: .15 });
+          }
+          new Chart(document.getElementById('chart-' + c.account).getContext('2d'), {
+            type: 'line',
+            data: { labels: data.dates, datasets: ds },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom' } },
+              scales: { x: { ticks: { maxTicksLimit: 12 } }, y: { beginAtZero: false } },
+            },
+          });
+        } catch (e) {
+          card.querySelector('.chart-wrap').innerHTML = '<div class="banner">Chart JSON load failed: ' + e.message + '</div>';
+        }
+      }
+
+      // Generic CSV table renderer with search + row cap
+      const renderCsvInto = async (container, csvUrl, cap = 500) => {
+        try {
+          const txt = await (await fetch(csvUrl)).text();
+          const rows = txt.trim().split(/\r?\n/).map(line => line.split(','));
+          if (!rows.length) { container.textContent = 'empty'; return; }
+          const headers = rows[0]; const body = rows.slice(1);
+          container.innerHTML = `
+            <div class="toolbar"><input placeholder="filter…" oninput="(function(v){var rows=document.querySelectorAll('#${container.id} tbody tr'); rows.forEach(function(r){r.style.display = r.textContent.toLowerCase().indexOf(v.toLowerCase())>=0?'':'none';});})(this.value)" />
+              <span class="muted">${body.length.toLocaleString()} rows${body.length > cap ? ' (showing ' + cap + ')' : ''}</span>
+            </div>
+            <div style="max-height:340px; overflow:auto; border:1px solid var(--line); border-radius:8px; margin-top:.5rem;">
+              <table>
+                <thead><tr>${headers.map(h=>'<th>'+h+'</th>').join('')}</tr></thead>
+                <tbody>${body.slice(0, cap).map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')}</tbody>
+              </table>
+            </div>
+            <div class="foot">Source: <a href="${csvUrl}">${csvUrl.split('/').pop()}</a></div>`;
+        } catch (e) {
+          container.innerHTML = '<div class="banner">CSV load failed: ' + e.message + '</div>';
+        }
+      };
+
+      if (m?.tables?.selected_drivers)             renderCsvInto($('drivers'),    abs(m.tables.selected_drivers));
+      if (m?.tables?.validation)                   renderCsvInto($('validation'), abs(m.tables.validation));
+      if (m?.tables?.account_forecasts)            renderCsvInto($('forecasts'),  abs(m.tables.account_forecasts));
+      if (m?.tables?.account_forecasts_reconciled) renderCsvInto($('reconciled'), abs(m.tables.account_forecasts_reconciled));
+
+      // Audit
+      try {
+        const audit = {};
+        if (m?.audit?.run) audit.run = await (await fetch(abs(m.audit.run))).json();
+        $('audit').innerHTML = '<pre>' + (audit.run ? JSON.stringify(audit.run, null, 2) : '(no audit/run.json)') + '</pre>'
+          + (m?.audit?.config_resolved ? '<div class="foot"><a href="' + abs(m.audit.config_resolved) + '">config.resolved.yml</a></div>' : '');
+      } catch (e) {
+        $('audit').innerHTML = '<div class="banner">Audit load failed: ' + e.message + '</div>';
+      }
+    })();
+  </script>
+</body>
+</html>
