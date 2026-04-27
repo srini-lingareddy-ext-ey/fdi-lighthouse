@@ -16,6 +16,18 @@ HTTPS: `https://github.com/ey-org/lighthouse-2026.git`
 
 SSH: `git@github.com:ey-org/lighthouse-2026.git`
 
+After cloning **this** repository (`fdi-lighthouse`), initialize the HTML portal submodule ( [`lighthouse-portal`](https://github.com/srini-lingareddy-ext-ey/lighthouse-portal) ):
+
+```bash
+git submodule update --init --recursive
+```
+
+Alternatively clone with submodules in one step:
+
+```bash
+git clone --recurse-submodules https://github.com/srini-lingareddy-ext-ey/fdi-lighthouse.git
+```
+
 **For Mac users:**
 - `brew` (homebrew) is required for installation, follow instructions here: [homebrew install link](https://brew.sh/)
 
