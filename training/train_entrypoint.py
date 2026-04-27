@@ -33,6 +33,7 @@ import time
 import traceback
 from typing import Any
 
+import numpy as np
 import polars as pl
 
 import lh_v2
@@ -77,6 +78,16 @@ def _hash_file(path: pth.Path) -> str:
     return h.hexdigest()
 
 
+def _float_series_for_plot(values: list[float | None]) -> list[float]:
+    """Matplotlib ``plot`` expects numeric y; map missing values to NaN."""
+    return [float('nan') if v is None else float(v) for v in values]
+
+
+def _dates_for_plot(dates: list[dt.date]) -> np.ndarray[Any, Any]:
+    """Matplotlib stubs reject ``list[date]`` as *args; use datetime64 ndarray."""
+    return np.array([np.datetime64(d.isoformat()) for d in dates])
+
+
 def _write_chart(
     out_dir: pth.Path,
     account: str,
@@ -105,10 +116,17 @@ def _write_chart(
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots(figsize=(9, 4))
-        ax.plot(dates, actuals, label='actual', linewidth=2)
-        ax.plot(dates, forecast, label='forecast', linewidth=2, linestyle='--')
+        xd = _dates_for_plot(dates)
+        ax.plot(xd, _float_series_for_plot(actuals), label='actual', linewidth=2)
+        ax.plot(xd, _float_series_for_plot(forecast), label='forecast', linewidth=2, linestyle='--')
         if reconciled is not None and any(v is not None for v in reconciled):
-            ax.plot(dates, reconciled, label='reconciled', linewidth=2, linestyle=':')
+            ax.plot(
+                xd,
+                _float_series_for_plot(reconciled),
+                label='reconciled',
+                linewidth=2,
+                linestyle=':',
+            )
         ax.set_title(f'{account}')
         ax.set_xlabel('date')
         ax.set_ylabel('value')
