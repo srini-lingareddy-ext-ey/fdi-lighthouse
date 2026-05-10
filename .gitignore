@@ -71,3 +71,8 @@ planning/
 
 # Cursor IDE (local)
 .cursor/
+
+# Local / oversized artifacts (GitHub file limit 100MB; use release or LFS for large zips)
+out_e2e/
+__MACOSX/
+docs/xyz_solution.zip
